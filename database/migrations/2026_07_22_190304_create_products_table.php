@@ -22,8 +22,8 @@ return new class extends Migration
             $table->decimal('selling_price', 10, 2);
             $table->string('image',100);
             $table->boolean('is_active')->default(true);
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -1,0 +1,9 @@
+/* Subtle page background pattern, kept out of Blade on purpose */
+body {
+    background-image: radial-gradient(circle at top left, #f9f4f4 0%, #f3eeee 100%);
+}
+
+/* Smooth focus glow matching brand red */
+input:focus {
+    box-shadow: 0 0 0 3px rgba(122, 18, 32, 0.15);
+}
