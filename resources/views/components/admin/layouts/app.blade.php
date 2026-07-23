@@ -30,7 +30,7 @@
         <x-admin.layouts.aside></x-admin.layouts.aside>
 
         {{-- Main content, offset by header height + aside width --}}
-        <main class="pt-30 px-4 md:px-16 md:ml-64 min-h-screen transition-all duration-300" id="mainContent">
+        <main class="py-30 px-4 md:px-16 md:ml-64 min-h-screen transition-all duration-300" id="mainContent">
             <h1 class="text-4xl font-bold text-gray-700 capitalize mb-6">{{ $heading }}</h1>
             {{ $slot }}
         </main>

@@ -22,7 +22,7 @@
             <i class="fa-solid fa-plus"></i> Ajouter
         </button>
     </form>
-    
+
     {{-- Category badges --}}
     <div class="gap-3 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         @foreach ($categories as $c)
@@ -51,7 +51,8 @@
                     </button>
 
                     <button type="button" class="js-delete-btn text-red-500 hover:text-red-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 transition cursor-pointer"
-                            data-action={{ route('admin.categories.destory', $c->slug) }}>
+                            data-action={{ route('admin.categories.destory', $c->slug) }}
+                            data-modal="deleteCategoryModal">
                         <i class="fa-solid fa-trash"></i>
                     </button>
 
@@ -65,13 +66,12 @@
     </div>
     <div class="text-gray-400 my-3">
         <p>
-            {{ count($categories) }} 
+            {{ count($categories) }}
             @choice('catégorie a été trouvée.|catégories ont été trouvées.', count($categories))
         </p>
     </div>
 
-    <x-modals.delete-category id="deleteCategoryModal" message="Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action est irréversible." />
-
+    <x-modals.confirm-delete id="deleteCategoryModal" message="Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action est irréversible." />
 
     @push('scripts')
         @vite('resources/js/admin/categories.js')
