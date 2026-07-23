@@ -1,7 +1,7 @@
 @props([])
 
 <aside id="sidebar"
-       class="fixed top-16 left-0 bottom-0 w-64 bg-white border-r border-gray-200 z-30
+       class="fixed top-16 left-0 bottom-0 w-70 bg-white border-r border-gray-200 z-30
               transform -translate-x-full md:translate-x-0 transition-transform duration-300 overflow-y-auto
               flex flex-col align-center justify-between">
 
@@ -16,25 +16,31 @@
         <a href="{{ route('admin.dashboard') }}"
         class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 hover:bg-amani/10 hover:text-amani transition
                 {{ request()->routeIs('admin.orders.index') ? 'bg-amani/10 text-amani font-semibold' : '' }}">
-            <i class="fa-solid fa-box w-4 text-center"></i> Commandes
+            <i class="fa-solid fa-box w-4 text-center"></i> Gestion des Commandes
+        </a>
+
+        <a href="{{ route('admin.products.create') }}"
+        class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 hover:bg-amani/10 hover:text-amani transition
+                {{ request()->routeIs('admin.products.create') ? 'bg-amani/10 text-amani font-semibold' : '' }}">
+            <i class="fa-solid fa-plus w-4 text-center"></i> Ajouter un produit
         </a>
 
         <a href="{{ route('admin.products.index') }}"
         class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 hover:bg-amani/10 hover:text-amani transition
                 {{ request()->routeIs('admin.products.index') ? 'bg-amani/10 text-amani font-semibold' : '' }}">
-            <i class="fa-solid fa-bag-shopping w-4 text-center"></i> Produits
+            <i class="fa-solid fa-bag-shopping w-4 text-center"></i> Liste des produits
         </a>
 
         <a href="{{ route('admin.categories.index') }}"
             class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 hover:bg-amani/10 hover:text-amani transition
                     {{ request()->routeIs('admin.categories.index') ? 'bg-amani/10 text-amani font-semibold' : '' }}">
-                <i class="fa-solid fa-tags w-4 text-center"></i> Catégories
+                <i class="fa-solid fa-tags w-4 text-center"></i> Gestion des catégories
             </a>
 
         <a href="{{ route('admin.customers.index') }}"
         class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 hover:bg-amani/10 hover:text-amani transition
                 {{ request()->routeIs('admin.customers.index') ? 'bg-amani/10 text-amani font-semibold' : '' }}">
-            <i class="fa-solid fa-users w-4 text-center"></i> Clients
+            <i class="fa-solid fa-users w-4 text-center"></i> Liste des Clients
         </a>
 
 

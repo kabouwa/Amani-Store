@@ -18,7 +18,7 @@
                       focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition" value={{ old('search') }}>
         <button type="submit"
                 class="bg-amani hover:bg-amani-dark text-white px-4 py-2.5 rounded-lg transition flex items-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-plus"></i> Chercher
+            <i class="	fa-solid fa-magnifying-glass"></i> Chercher
         </button>
         @if (request()->has('search'))
             <a href="{{ route('admin.customers.index') }}"

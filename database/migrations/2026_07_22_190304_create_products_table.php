@@ -20,7 +20,6 @@ return new class extends Migration
             $table->integer('stock')->default(0);
             $table->decimal('purchase_price', 10, 2);
             $table->decimal('selling_price', 10, 2);
-            $table->string('image',100);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();
