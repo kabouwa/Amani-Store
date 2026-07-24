@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('total_price', 10, 2)->default(0);
             $table->string('shipping_agency', 50);
             $table->string('status', 20)->default('Préparation');
+            $table->text('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

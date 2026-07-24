@@ -12,7 +12,7 @@
     @endif
 
     {{-- Add new category --}}
-    <form action="{{ route('admin.categories.store') }}" method="POST" class="flex gap-3 mb-8 w-full md:w-auto md:max-w-md" novalidate>
+    <form action="{{ route('admin.categories.store') }}" method="POST" class="flex gap-3  w-full md:w-auto md:max-w-md" novalidate>
         @csrf
         <input type="text" name="title" placeholder="Nouvelle catégorie..." required
                class="flex-1 rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900
@@ -22,6 +22,13 @@
             <i class="fa-solid fa-plus"></i> Ajouter
         </button>
     </form>
+
+    <div class="text-gray-400 my-3 mb-8">
+        <p>
+            {{ count($categories) }}
+            @choice('catégorie a été trouvée.|catégories ont été trouvées.', count($categories))
+        </p>
+    </div>
 
     {{-- Category badges --}}
     <div class="gap-3 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
@@ -63,12 +70,6 @@
 
             </div>
         @endforeach
-    </div>
-    <div class="text-gray-400 my-3">
-        <p>
-            {{ count($categories) }}
-            @choice('catégorie a été trouvée.|catégories ont été trouvées.', count($categories))
-        </p>
     </div>
 
     <x-modals.confirm-delete id="deleteCategoryModal" message="Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action est irréversible." />

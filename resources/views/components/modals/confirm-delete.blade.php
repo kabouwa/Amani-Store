@@ -14,13 +14,13 @@
 
         <div class="flex justify-end gap-3">
             <button type="button" class="js-modal-cancel px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition cursor-pointer">
-                Annuler
+                <i class="fa-solid fa-xmark"></i> Annuler
             </button>
             <form id={{ $id . "Form"}} method="POST" action="">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white transition cursor-pointer">
-                    Supprimer
+                    <i class="fa-solid fa-trash"></i> Supprimer
                 </button>
             </form>
         </div>

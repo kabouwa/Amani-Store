@@ -3,19 +3,56 @@
         <i class="fa-solid fa-bag-shopping w-4 text-center"></i> Ajouter un produit
     </x-slot:heading>
 
-    @error('title')
-        <x-alert>{{ $message }}</x-alert>
-    @enderror
     @if(session('success'))
         <x-alert color="green">{{ session('success') }}</x-alert>
     @endif
 
-    <form action="{{ route('admin.products.store') }}" method="POST"
-          class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+    <form action="{{ route('admin.products.store') }}" method="POST" novalidate enctype="multipart/form-data"
+          class="bg-white rounded-xl border border-gray-200 shadow-sm p-6" >
         @csrf
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {{-- Image upload section --}}
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6 mb-6">
 
+            <div class="flex items-center justify-between mb-4">
+                <label class="block text-sm font-medium text-gray-700">Images du produit</label>
+                <span id="imagesCount" class="text-xs text-gray-400">0 / 10</span>
+            </div>
+
+            {{-- Drop zone --}}
+            <div id="dropZone"
+                class="relative border-2 border-dashed border-gray-300 rounded-xl p-8 text-center
+                        hover:border-amani hover:bg-amani/5 transition-all duration-200 cursor-pointer">
+
+                <input type="file" name="images[]" id="imagesInput" accept=".png,.jpg,.jpeg" multiple
+                    class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                <input type="hidden" name="primary_image" id="primary_image" value="0" required>
+                
+                <div class="flex flex-col items-center gap-3 pointer-events-none">
+                    <div class="w-14 h-14 rounded-full bg-amani/10 flex items-center justify-center">
+                        <i class="fa-solid fa-cloud-arrow-up text-amani text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-700">
+                            Glissez vos images ici ou <span class="text-amani">parcourir</span>
+                        </p>
+                        <p class="text-xs text-gray-400 mt-1">PNG, JPG, JPEG — jusqu'à 10 images</p>
+                    </div>
+                </div>
+            </div>
+            @error('images')
+                    <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
+                @enderror
+                @error('images.*')
+                    <p class="text-xs text-red-600 mt-2">{{ $message }}</p>
+                @enderror
+
+                {{-- Preview grid --}}
+                <div id="imagesPreview" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3 mt-5"></div>
+
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {{-- Title --}}
             <div>
                 <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Titre</label>
@@ -28,18 +65,21 @@
             </div>
 
             {{-- Category --}}
-            <div>
+            <div class="relative">
                 <label for="category_id" class="block text-sm font-medium text-gray-700 mb-1">Catégorie</label>
                 <select name="category_id" id="category_id" required
-                        class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 bg-white
+                        class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 bg-white cursor-pointer
                                focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition">
-                    <option value="" disabled {{ old('category_id') ? '' : 'selected' }}>Non Classé</option>
+                    <option value="" {{ old('category_id') ? '' : 'selected' }}>Non Classé</option>
                     @foreach ($categories as $cat)
                         <option value="{{ $cat->id }}" {{ old('category_id') == $cat->id ? 'selected' : '' }}>
                             {{ $cat->title }}
                         </option>
                     @endforeach
                 </select>
+                <div class="absolute top-8 right-1 bg-white px-2 pointer-events-none text-gray-400 text-lg">
+                    <i class="fa-solid fa-angle-down"></i>
+                </div>
                 @error('category_id')
                     <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
                 @enderror
@@ -50,7 +90,7 @@
                 <label for="purchase_price" class="block text-sm font-medium text-gray-700 mb-1">Prix d'achat</label>
                 <div class="relative">
                     <input type="number" step="0.01" min="0" name="purchase_price" id="purchase_price"
-                           value="{{ old('purchase_price') }}" required
+                           value="{{ old('purchase_price', 0) }}" required
                            class="w-full rounded-lg border border-gray-300 px-4 py-2.5 pr-12 text-gray-900
                                   focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition">
                     <span class="absolute inset-y-0 right-3 flex items-center text-gray-400 text-sm">DH</span>
@@ -65,7 +105,7 @@
                 <label for="selling_price" class="block text-sm font-medium text-gray-700 mb-1">Prix de vente</label>
                 <div class="relative">
                     <input type="number" step="0.01" min="0" name="selling_price" id="selling_price"
-                           value="{{ old('selling_price') }}" required
+                           value="{{ old('selling_price', 0) }}" required
                            class="w-full rounded-lg border border-gray-300 px-4 py-2.5 pr-12 text-gray-900
                                   focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition">
                     <span class="absolute inset-y-0 right-3 flex items-center text-gray-400 text-sm">DH</span>
@@ -129,5 +169,10 @@
         </div>
 
     </form>
+
+
+    @push('scripts')
+        @vite('resources/js/admin/add-product.js')
+    @endpush
 
 </x-admin.layouts.app>

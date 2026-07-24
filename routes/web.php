@@ -33,12 +33,14 @@ Route::prefix('admin')->group(function(){
 
         Route::delete('/logout',[AuthController::class,'destroy'])->name('admin.logout');
 
-        Route::resource('products',AdminProductController::class)->only(['index','create','store'])
+        Route::resource('products',AdminProductController::class)->only(['index','create','store','destroy'])
         ->names([
             'index' => 'admin.products.index',
             'create' => 'admin.products.create',
             'store' => 'admin.products.store',
+            'destroy' => 'admin.products.destroy',
         ]);
+        Route::patch('products/{product}',[AdminProductController::class,'toggle'])->name('admin.products.toggle');
 
         Route::resource('categories',AdminCategoryController::class)->only(['index','store','update','destroy'])
         ->names([

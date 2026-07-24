@@ -18,7 +18,7 @@
                       focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition" value={{ old('search') }}>
         <button type="submit"
                 class="bg-amani hover:bg-amani-dark text-white px-4 py-2.5 rounded-lg transition flex items-center gap-2 cursor-pointer">
-            <i class="	fa-solid fa-magnifying-glass"></i> Chercher
+            <i class="	fa-solid fa-magnifying-glass"></i> <span class="hidden md:inline">Chercher</span> 
         </button>
         @if (request()->has('search'))
             <a href="{{ route('admin.customers.index') }}"
@@ -28,6 +28,12 @@
         @endif
     </form>
 
+    <div class="text-gray-400 my-3">
+        <p>
+            {{ count($customers) }} {{ count($customers) > 1 ? 'clients ont été trouvés.' : 'client a été trouvé.' }}
+        </p>
+    </div>
+    
     {{-- Desktop / tablet table --}}
     <div class="hidden md:block bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
         <table class="w-full text-sm">
@@ -63,7 +69,7 @@
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
                                 <button type="button" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 hover:text-red-600 hover:bg-red-50 transition"
-                                        data-action="{{ route('admin.customers.destroy', $c->id) }}">
+                                        data-action="{{ route('admin.products.destroy', $c->slug) }}">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>
@@ -104,11 +110,7 @@
         @endforeach
     </div>
 
-    <div class="text-gray-400 my-3">
-        <p>
-            {{ count($customers) }} {{ count($customers) > 1 ? 'clients ont été trouvés.' : 'client a été trouvé.' }}
-        </p>
-    </div>
+    
 
     <x-modals.confirm-delete id="deleteModal"
                        message="Êtes-vous sûr de vouloir supprimer ce client avec sa commande ?" />
