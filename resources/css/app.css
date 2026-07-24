@@ -12,11 +12,20 @@
   --color-amani: #7A1220;
   --color-amani-light: #9E1B2B;
   --color-amani-dark: #5C0D18;
+
+  /* Better for dark mode */
+  --color-amani-200: #F3D7DC;
+  --color-amani-300: #E7B3BD;
+  --color-amani-400: #D77A8B;
 }
 
 html{
   scrollbar-width: thin;
   scrollbar-color: #7A1220 rgba(255, 255, 255, 0.6) ;
+}
+html.dark{
+  scrollbar-color: #7A1220 #00000099 ;
+  
 }
 body {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;

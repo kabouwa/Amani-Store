@@ -3,7 +3,7 @@
     'heading' => 'Management'
 ])
 <!DOCTYPE html>
-<html lang="fr" class="dark">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,8 +18,8 @@
         }
     </style>
     @vite(['resources/css/app.css','resources/js/app.js','resources/js/admin/layout.js'])
-</head> 
-<body class="bg-gray-50 font-serif">
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-serif">
 
     <div class="min-h-screen">
 
@@ -31,12 +31,12 @@
 
         {{-- Main content, offset by header height + aside width --}}
         <main class="py-30 px-4 md:px-16 md:ml-64 min-h-screen transition-all duration-300" id="mainContent">
-            <h1 class="text-4xl font-bold text-gray-700 capitalize mb-6">{{ $heading }}</h1>
+            <h1 class="text-4xl font-bold text-gray-700 dark:text-gray-100 capitalize mb-6">{{ $heading }}</h1>
             {{ $slot }}
         </main>
 
     </div>
 
-     @stack('scripts')
+    @stack('scripts')
 </body>
 </html>

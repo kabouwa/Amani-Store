@@ -1,18 +1,18 @@
 @props(['product'])
 
-<div class="group relative bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden">
+<div class="group relative bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden">
 
     {{-- Admin actions --}}
     @auth
         <div class="absolute top-2 right-2 z-20 flex gap-1.5">
             <a href="{{ route('admin.products.edit', $product->slug) }}"
-               class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full bg-white/95 text-gray-600
-                      hover:text-amani hover:bg-white shadow-sm transition">
+               class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full bg-white/95 dark:bg-gray-800/95 text-gray-600 dark:text-gray-300
+                      hover:text-amani dark:hover:text-white hover:bg-white dark:hover:bg-amani shadow-sm transition">
                 <i class="fa-solid fa-pen text-xs"></i>
             </a>
             <button type="button"
-                    class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full bg-white/95 text-gray-600
-                           hover:text-red-600 hover:bg-white shadow-sm transition"
+                    class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full bg-white/95 dark:bg-gray-800/95 text-gray-600 dark:text-gray-300
+                           hover:text-red-600 dark:hover:text-white hover:bg-white dark:hover:bg-red-600 shadow-sm transition"
                     data-action="{{ route('admin.products.destroy', $product->slug) }}"
                     data-modal="deleteModal">
                 <i class="fa-solid fa-trash text-xs"></i>
@@ -21,7 +21,7 @@
     @endauth
 
     {{-- Image carousel --}}
-    <div class="relative aspect-square bg-gray-50 overflow-hidden js-carousel" data-autoplay="2000">
+    <div class="relative aspect-square bg-gray-50 dark:bg-gray-800 overflow-hidden js-carousel" data-autoplay="2000">
 
         @if($product->images->count())
             <div class="flex h-full transition-transform duration-500 ease-out js-carousel-track"
@@ -38,12 +38,12 @@
                 {{-- Prev / next --}}
                 <button type="button"
                         class="js-carousel-prev cursor-pointer absolute left-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full
-                               bg-white/90 text-gray-700 hover:text-amani hover:bg-white shadow-sm flex items-center justify-center transition">
+                               bg-white/90 dark:bg-gray-800/90 text-gray-700 dark:text-gray-300 hover:text-amani dark:hover:text-white hover:bg-white dark:hover:bg-amani shadow-sm flex items-center justify-center transition">
                     <i class="fa-solid fa-chevron-left text-xs"></i>
                 </button>
                 <button type="button"
                         class="js-carousel-next cursor-pointer absolute right-2 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full
-                               bg-white/90 text-gray-700 hover:text-amani hover:bg-white shadow-sm flex items-center justify-center transition">
+                               bg-white/90 dark:bg-gray-800/90 text-gray-700 dark:text-gray-300 hover:text-amani dark:hover:text-white hover:bg-white dark:hover:bg-amani shadow-sm flex items-center justify-center transition">
                     <i class="fa-solid fa-chevron-right text-xs"></i>
                 </button>
 
@@ -56,7 +56,7 @@
                 </div>
             @endif
         @else
-            <div class="w-full h-full flex items-center justify-center text-gray-300">
+            <div class="w-full h-full flex items-center justify-center text-gray-300 dark:text-gray-600">
                 <i class="fa-solid fa-image text-4xl"></i>
             </div>
         @endif
@@ -64,34 +64,34 @@
 
     {{-- Info --}}
     <div class="p-4 relative z-10">
-        <p class="text-xs text-amani font-medium mb-1">{{ $product->category->title ?? 'Non Classé' }}</p>
-        <h3 class="font-semibold text-gray-800 truncate mb-2">{{ $product->title }}</h3>
+        <p class="text-xs text-amani dark:text-amani-light font-medium mb-1">{{ $product->category->title ?? 'Non Classé' }}</p>
+        <h3 class="font-semibold text-gray-800 dark:text-gray-100 truncate mb-2">{{ $product->title }}</h3>
 
         {{-- Prices --}}
         <div class="flex items-center justify-between mb-2">
             <div class="flex items-baseline gap-2">
-                <span class="text-lg font-bold text-gray-900">{{ number_format($product->selling_price, 2) }} DH</span>
+                <span class="text-lg font-bold text-gray-900 dark:text-white">{{ number_format($product->selling_price, 2) }} DH</span>
                 @auth
-                    <span class="text-xs text-gray-400">achat: {{ number_format($product->purchase_price, 2) }} DH</span>
+                    <span class="text-xs text-gray-400 dark:text-gray-500">achat: {{ number_format($product->purchase_price, 2) }} DH</span>
                 @endauth
             </div>
-            <span class="text-xs {{ $product->stock > 0 ? 'text-gray-400' : 'text-red-500 font-medium' }}">
+            <span class="text-xs {{ $product->stock > 0 ? 'text-gray-400 dark:text-gray-500' : 'text-red-500 dark:text-red-400 font-medium' }}">
                 {{ $product->stock > 0 ? $product->stock . ' en stock' : 'Rupture' }}
             </span>
         </div>
 
         {{-- Admin-only sales stats --}}
         @auth
-            <div class="grid grid-cols-2 gap-2 mb-3 mt-3 pt-3 border-t border-gray-100">
-                <div class="bg-gray-50 rounded-lg px-3 py-2">
-                    <p class="text-[11px] text-gray-400">Ventes</p>
-                    <p class="text-sm font-semibold text-gray-800">
-                        <i class="fa-solid fa-bag-shopping text-amani text-xs mr-1"></i>{{ $product->sales_count ?? 0 }}
+            <div class="grid grid-cols-2 gap-2 mb-3 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg px-3 py-2">
+                    <p class="text-[11px] text-gray-400 dark:text-gray-500">Ventes</p>
+                    <p class="text-sm font-semibold text-gray-800 dark:text-gray-100">
+                        <i class="fa-solid fa-bag-shopping text-amani dark:text-amani-light text-xs mr-1"></i>{{ $product->sales_count ?? 0 }}
                     </p>
                 </div>
-                <div class="bg-gray-50 rounded-lg px-3 py-2">
-                    <p class="text-[11px] text-gray-400">Total généré</p>
-                    <p class="text-sm font-semibold text-gray-800">
+                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg px-3 py-2">
+                    <p class="text-[11px] text-gray-400 dark:text-gray-500">Total généré</p>
+                    <p class="text-sm font-semibold text-gray-800 dark:text-gray-100">
                         {{ number_format($product->total_sales ?? 0, 2) }} DH
                     </p>
                 </div>
@@ -101,15 +101,15 @@
         {{-- Active toggle --}}
         @auth
             <form action="{{ route('admin.products.toggle', $product->slug) }}" method="POST"
-                  class="flex items-center justify-between pt-3 border-t border-gray-100">
+                  class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
                 @csrf
                 @method('PATCH')
-                <span class="text-xs text-gray-500">Statut</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400">Statut</span>
                 <label class="inline-flex items-center cursor-pointer">
                     <input type="checkbox" name="is_active" value="1" class="sr-only peer"
                            onchange="this.form.requestSubmit()"
                            {{ $product->is_active ? 'checked' : '' }}>
-                    <div class="relative w-9 h-5 bg-gray-200 rounded-full peer
+                    <div class="relative w-9 h-5 bg-gray-200 dark:bg-gray-700 rounded-full peer
                                 peer-checked:bg-amani transition-colors duration-200
                                 after:content-[''] after:absolute after:top-0.5 after:left-0.5
                                 after:bg-white after:rounded-full after:h-4 after:w-4

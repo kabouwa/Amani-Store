@@ -4,6 +4,34 @@ window.$ = $ // Make it from all js files
 window.jQuery = $
 
 
+// Theme switcher
+$(function () {
+
+    const html = document.documentElement;
+
+    // Apply saved preference on load
+    if (localStorage.getItem('theme') === 'dark') {
+        html.classList.add('dark');
+    }
+    updateSwitch();
+
+    $('#themeToggle').on('click', function () {
+        html.classList.toggle('dark');
+        localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        updateSwitch();
+    });
+
+    function updateSwitch() {
+        const isDark = html.classList.contains('dark');
+
+        $('#themeSwitch').toggleClass('bg-amani', isDark).toggleClass('bg-gray-200', !isDark);
+        $('#themeKnob').toggleClass('translate-x-4', isDark);
+        $('#themeIcon').toggleClass('fa-moon', !isDark).toggleClass('fa-sun', isDark);
+    }
+
+});
+
+
 // Utilities
 $(function () {
     const toggler = $('#togglePassword')    
@@ -33,3 +61,4 @@ $('form.save-position').submit(e => {
     sessionStorage.setItem('scrollY', window.scrollY);
     e.currentTarget.submit()
 })
+
