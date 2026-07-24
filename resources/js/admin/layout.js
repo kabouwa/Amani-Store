@@ -1,3 +1,4 @@
+// Phone Sidebar
 $(function () {
     $('#toggleSidebar').on('click', function () {
         $('#sidebar').toggleClass('-translate-x-full');
@@ -8,6 +9,26 @@ $(function () {
         $(this).addClass('hidden');
     });
 });
+
+// Desktop Sidebar
+$(function () {
+    $('#toggleSidebarDesktop').on('click', function () {
+        const html = document.documentElement;
+        html.classList.toggle('sidebar-collapsed');
+
+        const isCollapsed = html.classList.contains('sidebar-collapsed');
+        localStorage.setItem('sidebarCollapsed', isCollapsed);
+
+        $('#collapseIcon').toggleClass('fa-bars-staggered', !isCollapsed).toggleClass('fa-bars', isCollapsed);
+    });
+
+    // Sync icon on load with whatever the pre-paint script already applied
+    if (document.documentElement.classList.contains('sidebar-collapsed')) {
+        $('#collapseIcon').removeClass('fa-bars-staggered').addClass('fa-bars');
+    }
+
+});
+
 
 // Delete Modals toggling
 $(function () {

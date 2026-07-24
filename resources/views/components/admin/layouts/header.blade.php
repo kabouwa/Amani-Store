@@ -7,6 +7,12 @@
         <button id="toggleSidebar" class="md:hidden text-gray-600 dark:text-gray-300 hover:text-amani dark:hover:text-amani-light p-2 cursor-pointer">
             <span class="text-xl"><i class="fa-solid fa-bars"></i></span>
         </button>
+
+        {{-- Desktop collapse toggle --}}
+        <button id="toggleSidebarDesktop" class="hidden md:flex text-gray-600 dark:text-gray-300 hover:text-amani dark:hover:text-amani-light p-2 cursor-pointer">
+            <span class="text-xl"><i class="fa-solid fa-bars-staggered" id="collapseIcon"></i></span>
+        </button>
+
         <a href="/">
             <img src="{{ Vite::asset('resources/images/logo/amani-h.png') }}" alt="Amani Store" class="h-4 md:h-7 w-auto">
         </a>

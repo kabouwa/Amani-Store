@@ -1,0 +1,25 @@
+#sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+#sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(122, 18, 32, 0.3);
+    border-radius: 4px;
+}
+/* Desktop sidebar collapse */
+@media (min-width: 768px) {
+    .sidebar-collapsed #sidebar {
+        width: 5rem; /* w-20 */
+    }
+    .sidebar-collapsed #mainContent {
+        margin-left: 5rem;
+    }
+    .sidebar-collapsed .sidebar-label {
+        display: none;
+    }
+    .sidebar-collapsed #sidebar nav a,
+    .sidebar-collapsed #sidebar nav button,
+    .sidebar-collapsed .aside-bottom a,
+    .sidebar-collapsed .aside-bottom button {
+        justify-content: center;
+    }
+}
