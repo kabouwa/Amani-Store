@@ -18,10 +18,8 @@ return new class extends Migration
             $table->string('slug',100)->unique();
             $table->text('description')->nullable();
             $table->integer('stock')->default(0);
-            $table->check('stock >= 0');
             $table->decimal('purchase_price', 10, 2);
             $table->decimal('selling_price', 10, 2);
-            $table->check('selling_price >= purchase_price');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->softDeletes();

@@ -14,17 +14,23 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->search;
-        $products = Product::when($search, function ($query) use ($search) {
-            $query->where("title","LIKE","%". $search ."%")
-                ->orwhere("description","LIKE","%". $search ."%")
-                ->orwhere("stock","LIKE","%". $search ."%")
-                ->orwhere("purchase_price","LIKE","%". $search ."%")
-                ->orwhere("selling_price","LIKE","%". $search ."%");
-        })
-            ->orderByDesc('id')
+
+        $products = Product::when(request('search'), fn ($q, $sr) => $q->where("title","LIKE","%". $sr ."%")->orwhere("description","LIKE","%". $sr ."%"))
+            ->when( request('category') , fn($q) => $q->whereHas('category', fn ($q) => $q->where('slug', request('category') ) ) )
+
+            ->when(!is_null(request('is_active')) && in_array(request('is_active'),[0,1]), fn ($q) => $q->where('is_active', request('is_active')))
+
+            ->when(request('price_min'), fn($q,$p) => $q->where('selling_price','>=',$p))
+            ->when(request('price_max'), fn($q,$p) => $q->where('selling_price','<=',$p))
+
+            ->when(request('stock_min'), fn($q,$s) => $q->where('stock','>=',$s))
+            ->when(request('stock_max'), fn($q,$s) => $q->where('stock','<=',$s))
+            
+            ->orderBy(request('sort','created_at') , request('direction','desc'))
             ->get();
+
         $categories = Category::orderByDesc('id')->get();
+
         return view('admin.products.index',compact('products','categories'));
     }
 
@@ -59,14 +65,6 @@ class ProductController extends Controller
         return back()->with('success',"Le produit a été $status avec succès.");
     }
     /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Product $product)
@@ -82,9 +80,6 @@ class ProductController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Product $product)
     {
         foreach($product->images as $img) {
@@ -94,6 +89,6 @@ class ProductController extends Controller
             );
         }
         $product->delete();
-        return to_route('admin.products.index')->with("success','Le produit a été supprimer avec succès.");
+        return to_route('admin.products.index')->with("success","Le produit a été supprimer avec succès.");
     }
 }

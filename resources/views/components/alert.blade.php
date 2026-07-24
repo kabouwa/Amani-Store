@@ -11,6 +11,6 @@
     ];
     $classes = $styles[$color] ?? $styles['red'];
 @endphp
-<div class="mb-4 text-sm border  rounded-lg px-4 py-2 {{ $classes }}">
+<div class="mb-4 text-sm border rounded-lg px-4 py-2 flex-1 {{ $classes }}">
     {{ $slot }}
 </div>

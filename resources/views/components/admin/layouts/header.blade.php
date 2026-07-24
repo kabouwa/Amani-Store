@@ -1,6 +1,6 @@
 @props([])
 
-<header class="fixed top-0 left-0 right-0 h-18 bg-white/75 border-b border-gray-200 shadow-sm z-40 flex items-center justify-between px-4 md:px-6">
+<header class="fixed top-0 left-0 right-0 h-18 bg-white/75 backdrop-blur-md border-b border-gray-200 shadow-sm z-40 flex items-center justify-between px-4 md:px-6">
 
     <div class="flex items-center gap-3">
         {{-- Mobile menu toggle --}}
