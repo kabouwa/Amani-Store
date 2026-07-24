@@ -17,13 +17,13 @@ class CustomerController extends Controller
                 ->orwhere("instagram","LIKE","%". $search ."%")
                 ->orwhere("address","LIKE","%". $search ."%");
         })
-        ->orderByDesc('id')
+        ->orderByDesc('created_at')
         ->get();
         return view('admin.customers.index',compact('customers'));
     }
     public function destroy(Customer $customer)
     {
         $customer->delete();
-        return redirect()->back()->with('success','Le client et sa commande a été supprimer avec succès');
+        return redirect()->back()->with('success','Le client et sa commande a été supprimée avec succès');
     }
 }

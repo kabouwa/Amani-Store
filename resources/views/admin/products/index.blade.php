@@ -7,7 +7,7 @@
         <x-alert color="green">{{ session('success') }}</x-alert>
     @endif
     <div class="mb-2 flex flex-col md:flex-row md:items-center md:justify-between">
-        <a href="{{ route('admin.products.create') }}"
+        <a href={{ route('admin.products.create') }}
             class="cursor-pointer bg-amani hover:bg-amani-dark text-white px-4 py-3 rounded-lg transition
                 flex items-center justify-center gap-2 text-sm font-medium w-full md:w-auto md:ml-auto shrink-0">
             <i class="fa-solid fa-plus"></i> Ajouter un produit

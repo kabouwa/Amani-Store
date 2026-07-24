@@ -2,15 +2,10 @@
 
 <div class="group relative bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden">
 
-    @guest
-        {{-- Guests: whole card links out to the public product page --}}
-        <a href="{{ route('products.show', $product->slug) }}" class="absolute inset-0 z-0" aria-label="{{ $product->title }}"></a>
-    @endguest
-
     {{-- Admin actions --}}
     @auth
         <div class="absolute top-2 right-2 z-20 flex gap-1.5">
-            <a href="{{ route('admin.products.index', $product->slug) }}"
+            <a href="{{ route('admin.products.edit', $product->slug) }}"
                class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full bg-white/95 text-gray-600
                       hover:text-amani hover:bg-white shadow-sm transition">
                 <i class="fa-solid fa-pen text-xs"></i>

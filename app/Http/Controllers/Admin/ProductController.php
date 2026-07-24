@@ -43,52 +43,57 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $data = $request->validated();
-        
         $product = Product::create($data);
-
-        foreach($data['images'] as $index => $img){ 
+        // Store Images
+        foreach($data['images'] as $img){ 
             $path = $img->store('products','public');
             ProductImages::create([
                 'product_id' => $product->id,
                 'image' => $path,
-                'is_primary' => $index == $data['primary_image']
+                'is_primary' => false
             ]);
         }
-        return to_route('admin.products.index')->with('success','Le produit a été créée avec succès.');
+        // Make an image primary
+        ProductImages::where('product_id',$product->id)->latest()->update(['is_primary' => true]);
+
+        return to_route('admin.products.index')->with('success','Le produit a été créé avec succès.');
+    }
+
+    public function edit(Product $product)
+    {
+        $categories = Category::orderByDesc('created_at')->get();
+        return view('admin.products.edit',compact('product','categories'));
+    }
+
+    public function update(ProductRequest $request, Product $product)
+    {
+        $data = $request->validated();
+        if(isset($data['images'])){
+            foreach($data['images'] as $img){ 
+                $path = $img->store('products','public');
+                ProductImages::create([
+                    'product_id' => $product->id,
+                    'image' => $path,
+                    'is_primary' => false
+                ]);
+            }
+        }
+        $product->update($data);
+        return to_route('admin.products.index')->with('success','Le produit a été modifiée avec succès.');
     }
 
     public function toggle(Product $product)
     {
         $product->is_active = !$product->is_active;
         $product->save();
-        $status = $product->is_active ? 'activer' : 'désactiver';
+        $status = $product->is_active ? 'activé' : 'désactivé';
         return back()->with('success',"Le produit a été $status avec succès.");
-    }
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Product $product)
-    {
-        //
     }
 
     public function destroy(Product $product)
     {
-        foreach($product->images as $img) {
-            Storage::disk('public')->move(
-                from : $img->image,
-                to   : 'products/trash/' . basename($img->image)
-            );
-        }
+        $product->images()->delete();
         $product->delete();
-        return to_route('admin.products.index')->with("success","Le produit a été supprimer avec succès.");
+        return to_route('admin.products.index')->with("success","Le produit a été supprimée avec succès.");
     }
 }

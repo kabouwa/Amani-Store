@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductImagesController;
 use Illuminate\Support\Facades\Route;
 /**
  * Admin Controllers
@@ -14,6 +15,11 @@ use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
  * Public Controllers
 */
 use App\Http\Controllers\ProductController;
+
+Route::get('/', fn () => redirect('/admin'));
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
 
 
 
@@ -33,14 +39,19 @@ Route::prefix('admin')->group(function(){
 
         Route::delete('/logout',[AuthController::class,'destroy'])->name('admin.logout');
 
-        Route::resource('products',AdminProductController::class)->only(['index','create','store','destroy'])
+        Route::resource('products', AdminProductController::class)->except('show')
         ->names([
             'index' => 'admin.products.index',
             'create' => 'admin.products.create',
             'store' => 'admin.products.store',
+            'edit' => 'admin.products.edit',
+            'update' => 'admin.products.update',
             'destroy' => 'admin.products.destroy',
         ]);
         Route::patch('products/{product}',[AdminProductController::class,'toggle'])->name('admin.products.toggle');
+
+        Route::patch('product-images/{productImages}/{product}',[ProductImagesController::class, 'primary'])->name('product-image.primary');
+        Route::delete('product-images/{productImages}',[ProductImagesController::class, 'destroy'])->name('product-image.destroy');
 
         Route::resource('categories',AdminCategoryController::class)->only(['index','store','update','destroy'])
         ->names([

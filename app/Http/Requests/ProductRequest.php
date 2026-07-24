@@ -45,6 +45,7 @@ class ProductRequest extends FormRequest
     }
     public function rules(): array
     {
+        $isUpdate = $this->isMethod('PUT') || $this->isMethod('PATCH') ;
         $product = $this->route('product');
         return [
             'title' => [
@@ -61,11 +62,9 @@ class ProductRequest extends FormRequest
 
             'category_id' => 'nullable|exists:categories,id',
 
-            'images' => 'required|array|max:10',
+            'images' => ['array','max:10', $isUpdate ? 'nullable' : 'required'],
 
-            'images.*' => 'image|mimes:png,jpg,jpeg|max:10000',
-
-            'primary_image' => 'required|integer',
+            'images.*' => 'image|mimes:png,jpg,jpeg|max:15000',
 
             'purchase_price' => 'required|numeric|min:1|max:9999',
 

@@ -69,7 +69,7 @@
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
                                 <button type="button" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 hover:text-red-600 hover:bg-red-50 transition"
-                                        data-action="{{ route('admin.products.destroy', $c->slug) }}">
+                                        data-action={{ route('admin.customers.destroy', $c->id) }}>
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </div>

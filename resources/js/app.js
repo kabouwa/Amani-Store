@@ -18,3 +18,18 @@ $(function () {
         $(this).html(isPassword ? hideIcon : showIcon);
     });
 });
+
+
+// Preserve scroll
+const scroll = sessionStorage.getItem('scrollY');
+
+if (scroll) {
+    window.scrollTo(0, scroll);
+    sessionStorage.removeItem('scrollY');
+}
+
+$('form.save-position').submit(e => {
+    e.preventDefault()
+    sessionStorage.setItem('scrollY', window.scrollY);
+    e.currentTarget.submit()
+})

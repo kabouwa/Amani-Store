@@ -38,6 +38,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return back()->with('success','La catégorie a été supprimer avec succès.');
+        return back()->with('success','La catégorie a été supprimée avec succès.');
     }  
 }

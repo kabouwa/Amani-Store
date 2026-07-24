@@ -6,6 +6,8 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-amani: #7A1220;
   --color-amani-light: #9E1B2B;
@@ -14,7 +16,7 @@
 
 html{
   scrollbar-width: thin;
-  scrollbar-color: #7A1220 white ;
+  scrollbar-color: #7A1220 rgba(255, 255, 255, 0.6) ;
 }
 body {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;

@@ -27,8 +27,8 @@
 
         <a href="{{ route('admin.products.index') }}"
         class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 hover:bg-amani/10 hover:text-amani transition
-                {{ request()->routeIs('admin.products.index') ? 'bg-amani/10 text-amani font-semibold' : '' }}">
-            <i class="fa-solid fa-bag-shopping w-4 text-center"></i> Liste des produits
+                {{ request()->routeIs('admin.products.index') || request()->routeIs('admin.products.edit') ? 'bg-amani/10 text-amani font-semibold' : '' }}">
+            <i class="fa-solid fa-bag-shopping w-4 text-center"></i> Gestion des produits
         </a>
 
         <a href="{{ route('admin.categories.index') }}"
