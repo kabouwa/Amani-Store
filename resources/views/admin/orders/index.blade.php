@@ -1,10 +1,13 @@
 <x-admin.layouts.app title="Gestion des commandes">
     <x-slot:heading>
-        <i class="fa-solid fa-bag-shopping w-4 text-center"></i> Gestion des commandes
+        <i class="fa-solid fa-box w-4 text-center"></i> Gestion des commandes
     </x-slot:heading>
 
     @if(session('success'))
         <x-alert color="green">{{ session('success') }}</x-alert>
+    @endif
+    @if(session('error'))
+        <x-alert color="red">{{ session('error') }}</x-alert>
     @endif
 
     {{-- Desktop / tablet table --}}
@@ -43,24 +46,41 @@
                         </td>
                         <td class="px-5 py-3">
                             <div class="flex justify-end gap-2">
-                                <button type="button" class="js-order-view cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 transition"
-                                        data-order-id="{{ $order->id }}">
+                                <a href={{ route('admin.orders.show' , $order->code) }} class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 transition">
                                     <i class="fa-solid fa-eye"></i>
-                                </button>
+                                </a>
                                 <a href="{{ route('admin.orders.index', $order->id) }}"
                                    class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-amani hover:bg-amani/10 transition">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
                                 <button type="button" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition"
-                                        data-action="{{ route('admin.orders.index', $order->id) }}"
-                                        data-modal="cancelOrderModal">
-                                    <i class="fa-solid fa-ban"></i>
+                                        data-action="{{ route('admin.orders.destroy', $order->code) }}"
+                                        data-modal="deleteOrderModal">
+                                    <i class="fa-solid fa-trash"></i>
                                 </button>
-                                <button type="button" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/30 transition"
-                                        data-action="{{ route('admin.orders.index', $order->id) }}"
-                                        data-modal="senditOrderModal">
-                                    <i class="fa-solid fa-truck-fast"></i>
-                                </button>
+                                @if ($order->sendit_code)
+                                    <form action={{ route('admin.shipment.destroy', $order->code) }} method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition"
+                                            title="Supprimer de Sendit"
+                                            data-action="{{ route('admin.shipment.destroy', $order->code) }}"
+                                            data-modal="deleteShipmentModal"
+                                            >
+                                            <i class="fa-solid fa-ban"></i>
+                                        </button>
+                                    </form>
+                                @else
+                                    <form action={{ route('admin.shipment.store', $order->code) }} method="POST" class="inline">
+                                        @csrf
+                                        <button type="submit" class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/30 transition"
+                                                title="Ajouter dans Sendit"
+                                                data-action=""
+                                                data-modal="senditOrderModal">
+                                            <i class="fa-solid fa-truck-fast"></i>
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -108,7 +128,7 @@
                         </a>
                         <button type="button" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition"
                                 data-action="{{ route('admin.orders.index', $order->id) }}"
-                                data-modal="cancelOrderModal">
+                                data-modal="deleteOrderModal">
                             <i class="fa-solid fa-ban"></i>
                         </button>
                         <button type="button" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/30 transition"
@@ -122,11 +142,6 @@
         @endforeach
     </div>
 
-    <x-admin.order-details />
-    <x-modals.confirm-delete id="cancelOrderModal" title="Annuler la commande" message="Vous voulez vraiment annuler de cette commande ?" action="Confirmer"/>
-    <x-modals.confirm-delete id="senditOrderModal" title="Envoyer via Sendit" message="Confirmer l'envoi de cette commande à Sendit ?" />
+    <x-modals.confirm-delete id="deleteOrderModal" title="Supprimer la commande" message="Vous voulez vraiment supprimer cette commande ?" />
 
-    @push('scripts')
-        @vite(['resources/js/admin/order-details.js'])
-    @endpush
 </x-admin.layouts.app>

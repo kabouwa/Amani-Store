@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ProductImagesController;
 
+use App\Http\Controllers\Admin\ShipmentController;
 use Illuminate\Support\Facades\Route;
 /**
  * Admin Controllers
@@ -18,25 +19,6 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 */
 use App\Http\Controllers\ProductController;
 
-
-
-
-
-
-// SENDIT DEBUG
-use App\Services\SendItService;
-Route::get('/sendit', function (SendItService $sendit) {
-    return $sendit->status('DH210689853');
-    return $sendit->create([
-        'district_id' => 190,
-        'name' => 'Mohammed',
-        'amount' => 200,
-        'address' => 'Hay amal, Sale',
-        'phone' => '0631419206',
-        'products' => '',
-        'reference' => 'AMN-0725-DJSKWEOJ'
-    ]) ;
-});
 
 Route::get('/', fn () => redirect('/admin'));
 
@@ -86,11 +68,18 @@ Route::prefix('admin')->group(function(){
         ]);
 
 
-        Route::resource('orders',AdminOrderController::class)->only(['index'])
+        Route::resource('orders',AdminOrderController::class)->only(['index','show','edit','update','destroy'])
         ->names([
             'index' => 'admin.orders.index',
+            'show' => 'admin.orders.show',
+            'edit' => 'admin.orders.edit',
+            'update' => 'admin.orders.update',
+            'destroy' => 'admin.orders.destroy',
         ]);
 
+
+        Route::post('shipment/{order}',[ShipmentController::class,'store'])->name('admin.shipment.store');
+        Route::delete('shipment/{order}',[ShipmentController::class,'destroy'])->name('admin.shipment.destroy');
 
     });
 });

@@ -3,45 +3,28 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Order;
+use App\Services\SenditService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(SenditService $agency)
     {
-        $orders = Order::all();
+        $orders = Order::get()->each(function ($order) use ($agency) {
+            if($order->hasShipment()){
+                $order->status = $agency->status($order->sendit_code);
+            }
+        });
         
         return view('admin.orders.index',compact('orders'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Order $order)
     {
-        //
+        return view('admin.orders.show',compact('order'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Order $order)
     {
         //
@@ -55,11 +38,13 @@ class OrderController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
+    public function destroy(Order $order, SenditService $agency)
     {
-        //
+        if($order->sendit_code) {
+            $agency->delete($order->sendit_code);
+        };
+        
+        $order->customer->delete();
+        return back()->with('success','La commande a été supprimée avec succès.');
     }
 }

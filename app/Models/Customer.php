@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Customer extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['name','phone','instagram','address'];
+    protected $fillable = ['name','phone','instagram','address','city','district_id'];
 
     public function order()
     {

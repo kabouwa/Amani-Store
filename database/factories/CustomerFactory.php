@@ -22,6 +22,7 @@ class CustomerFactory extends Factory
             'phone' =>  fake()->numerify('06########'),
             'instagram' => fake()->userName(),
             'city' => fake()->city(),
+            'district_id' => 190,
             'address' => fake()->streetAddress()
         ];
     }

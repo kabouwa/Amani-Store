@@ -2,10 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\Order;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
-class SendItService
+class SenditService
 {
     protected string $apiUrl;
 
@@ -69,7 +70,7 @@ class SendItService
         });
     }
     public function create(
-        array $data = [], 
+        Order $order, 
         string $comment = 'Fragile – Merci de manipuler avec le plus grand soin.',
         int $allow_open = 1,
         int $allow_try = 1,
@@ -78,13 +79,13 @@ class SendItService
     {
         $package = [
             // Required Value
-            "district_id"=> 1,
-            "name"       => "Mohammed",
-            "amount"     => "",
-            "address"    => "",
-            "phone"      => "",
-            "products"   => "",
-            "reference"  => "AMN-0725-DJSKWEOJ",
+            "district_id"=> $order->customer->district_id,
+            "name"       => $order->customer->name,
+            "address"    => $order->customer->address,
+            "phone"      => $order->customer->phone,
+            "reference"  => $order->code,
+            "amount"     => $order->total_price,
+            "products"   => '',
 
             //Default Values
             "comment" => $comment,
@@ -96,9 +97,10 @@ class SendItService
             "delivery_exchange_id" => "",
             "products_from_stock"=> 0,
         ];
-        $package = array_merge($package,$data);
-        // foreach($data as $key => $value) $package[$key] = $value;
-
+        $package['products'] =$order->items
+            ->map(fn ($item) => "x{$item->quantity} {$item->product->title}")
+            ->implode(', ');
+        
         // Send Creation Request 
         $response = Http::withToken( $this->getToken() )->post(
             url : $this->apiUrl . '/deliveries',
@@ -115,6 +117,16 @@ class SendItService
         )->throw();
         Cache::forget('sendit_deliveries');
         Cache::forget("sendit_status_$code");
+        return $response->json();
+    }
+
+
+
+    public function getStatusDeliveries()
+    {
+        $response = Http::withToken( $this->getToken() )->get(
+            url : $this->apiUrl . '/all-status-deliveries'
+        )->throw();
         return $response->json();
     }
 }

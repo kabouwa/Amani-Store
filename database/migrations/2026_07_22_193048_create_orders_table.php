@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('shipping_price', 10, 2)->default(35);
             $table->decimal('total_price', 10, 2)->default(0);
             $table->string('shipping_agency', 50);
-            $table->string('status', 20)->default('Préparation');
+            $table->string('status', 20)->nullable()->default('PREPARING');
             $table->string('sendit_code')->nullable();
             $table->text('note')->nullable();
             $table->timestamps();
