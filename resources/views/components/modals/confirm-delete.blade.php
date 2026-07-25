@@ -1,12 +1,12 @@
 @props([
-    'id', 
+    'id',
     'title' => 'Confirmer la suppression',
     'action' => 'Supprimer',
     'message' => 'Êtes-vous sûr de vouloir supprimer cet élément ?',
 ])
 
 <div id={{ $id }} class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 dark:bg-black/70">
-    <div data-modal-box class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg w-full max-w-sm p-6 scale-95 opacity-0 transition-all duration-200">
+    <div data-modal-box class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg w-full max-w-xs p-6 scale-95 opacity-0 transition-all duration-200 md:max-w-sm">
 
         <div class="flex items-center gap-3 mb-4">
             <div class="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 flex items-center justify-center">

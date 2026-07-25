@@ -7,10 +7,10 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
-                'resources/css/app.css', 
+                'resources/css/app.css',
                 'resources/js/app.js',
                 // Admin Files
-                'resources/css/admin/login.css', 
+                'resources/css/admin/login.css',
 
             ],
             refresh: [
@@ -27,8 +27,10 @@ export default defineConfig({
         tailwindcss(),
     ],
     server: {
-        watch: {
-            ignored: ['**/storage/framework/views/**'],
+        host: '0.0.0.0',
+        port: 5173,
+        hmr: {
+            host: '192.168.1.38',
         },
     },
 });

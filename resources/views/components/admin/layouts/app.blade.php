@@ -19,7 +19,6 @@
         }
     </style>
     <script>
-        // Prevent flash of wrong theme/sidebar state before CSS loads
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark');
         }
@@ -42,7 +41,7 @@
         {{-- Main content --}}
         <main class="py-30 px-4 md:px-16 md:ml-72 min-h-screen transition-all duration-300" id="mainContent">
             <div class="mb-6 flex flex-col lg:flex-row justify-between items-stretch gap-4">
-                <h1 class="text-4xl font-bold text-gray-700 dark:text-gray-100 capitalize">
+                <h1 class="text-2xl md:text-4xl font-bold text-gray-700 dark:text-gray-100 capitalize">
                     {{ $heading }}
                 </h1>
                 {{ $headingBtn }}

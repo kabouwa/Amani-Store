@@ -3,7 +3,7 @@
         <i class="fa-solid fa-tags w-4 text-center"></i> Gestion des catégories
     </x-slot:heading>
 
-    {{-- -Messages --}}
+    {{-- Messages --}}
     @error('title')
         <x-alert>{{ $message }}</x-alert>
     @enderror
@@ -12,14 +12,14 @@
     @endif
 
     {{-- Add new category --}}
-    <form action="{{ route('admin.categories.store') }}" method="POST" class="flex gap-3 w-full md:w-auto md:max-w-md" novalidate>
+    <form action="{{ route('admin.categories.store') }}" method="POST" class="flex flex-col sm:flex-row gap-3 w-full md:w-auto md:max-w-md" novalidate>
         @csrf
         <input type="text" name="title" placeholder="Nouvelle catégorie..." required
                class="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2.5 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800
                       placeholder-gray-400 dark:placeholder-gray-500
                       focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition">
         <button type="submit"
-                class="bg-amani hover:bg-amani-dark text-white px-4 py-2.5 rounded-lg transition flex items-center gap-2 cursor-pointer">
+                class="bg-amani hover:bg-amani-dark text-white px-4 py-2.5 rounded-lg transition flex justify-center items-center gap-2 cursor-pointer">
             <i class="fa-solid fa-plus"></i> Ajouter
         </button>
     </form>

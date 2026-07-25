@@ -41,6 +41,6 @@
     $label = $labels[$key] ?? $labels['PREPARING'];
 @endphp
 
-<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium {{ $class }}">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium whitespace-nowrap {{ $class }}">
     {{ $label }}
 </span>
