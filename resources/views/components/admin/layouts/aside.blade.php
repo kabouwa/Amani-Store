@@ -14,7 +14,7 @@
             <span class="sidebar-label whitespace-nowrap">Tableau de bord</span>
         </a>
 
-        <a href="{{ route('admin.dashboard') }}"
+        <a href="{{ route('admin.orders.index') }}"
             class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
                 {{ request()->routeIs('admin.orders.index') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
             <i class="fa-solid fa-box w-5 text-xl text-center shrink-0"></i>

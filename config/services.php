@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+
+    'sendit' => [
+        'api' => env('SENDIT_API'),
+        'public_key' => env('SENDIT_PUBLIC_KEY'),
+        'private_key' => env('SENDIT_PRIVATE_KEY'),
+    ]
+
 ];

@@ -21,6 +21,7 @@ class CustomerFactory extends Factory
             'name' => fake()->name(),
             'phone' =>  fake()->numerify('06########'),
             'instagram' => fake()->userName(),
+            'city' => fake()->city(),
             'address' => fake()->streetAddress()
         ];
     }

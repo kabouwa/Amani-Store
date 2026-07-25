@@ -14,8 +14,6 @@
         <x-alert color="green">{{ session('success') }}</x-alert>
     @endif
 
-    
-
     {{-- Toolbar --}}
     <x-product-toolbar :categories="$categories" />        
        

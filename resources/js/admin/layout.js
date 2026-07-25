@@ -64,3 +64,5 @@ function closeModal(selector) {
         $modal.removeClass('flex').addClass('hidden');
     }, 200);
 }
+window.openModal = openModal
+window.closeModal = closeModal

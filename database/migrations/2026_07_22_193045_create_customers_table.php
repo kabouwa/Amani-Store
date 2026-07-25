@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name',80);
             $table->string('phone',10);
             $table->string('instagram')->nullable();
+            $table->string('city',20);
             $table->string('address',150);
             $table->timestamps();
             $table->softDeletes();

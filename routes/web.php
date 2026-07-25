@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ProductImagesController;
+
 use Illuminate\Support\Facades\Route;
 /**
  * Admin Controllers
@@ -10,17 +11,34 @@ use App\Http\Controllers\Admin\DashboardController ;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
 /**
  * Public Controllers
 */
 use App\Http\Controllers\ProductController;
 
-Route::get('/', fn () => redirect('/admin'));
-Route::get('/phpinfo', function () {
-    phpinfo();
+
+
+
+
+
+// SENDIT DEBUG
+use App\Services\SendItService;
+Route::get('/sendit', function (SendItService $sendit) {
+    return $sendit->status('DH210689853');
+    return $sendit->create([
+        'district_id' => 190,
+        'name' => 'Mohammed',
+        'amount' => 200,
+        'address' => 'Hay amal, Sale',
+        'phone' => '0631419206',
+        'products' => '',
+        'reference' => 'AMN-0725-DJSKWEOJ'
+    ]) ;
 });
 
+Route::get('/', fn () => redirect('/admin'));
 
 
 Route::prefix('admin')->group(function(){
@@ -66,5 +84,13 @@ Route::prefix('admin')->group(function(){
             'index' => 'admin.customers.index',
             'destroy' => 'admin.customers.destroy',
         ]);
+
+
+        Route::resource('orders',AdminOrderController::class)->only(['index'])
+        ->names([
+            'index' => 'admin.orders.index',
+        ]);
+
+
     });
 });

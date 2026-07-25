@@ -25,7 +25,7 @@ class ProductFactory extends Factory
             'title' => $title,
             'slug' => Str::slug($title),
             'description' => fake()->realText(400),
-            'stock' => fake()->numberBetween(0,100),
+            'stock' => fake()->numberBetween(5,100),
             'purchase_price' => fake()->numberBetween(0,100),
             'selling_price' => fake()->numberBetween(100,250),
             'is_active' => fake()->boolean(),

@@ -43,6 +43,7 @@
                     <th class="px-5 py-3 font-semibold">Nom</th>
                     <th class="px-5 py-3 font-semibold">Téléphone</th>
                     <th class="px-5 py-3 font-semibold">Instagram</th>
+                    <th class="px-5 py-3 font-semibold">City</th>
                     <th class="px-5 py-3 font-semibold">Adresse</th>
                     <th class="px-5 py-3 font-semibold text-right">Actions</th>
                 </tr>
@@ -62,6 +63,7 @@
                                 <span class="text-gray-300 dark:text-gray-600">—</span>
                             @endif
                         </td>
+                        <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $c->city }}</td>
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $c->address }}</td>
                         <td class="px-5 py-3">
                             <div class="flex justify-end gap-2">

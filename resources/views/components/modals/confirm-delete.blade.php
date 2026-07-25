@@ -1,4 +1,9 @@
-@props(['id', 'title' => 'Confirmer la suppression', 'message' => 'Êtes-vous sûr de vouloir supprimer cet élément ?'])
+@props([
+    'id', 
+    'title' => 'Confirmer la suppression',
+    'action' => 'Supprimer',
+    'message' => 'Êtes-vous sûr de vouloir supprimer cet élément ?',
+])
 
 <div id={{ $id }} class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 dark:bg-black/70">
     <div data-modal-box class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg w-full max-w-sm p-6 scale-95 opacity-0 transition-all duration-200">
@@ -24,7 +29,7 @@
 
                 <button type="submit"
                         class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white transition cursor-pointer">
-                    <i class="fa-solid fa-trash"></i> Supprimer
+                    <i class="fa-solid fa-trash"></i> {{ $action }}
                 </button>
             </form>
         </div>
