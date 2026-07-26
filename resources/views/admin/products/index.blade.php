@@ -15,7 +15,7 @@
     @endif
 
     {{-- Toolbar --}}
-    <x-product-toolbar :categories="$categories" />        
+    <x-products-toolbar :categories="$categories" />        
        
 
     <div class="text-gray-400 my-3">
@@ -48,8 +48,11 @@
         </div>
     @endif
 
+    <div class="my-4">
+        {{ $products->links() }}
+    </div>
+
     @push('scripts')
-        @vite('resources/js/products/toolbar.js')
         @vite('resources/js/products/carousel.js')
     @endpush
 </x-admin.layouts.app>

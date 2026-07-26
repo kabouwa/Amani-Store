@@ -27,7 +27,8 @@ class ProductController extends Controller
             ->when(request('stock_max'), fn($q,$s) => $q->where('stock','<=',$s))
             
             ->orderBy(request('sort','created_at') , request('direction','desc'))
-            ->get();
+            ->paginate(20)
+            ->withQueryString();
 
         $categories = Category::orderByDesc('id')->get();
 

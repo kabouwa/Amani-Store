@@ -22,7 +22,7 @@
             <span class="hidden md:inline">Chercher</span>
         </button>
 
-        @if (request()->filled('search'))
+        @if (request()->except('page'))
             <a href="{{ route('admin.products.index') }}"
                class="cursor-pointer border-2 border-amani text-amani dark:text-amani-light hover:bg-amani hover:text-white px-4 py-2.5 rounded-lg transition flex items-center gap-2 shrink-0">
                 <i class="fa-solid fa-rotate-right"></i>
@@ -252,3 +252,7 @@
 </div>
 
 </div>
+
+@push('scripts')
+    @vite('resources/js/toolbar.js')
+@endpush

@@ -10,6 +10,9 @@
         <x-alert color="red">{{ session('error') }}</x-alert>
     @endif
 
+    {{-- Orders Toolbar --}}
+    <x-admin.orders-toolbar />
+
     <div class="text-gray-400 dark:text-gray-500 my-3 mb-8">
         <p>
             {{ count($orders) }}
@@ -149,6 +152,10 @@
                 </div>
             </div>
         @endforeach
+    </div>
+
+    <div class="my-4">
+        {{ $orders->links() }}
     </div>
 
     <x-modals.confirm-delete id="deleteOrderModal" title="Supprimer la commande" message="Vous voulez vraiment supprimer cette commande ?" />

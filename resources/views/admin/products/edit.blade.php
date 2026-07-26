@@ -84,8 +84,7 @@
 
 
     @push('scripts')
-        @vite('resources/js/admin/product-images.js')
-        @vite('resources/js/image-viewer.js')
+        @vite(['resources/js/admin/product-images.js','resources/js/image-viewer.js'])
     @endpush
 
 </x-admin.layouts.app>

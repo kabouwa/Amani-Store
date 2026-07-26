@@ -12,13 +12,40 @@ class OrderController extends Controller
 {
     public function index(SenditService $agency)
     {
-        $orders = Order::get()->each(function ($order) use ($agency) {
+
+        $orders = Order::query()
+        ->join('customers', 'orders.customer_id', '=', 'customers.id')
+        ->select('orders.*')
+        ->when(
+            request('search'), fn ($q,$s) => 
+                $q->where(function ($q) use ($s) {
+                    $q->where('orders.code','LIKE',"%$s%")
+                        ->orWhere('customers.name','LIKE',"%$s%")
+                        ->orWhere('customers.phone','LIKE',"%$s%")
+                        ->orWhere('customers.city','LIKE',"%$s%")
+                        ->orWhere('orders.shipping_price',$s)
+                        ->orWhere('orders.total_price',$s);
+                })
+        )
+        ->when( request('price_min'), fn ($q,$p) => $q->where('total_price','>=',$p))
+        ->when( request('price_max'), fn ($q,$p) => $q->where('total_price','<=',$p))
+        ->when( request('status'), fn ($q,$s) => $q->where('status','PREPARING'))
+        ->orderBy(request('sort', 'created_at') , request('direction', 'desc'))
+        ->paginate(20)
+        ->withQueryString();
+
+        $orders->getCollection()
+        ->each(function ($order) use ($agency) {
             if($order->hasShipment()){
                 $order->status = $agency->status($order->sendit_code);
             }
         });
+
         return view('admin.orders.index',compact('orders'));
     }
+
+
+
     public function show(Order $order, SenditService $agency)
     {
         if($order->hasShipment()){
