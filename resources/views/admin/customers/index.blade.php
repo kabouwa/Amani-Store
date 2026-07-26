@@ -53,7 +53,12 @@
                 @foreach ($customers as $c)
                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                         <td class="px-5 py-3 font-medium text-gray-800 dark:text-gray-100">{{ $c->name }}</td>
-                        <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $c->phone }}</td>
+                        <td class="px-5 py-3 text-gray-600 dark:text-gray-400">
+                            <a href="https://wa.me/212{{ ltrim($c->phone, '0') }}" target="_blank" rel="noopener noreferrer"
+                                title="Contacter sur WhatsApp" class="hover:text-green-600 hover:underline transition">
+                                {{ $c->phone }}
+                            </a>
+                        </td>
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">
                             @if($c->instagram)
                                 <a href="https://instagram.com/{{ ltrim($c->instagram, '@') }}" target="_blank"
@@ -108,9 +113,19 @@
                 </div>
 
                 <div class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                    <p><i class="fa-solid fa-phone w-4 text-gray-400 dark:text-gray-500"></i> {{ $c->phone }}</p>
+                    <p><i class="fa-solid fa-phone w-4 text-gray-400 dark:text-gray-500"></i> 
+                        <a href="https://wa.me/212{{ ltrim($c->phone, '0') }}" target="_blank" rel="noopener noreferrer"
+                            title="Contacter sur WhatsApp" class="hover:text-green-600 hover:underline transition">
+                            {{ $c->phone }}
+                        </a>
+                    </p>
                     @if($c->instagram)
-                        <p><i class="fa-brands fa-instagram w-4 text-gray-400 dark:text-gray-500"></i> {{ $c->instagram }}</p>
+                        <p>
+                            <a href="https://instagram.com/{{ ltrim($c->instagram, '@') }}" target="_blank"
+                                class="text-amani hover:underline">
+                                <i class="fa-brands fa-instagram"></i> {{ $c->instagram }}
+                            </a>
+                        </p>
                     @endif
                     @if($c->city)
                         <p><i class="fa-solid fa-city w-4 text-gray-400 dark:text-gray-500"></i> {{ $c->city }}</p>

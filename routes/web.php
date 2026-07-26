@@ -42,6 +42,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
         Route::resource('users', UserController::class)->except('show');
 
+        Route::patch('/users/{user}/password', [UserController::class,'updatePassword'])->name('users.password.update');
+
         Route::resource('products', AdminProductController::class)->except('show');
 
         Route::patch('products/{product}',[AdminProductController::class,'toggle'])->name('products.toggle');

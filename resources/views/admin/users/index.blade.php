@@ -36,6 +36,12 @@
 
                 <div class="text-sm text-gray-600 dark:text-gray-400 space-y-1.5 pt-3 border-t border-gray-100 dark:border-gray-800">
                     <p class="truncate"><i class="fa-solid fa-envelope w-4 text-gray-400 dark:text-gray-500"></i> {{ $user->email }}</p>
+                    <p class="truncate"><i class="fa-solid fa-phone w-4 text-gray-400 dark:text-gray-500"></i> 
+                        <a href="https://wa.me/212{{ ltrim($user->phone, '0') }}" target="_blank" rel="noopener noreferrer"
+                            title="Contacter sur WhatsApp" class="hover:text-green-600 hover:underline transition">
+                            {{ $user->phone }}
+                        </a>
+                    </p>
                     <p><i class="fa-solid fa-calendar w-4 text-gray-400 dark:text-gray-500"></i> Depuis le {{ $user->created_at->format('d/m/Y') }}</p>
                 </div>
 

@@ -37,14 +37,12 @@ $(function () {
         const action = $(e.currentTarget).data('action');
         const modalId = $(e.currentTarget).data('modal') || 'deleteModal';
         $('#' + modalId + 'Form').attr('action', action);
-        console.log(modalId);
-
         openModal('#' + modalId);
     });
 
     // Cancel / overlay click -> close modal
-    $('.js-modal-cancel').click(e => {
-        closeModal('#' + $(e.currentTarget).closest('[id]').attr('id'));
+    $(document).on('click', '.js-modal-cancel', function () {
+        closeModal('#' + $(this).closest('.fixed.inset-0').attr('id'));
     });
 
 });

@@ -3,12 +3,13 @@
         <i class="fa-solid fa-gear w-4 text-center"></i> Paramètres du compte
     </x-slot:heading>
 
-    @if($errors->any())
-        <x-alert>{{ $errors->first() }}</x-alert>
-    @endif
     @if(session('success'))
         <x-alert color="green">{{ session('success') }}</x-alert>
     @endif
+    @error('delete_password')
+        <x-alert color="red">{{ $message }}</x-alert>
+    @enderror
+
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -19,6 +20,7 @@
                     {{ substr(auth()->user()->name, 0, 1) }}
                 </div>
                 <p class="font-semibold text-gray-800 dark:text-gray-100">{{ auth()->user()->name }}</p>
+                <p class="font-semibold text-gray-500 dark:text-gray-400">{{ auth()->user()->phone }}</p>
                 <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ auth()->user()->email }}</p>
 
                 <div class="pt-4 border-t border-gray-100 dark:border-gray-800 text-sm text-gray-500 dark:text-gray-400">
@@ -41,7 +43,7 @@
         <div class="lg:col-span-2 space-y-6">
 
             {{-- Profile info --}}
-            <form action="{{ route('admin.users.update',auth()->user()->slug) }}" method="POST"
+            <form action="{{ route('admin.users.update',auth()->user()->slug) }}" method="POST" novalidate
                   class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm p-6">
                 @csrf
                 @method('PUT')
@@ -58,14 +60,21 @@
                                       focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition">
                         @error('name')<p class="text-xs text-red-600 mt-1">{{ $message }}</p>@enderror
                     </div>
-
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
-                        <input type="email" name="email" id="email" value="{{ old('email', auth()->user()->email) }}" required
+                        <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Télephone</label>
+                        <input type="tel" name="phone" id="phone" value="{{ old('phone', auth()->user()->phone) }}" required
                                class="w-full rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2.5 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800
                                       focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition">
-                        @error('email')<p class="text-xs text-red-600 mt-1">{{ $message }}</p>@enderror
+                        @error('phone')<p class="text-xs text-red-600 mt-1">{{ $message }}</p>@enderror
                     </div>
+                </div>
+
+                <div class="mt-5">
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                    <input type="email" name="email" id="email" value="{{ old('email', auth()->user()->email) }}" required
+                           class="w-full rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2.5 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800
+                                  focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition">
+                    @error('email')<p class="text-xs text-red-600 mt-1">{{ $message }}</p>@enderror
                 </div>
 
                 <div class="flex justify-end mt-6 pt-6 border-t border-gray-100 dark:border-gray-800">
@@ -77,11 +86,10 @@
             </form>
 
             {{-- Password change --}}
-            {{-- <form action="{{ route('admin.users.password') }}" method="POST" --}}
-            <form action="" method="POST"
+            <form action="{{ route('admin.users.password.update', auth()->user()->slug ) }}" method="POST" novalidate
                   class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm p-6">
                 @csrf
-                @method('PUT')
+                @method('PATCH')
 
                 <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
                     Changer le mot de passe
@@ -149,6 +157,7 @@
 
     <x-modals.confirm-delete id="deleteAccountModal"
                    title="Supprimer votre compte"
-                   message="Cette action est irréversible. Êtes-vous sûr de vouloir supprimer définitivement votre compte administrateur ?" />
+                   message="Cette action est irréversible. Êtes-vous sûr de vouloir supprimer définitivement votre compte administrateur ?"
+                   :deleteAccount="true" />
 
 </x-admin.layouts.app>

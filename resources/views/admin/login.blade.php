@@ -30,9 +30,12 @@
                 Connectez-vous pour gérer Amani Store
             </p>
 
-            {{-- Session error / status --}}
+            {{-- Session error / success --}}
             @if (session('error'))
                 <x-alert>{{ session('error') }}</x-alert>
+            @endif
+            @if (session('success'))
+                <x-alert>{{ session('success') }}</x-alert>
             @endif
 
             <form method="POST" action="{{ route('admin.login') }}" class="space-y-5" novalidate>

@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
             'name' => "Mohammed",
             'slug' => Str::slug('Mohammed'),
             'email' => "admin@mail.com",
+            'phone' => "0631419206",
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ]);
@@ -27,6 +28,7 @@ class UserSeeder extends Seeder
             'name' => "Alabax",
             'slug' => Str::slug('Alabax'),
             'email' => "aliAlbax@mail.com",
+            'phone' => "0674356417",
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ]);
