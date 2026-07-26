@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Order;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use PhpParser\Node\Stmt\Return_;
 
 class SenditService
 {
@@ -18,33 +19,43 @@ class SenditService
     private function getToken() : string
     {
         return Cache::remember('sendit_token', now()->addMinutes(50), function () {
-            $response = Http::post(
+            return Http::post(
                 url : $this->apiUrl . '/login',
                 data : [
                     'public_key' => config('services.sendit.public_key'),
                     'secret_key' => config('services.sendit.private_key'),
                 ]
-            )->throw();
-            return $response->json()['data']['token'];
+            )->throw()->json('data.token');
         });
     }
     public function all()
     {
         return Cache::remember('sendit_deliveries', now()->addDay(), function (){
-            $response = Http::withToken( $this->getToken() )->get(
+            return Http::withToken( $this->getToken() )->get(
                 url : $this->apiUrl . '/deliveries'
-            )->throw();
-            return $response->json()['data'];
+            )->throw()->json('data');
         });
     }
     public function status(string $code)
     {
         return Cache::remember('sendit_status_' . $code, now()->addMinutes(10), function () use ($code){
-            $response = Http::withToken( $this->getToken() )->get(
+            return Http::withToken( $this->getToken() )->get(
                 url : $this->apiUrl . '/deliveries/' . $code
-            )->throw();
-            return $response->json()['data']['status'];
+            )->throw()->json('data.status');
         });
+    }
+    public function city(int $id)
+    {
+        $city = Cache::get("sendit_city_$id");
+        if($city) return $city;
+        $response = Http::withToken( $this->getToken() )->get(
+            url : $this->apiUrl . '/districts/' . $id,
+        )->throw();
+        if($response->successful()){
+            $city = $response->json()['data']['name'];
+            Cache::put("sendit_city_$id" , $city, now()->addMonth() );
+        } 
+        return $city;
     }
     public function cities()
     {
@@ -66,7 +77,7 @@ class SenditService
                     $cities[] = $city;
                 } ;
             }
-            return $cities ;
+            return collect($cities)->sortBy('name')->values()->all();
         });
     }
     public function create(
@@ -102,25 +113,32 @@ class SenditService
             ->implode(', ');
         
         // Send Creation Request 
-        $response = Http::withToken( $this->getToken() )->post(
+        $data = Http::withToken( $this->getToken() )->post(
             url : $this->apiUrl . '/deliveries',
             data : $package
-        )->throw();
+        )->throw()->json('data');
         Cache::forget('sendit_deliveries');
 
-        return $response->json()['data'];
+        $order->update([
+            'sendit_code' => $data['code'],
+            'status' => null
+        ]);
+
+        return $data;
     }
-    public function delete(string $code)
+    public function delete(Order $order)
     {
         $response = Http::withToken( $this->getToken() )->delete(
-            url : $this->apiUrl . '/deliveries/' . $code
+            url : $this->apiUrl . '/deliveries/' . $order->sendit_code
         )->throw();
         Cache::forget('sendit_deliveries');
-        Cache::forget("sendit_status_$code");
+        Cache::forget("sendit_status_" . $order->sendit_code);
+        $order->update([
+            'sendit_code' => null,
+            'status' => 'PREPARING'
+        ]);
         return $response->json();
     }
-
-
 
     public function getStatusDeliveries()
     {

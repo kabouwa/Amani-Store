@@ -17,7 +17,16 @@ class UserSeeder extends Seeder
     {
         User::factory()->create([
             'name' => "Mohammed",
+            'slug' => Str::slug('Mohammed'),
             'email' => "admin@mail.com",
+            'password' => Hash::make('password'),
+            'remember_token' => Str::random(10),
+        ]);
+
+        User::factory()->create([
+            'name' => "Alabax",
+            'slug' => Str::slug('Alabax'),
+            'email' => "aliAlbax@mail.com",
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ]);

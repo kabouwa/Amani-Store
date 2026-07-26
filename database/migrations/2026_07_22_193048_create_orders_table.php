@@ -20,12 +20,12 @@ return new class extends Migration
             $table->string('shipping_agency', 50);
             $table->string('status', 20)->nullable()->default('PREPARING');
             $table->string('sendit_code')->nullable();
+            $table->boolean('is_picked')->default(false);
             $table->text('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
     }
-
     /**
      * Reverse the migrations.
      */

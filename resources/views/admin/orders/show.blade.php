@@ -7,7 +7,7 @@
     {{-- Header : retour + code commande + statut --}}
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-3">
-            <a href="{{ route('admin.orders.index') }}"
+            <a href="{{url()->previous()}}"
                class="w-9 h-9 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-amani hover:bg-amani/10 transition">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
@@ -24,7 +24,21 @@
         <x-admin.order-status :status="$order->status" />
     </div>
 
+
+    @if(session('success'))
+        <x-alert color="green">{{ session('success') }}</x-alert>
+    @endif
+    @if(session('error'))
+        <x-alert color="red">{{ session('error') }}</x-alert>
+    @endif
+    @if($errors->any())
+        @foreach ($errors->all() as $error)
+            <x-alert color="red">{{ $error }}</x-alert>
+        @endforeach
+    @endif
+    
     {{-- Actions --}}
+    @can('update',$order)
     <div class="flex flex-wrap gap-3 mb-6">
         <a href="{{ route('admin.orders.edit', $order->code) }}"
            class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
@@ -54,6 +68,7 @@
                 </button>
             </form>
         @endif
+        
 
         <button type="button"
                 class="js-delete-btn ml-auto inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-red-600 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 transition cursor-pointer"
@@ -63,6 +78,7 @@
             Supprimer la commande
         </button>
     </div>
+    @endcan
 
     {{-- Grid principal --}}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -202,8 +218,9 @@
             </div>
         </div>
     </div>
-
+    @can('update',$order)
     <x-modals.confirm-delete id="deleteOrderModal" title="Supprimer la commande" message="Vous voulez vraiment supprimer cette commande ?" />
-    <x-modals.confirm-delete id="deleteShipmentModal" title="Retirer de Sendit" message="Vous voulez vraiment retirer cette commande de Sendit ?" />
+    <x-modals.confirm-delete id="deleteShipmentModal" title="Retirer de Sendit" message="Vous voulez vraiment retirer cette commande de Sendit ?" action="Retirer" />   
+    @endcan
 
 </x-admin.layouts.app>

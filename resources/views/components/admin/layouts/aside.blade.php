@@ -21,11 +21,11 @@
             <span class="sidebar-label whitespace-nowrap">Gestion des Commandes</span>
         </a>
 
-        <a href="{{ route('admin.products.create') }}"
+        <a href="{{ route('admin.orders.index') }}"
             class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
-                {{ request()->routeIs('admin.products.create') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
-            <i class="fa-solid fa-plus w-5 text-xl text-center shrink-0"></i>
-            <span class="sidebar-label whitespace-nowrap">Ajouter un produit</span>
+                {{ request()->routeIs('admin.shipment.pickup') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
+            <i class="fa-solid fa-box-archive w-5 text-xl text-center shrink-0"></i>
+            <span class="sidebar-label whitespace-nowrap">Demander un ramassage</span>
         </a>
 
         <a href="{{ route('admin.products.index') }}"
@@ -33,6 +33,13 @@
                 {{ request()->routeIs('admin.products.index') || request()->routeIs('admin.products.edit') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
             <i class="fa-solid fa-bag-shopping w-5 text-xl text-center shrink-0"></i>
             <span class="sidebar-label whitespace-nowrap">Gestion des produits</span>
+        </a>
+
+        <a href="{{ route('admin.products.create') }}"
+            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
+                {{ request()->routeIs('admin.products.create') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
+            <i class="fa-solid fa-plus w-5 text-xl text-center shrink-0"></i>
+            <span class="sidebar-label whitespace-nowrap">Ajouter un produit</span>
         </a>
 
         <a href="{{ route('admin.categories.index') }}"
@@ -49,12 +56,19 @@
             <span class="sidebar-label whitespace-nowrap">Liste des Clients</span>
         </a>
 
-        <a href="#"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition">
-            <i class="fa-solid fa-users-gear w-5 text-xl text-center shrink-0"></i>
-            <span class="sidebar-label whitespace-nowrap">Gestion des administrateurs</span>
+        <a href="{{ route('admin.users.index') }}"
+            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
+                {{ request()->routeIs('admin.users.index') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
+            <i class="fa-solid fa-user-shield w-5 text-xl text-center shrink-0"></i>
+            <span class="sidebar-label whitespace-nowrap">Équipe de travail</span>
         </a>
 
+        <a href="{{ route('admin.users.create') }}"
+            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
+                {{ request()->routeIs('admin.users.create') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
+            <i class="fa-solid fa-user-plus w-5 text-xl text-center shrink-0"></i>
+            <span class="sidebar-label whitespace-nowrap">Ajouter un administrateur</span>
+        </a>
     </nav>
 
     <div class="aside-bottom p-4 space-y-1">
@@ -73,10 +87,10 @@
             </div>
         </button>
 
-        <a href="{{ route('admin.dashboard') }}"
+        <a href="{{ route('admin.users.edit', auth()->user()->slug ) }}"
             class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition">
             <i class="fa-solid fa-gear w-5 text-xl text-center shrink-0"></i>
-            <span class="sidebar-label whitespace-nowrap">Paramètres</span>
+            <span class="sidebar-label whitespace-nowrap">Paramètres du compte</span>
         </a>
 
         <form method="POST" action="{{ route('admin.logout') }}">

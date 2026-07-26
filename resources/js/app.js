@@ -1,8 +1,10 @@
-import '../css/app.css';
 import $ from 'jquery';
+import select2 from 'select2';
+import 'select2/dist/css/select2.min.css';
+import '../css/app.css';
 window.$ = $ // Make it from all js files
 window.jQuery = $
-
+select2(window, $)
 
 // Theme switcher
 $(function () {
@@ -34,19 +36,23 @@ $(function () {
 
 // Utilities
 $(function () {
-    const toggler = $('#togglePassword')    
-    if(!toggler) return
-    const showIcon = `<i class="fa-regular fa-eye"></i>`
-    const hideIcon = `<i class="fa-regular fa-eye-slash"></i>`
-    toggler.html(showIcon)
-    toggler.click(function () {
-        const input = $('#password');
+    const showIcon = `<i class="fa-regular fa-eye"></i>`;
+    const hideIcon = `<i class="fa-regular fa-eye-slash"></i>`;
+
+    $('.js-toggle-password').each(function () {
+        $(this).html(showIcon);
+    });
+
+    $('.js-toggle-password').on('click', function () {
+        const targetId = $(this).data('target');
+        const input = $('#' + targetId);
+        if (!input.length) return;
+
         const isPassword = input.attr('type') === 'password';
         input.attr('type', isPassword ? 'text' : 'password');
         $(this).html(isPassword ? hideIcon : showIcon);
     });
 });
-
 
 // Preserve scroll
 const scroll = sessionStorage.getItem('scrollY');
@@ -62,3 +68,9 @@ $('form.save-position').submit(e => {
     e.currentTarget.submit()
 })
 
+// Alert Close Button Event
+$(document).on('click', '.js-alert-close', function () {
+    $(this).closest('.js-alert').fadeOut(200, function () {
+        $(this).remove();
+    });
+});

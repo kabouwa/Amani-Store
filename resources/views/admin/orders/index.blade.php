@@ -10,6 +10,13 @@
         <x-alert color="red">{{ session('error') }}</x-alert>
     @endif
 
+    <div class="text-gray-400 dark:text-gray-500 my-3 mb-8">
+        <p>
+            {{ count($orders) }}
+            @choice('commande a été trouvée.|commandes ont été trouvées.', count($orders))
+        </p>
+    </div>
+
     {{-- Desktop / tablet table --}}
     <div class="hidden md:block bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
         <table class="w-full text-sm">
@@ -49,7 +56,8 @@
                                 <a href={{ route('admin.orders.show' , $order->code) }} class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 transition">
                                     <i class="fa-solid fa-eye"></i>
                                 </a>
-                                <a href="{{ route('admin.orders.index', $order->id) }}"
+                                @can('update',$order)
+                                <a href={{ route('admin.orders.edit', $order->code) }}
                                    class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-amani hover:bg-amani/10 transition">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
@@ -81,6 +89,7 @@
                                         </button>
                                     </form>
                                 @endif
+                                @endcan
                             </div>
                         </td>
                     </tr>

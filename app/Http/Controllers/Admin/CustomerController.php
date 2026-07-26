@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Services\SenditService;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -21,8 +22,12 @@ class CustomerController extends Controller
         ->get();
         return view('admin.customers.index',compact('customers'));
     }
-    public function destroy(Customer $customer)
+    public function destroy(Customer $customer, SenditService $agency)
     {
+        if($customer->order->sendit_code) {
+            $agency->delete($customer->order);
+        };
+
         $customer->delete();
         return redirect()->back()->with('success','Le client et sa commande a été supprimée avec succès');
     }

@@ -1,8 +1,25 @@
 <x-admin.layouts.app title="Modifier un produit">
     <x-slot:heading>
-        <i class="fa-solid fa-bag-shopping w-4 text-center"></i> Modifier un produit
+        <i class="fa-solid fa-pen w-4 text-center"></i> Modifier un produit
     </x-slot:heading>
     
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-3">
+            <a href="{{url()->previous()}}"
+               class="w-9 h-9 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-amani hover:bg-amani/10 transition">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <div>
+                <h1 class="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                    Produit : {{ $product->title }}
+                </h1>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                    Créée le {{ $product->created_at->format('d/m/Y à H:i') }}
+                </p>
+            </div>
+        </div>
+    </div>
+
     @if ($errors->any())
         @foreach ($errors->all() as $error)
             <x-alert>{{ $error }}</x-alert>
@@ -12,7 +29,7 @@
     <x-admin.forms.product :product="$product" :categories="$categories" />
 
 
-    <h1 class="text-4xl font-bold text-gray-700 capitalize my-8"><i class="fa-solid fa-images"></i> Images de produit</h1>
+    <h1 class="text-2xl md:text-4xl font-bold text-gray-700 capitalize my-8"><i class="fa-solid fa-images"></i> Images de produit</h1>
 
     @if(session('success'))
         <x-alert color="green">{{ session('success') }}</x-alert>
@@ -35,7 +52,7 @@
                         <i class="{{ $img->is_primary ? 'fa-solid fa-star' : 'fa-regular fa-star' }}"></i>
                     </div>
                 @else
-                    <form action={{ route('product-image.primary', [$img, $product]) }} method="POST"
+                    <form action={{ route('admin.product-image.primary', [$img, $product]) }} method="POST"
                         class="inline-block w-full py-1 px-2 save-position">
                         @csrf
                         @method('PATCH')
@@ -47,19 +64,18 @@
                         </button>  
                     </form>
 
-                    <form action={{ route('product-image.destroy', $img) }} method="POST"
+                    <form action={{ route('admin.product-image.destroy', $img) }} method="POST"
                         class="inline-block w-full py-1 px-2 save-position">
                         @csrf
                         @method('DELETE')
                         <button type="submit"
-                                class="cursor-pointer block md:absolute top-1 right-1 w-full md:w-6 h-6 rounded-full
+                                class="cursor-pointer md:absolute top-1 right-1 w-full md:w-6 h-6 rounded-full
                                     bg-white/90 text-red-600 flex items-center justify-center
                                     opacity-100 md:opacity-0 group-hover:opacity-100 transition shadow-sm">
                             <i class="fa-solid fa-xmark text-xs"></i>
                         </button>  
                     </form>    
                 @endif
-
             </div>  
         @endforeach
     </div>

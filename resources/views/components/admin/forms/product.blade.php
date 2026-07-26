@@ -3,14 +3,14 @@
     'categories' => [],
 ])
 <form action={{ $product ? route('admin.products.update', $product->slug) : route('admin.products.store') }} method="POST" novalidate enctype="multipart/form-data"
-      class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6">
+      class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-4 md:p-6">
     @csrf
     @unless ( is_null($product) )
         @method('PUT')
     @endunless
 
     {{-- Image upload section --}}
-    <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
+    <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-4 md:p-6 mb-6">
         <div class="flex items-center justify-between mb-4">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-200">Ajouter des images</label>
             <span id="imagesCount" class="text-xs text-gray-400 dark:text-gray-500">{{ $product ? count($product->images) : 0 }} / 10</span>

@@ -54,7 +54,7 @@ class ProductController extends Controller
             ]);
         }
         // Make an image primary
-        ProductImages::where('product_id',$product->id)->latest()->update(['is_primary' => true]);
+        ProductImages::where('product_id',$product->id)->first()->update(['is_primary' => true]);
 
         return to_route('admin.products.index')->with('success','Le produit a été créé avec succès.');
     }

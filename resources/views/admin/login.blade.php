@@ -80,9 +80,8 @@
                         >
 
                         <button
-                            type="button"
-                            id="togglePassword"
-                            class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 dark:text-gray-500 hover:text-amani dark:hover:text-white transition-colors cursor-pointer">
+                            type="button" data-target="password"
+                            class="js-toggle-password absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 dark:text-gray-500 hover:text-amani dark:hover:text-white transition-colors cursor-pointer">
                         </button>
                     </div>
 
