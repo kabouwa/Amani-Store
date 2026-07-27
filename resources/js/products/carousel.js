@@ -8,7 +8,7 @@ $(function () {
         const $track = $carousel.find('.js-carousel-track');
         const $dots = $carousel.find('.js-carousel-dot');
         const slideCount = $dots.length || 1;
-        const autoplayDelay = parseInt($carousel.data('autoplay')) || 4000;
+        const autoplayDelay = parseInt($carousel.data('autoplay')) || 2000;
 
         let current = 0;
         let timer = null;

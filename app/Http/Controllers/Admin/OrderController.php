@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
-use App\Services\SenditService;
+use App\Services\SenditDeliveriesService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
-    public function index(SenditService $agency)
+    public function index(SenditDeliveriesService $agency)
     {
+        $agency->updateStatus();
 
         $orders = Order::query()
         ->join('customers', 'orders.customer_id', '=', 'customers.id')
@@ -29,40 +30,25 @@ class OrderController extends Controller
         )
         ->when( request('price_min'), fn ($q,$p) => $q->where('total_price','>=',$p))
         ->when( request('price_max'), fn ($q,$p) => $q->where('total_price','<=',$p))
-        ->when( request('status'), fn ($q,$s) => $q->where('status','PREPARING'))
+        ->when( request('status'), fn ($q,$s) => $q->where('status',$s))
         ->orderBy(request('sort', 'created_at') , request('direction', 'desc'))
         ->paginate(20)
         ->withQueryString();
 
-        $orders->getCollection()
-        ->each(function ($order) use ($agency) {
-            if($order->hasShipment()){
-                $order->status = $agency->status($order->sendit_code);
-            }
-        });
-
         return view('admin.orders.index',compact('orders'));
     }
 
-
-
-    public function show(Order $order, SenditService $agency)
+    public function show(Order $order)
     {
-        if($order->hasShipment()){
-                $order->status = $agency->status($order->sendit_code);
-        }
         return view('admin.orders.show',compact('order'));
     }
-    public function edit(Order $order, SenditService $agency)
+    public function edit(Order $order, SenditDeliveriesService $agency)
     {
         $this->authorize('update', $order);
-        if($order->hasShipment()){
-                $order->status = $agency->status($order->sendit_code);
-        }
         $cities = $agency->cities();
         return view('admin.orders.edit',compact('order','cities'));
     }
-    public function update(Order $order, SenditService $agency, OrderRequest $request)
+    public function update(Order $order, SenditDeliveriesService $agency, OrderRequest $request)
     {
         $this->authorize('update', $order);
         
@@ -81,7 +67,7 @@ class OrderController extends Controller
 
         return to_route('admin.orders.show', $order->code)->with('success','La commande a été modifée avec succès.');
     }
-    public function destroy(Order $order, SenditService $agency)
+    public function destroy(Order $order, SenditDeliveriesService $agency)
     {
         $this->authorize('delete', $order);
         if($order->hasShipment()) {

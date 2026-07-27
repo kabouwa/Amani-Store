@@ -59,7 +59,7 @@
                     </button>
 
                     <button type="button" class="js-delete-btn text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 dark:hover:bg-red-950 transition cursor-pointer"
-                            data-action={{ route('admin.categories.destory', $c->slug) }}
+                            data-action={{ route('admin.categories.destroy', $c->slug) }}
                             data-modal="deleteCategoryModal">
                         <i class="fa-solid fa-trash"></i>
                     </button>

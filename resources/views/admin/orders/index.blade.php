@@ -20,6 +20,8 @@
         </p>
     </div>
 
+    @if(count($orders))
+
     {{-- Desktop / tablet table --}}
     <div class="hidden md:block bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden">
         <table class="w-full text-sm">
@@ -48,7 +50,7 @@
                         </td>
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $order->customer->phone }}</td>
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $order->customer->city }}</td>
-                        <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $order->items->sum('quantity') }}</td>
+                        <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $order->total_items }}</td>
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ number_format($order->shipping_price, 2) }} DH</td>
                         <td class="px-5 py-3 font-semibold text-gray-800 dark:text-gray-100">{{ number_format($order->total_price, 2) }} DH</td>
                         <td class="px-5 py-3">
@@ -69,15 +71,12 @@
                                         data-modal="deleteOrderModal">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
-                                @if ($order->sendit_code)
+                                @if ($order->hasShipment())
                                     <form action={{ route('admin.shipment.destroy', $order->code) }} method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition"
-                                            title="Supprimer de Sendit"
-                                            data-action="{{ route('admin.shipment.destroy', $order->code) }}"
-                                            data-modal="deleteShipmentModal"
-                                            >
+                                        <button type="submit" class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition"
+                                            title="Supprimer de Sendit">
                                             <i class="fa-solid fa-ban"></i>
                                         </button>
                                     </form>
@@ -85,9 +84,7 @@
                                     <form action={{ route('admin.shipment.store', $order->code) }} method="POST" class="inline">
                                         @csrf
                                         <button type="submit" class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/30 transition"
-                                                title="Ajouter dans Sendit"
-                                                data-action=""
-                                                data-modal="senditOrderModal">
+                                                title="Ajouter dans Sendit">
                                             <i class="fa-solid fa-truck-fast"></i>
                                         </button>
                                     </form>
@@ -108,8 +105,8 @@
                 <div class="flex items-start justify-between mb-2">
                     <div>
                         <span class="font-semibold text-gray-800 dark:text-gray-100 block">
-                            <a href={{ route('admin.customers.index', ['search' => $order->customer->name]) }}
-                                class="hover:text-amani transition-colors hover:underline">
+                            <a href="{{ route('admin.customers.index', ['search' => $order->customer->name]) }}"
+                               class="hover:text-amani transition-colors hover:underline">
                                 {{ $order->customer->name }}
                             </a>
                         </span>
@@ -121,7 +118,7 @@
                 <div class="text-sm text-gray-600 dark:text-gray-400 space-y-1 mb-3">
                     <p><i class="fa-solid fa-phone w-4 text-gray-400"></i> {{ $order->customer->phone }}</p>
                     <p><i class="fa-solid fa-location-dot w-4 text-gray-400"></i> {{ $order->customer->city }}</p>
-                    <p><i class="fa-solid fa-box w-4 text-gray-400"></i> {{ $order->items->sum('quantity') }} article(s)</p>
+                    <p><i class="fa-solid fa-box w-4 text-gray-400"></i> {{ $order->total_items }} article(s)</p>
                     <p><i class="fa-solid fa-truck w-4 text-gray-400"></i> {{ number_format($order->shipping_price, 2) }} DH</p>
                 </div>
 
@@ -129,25 +126,44 @@
                     <span class="font-bold text-gray-800 dark:text-gray-100">{{ number_format($order->total_price, 2) }} DH</span>
 
                     <div class="flex gap-2">
-                        
-                        <button type="button" class="js-order-view cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 transition"
-                                data-order-id="{{ $order->id }}">
+                        <a href="{{ route('admin.orders.show', $order->code) }}"
+                           class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 transition">
                             <i class="fa-solid fa-eye"></i>
-                        </button>
-                        <a href="{{ route('admin.orders.index', $order->id) }}"
-                           class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-amani hover:bg-amani/10 transition">
-                            <i class="fa-solid fa-pen"></i>
                         </a>
-                        <button type="button" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition"
-                                data-action="{{ route('admin.orders.index', $order->id) }}"
-                                data-modal="deleteOrderModal">
-                            <i class="fa-solid fa-ban"></i>
-                        </button>
-                        <button type="button" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/30 transition"
-                                data-action="{{ route('admin.orders.index', $order->id) }}"
-                                data-modal="senditOrderModal">
-                            <i class="fa-solid fa-truck-fast"></i>
-                        </button>
+
+                        @can('update', $order)
+                            <a href="{{ route('admin.orders.edit', $order->code) }}"
+                               class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-amani hover:bg-amani/10 transition">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+
+                            <button type="button" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition"
+                                    data-action="{{ route('admin.orders.destroy', $order->code) }}"
+                                    data-modal="deleteOrderModal">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                            @if ($order->sendit_code)
+                                <form action="{{ route('admin.shipment.destroy', $order->code) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition"
+                                            title="Supprimer de Sendit"
+                                            data-action="{{ route('admin.shipment.destroy', $order->code) }}"
+                                            data-modal="deleteShipmentModal">
+                                        <i class="fa-solid fa-ban"></i>
+                                    </button>
+                                </form>
+                            @else
+                                <form action="{{ route('admin.shipment.store', $order->code) }}" method="POST" class="inline">
+                                    @csrf
+                                    <button type="submit" class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/30 transition"
+                                            title="Ajouter dans Sendit">
+                                        <i class="fa-solid fa-truck-fast"></i>
+                                    </button>
+                                </form>
+                            @endif
+                        @endcan
                     </div>
                 </div>
             </div>
@@ -157,6 +173,17 @@
     <div class="my-4">
         {{ $orders->links() }}
     </div>
+
+    @else
+        {{-- Empty state --}}
+        <div class="flex flex-col items-center justify-center py-20 text-center">
+            <div class="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
+                <i class="fa-solid fa-box-open text-gray-300 dark:text-gray-600 text-2xl"></i>
+            </div>
+            <p class="text-gray-500 dark:text-gray-400 font-medium">Aucune commande trouvée</p>
+            <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">Essayez de modifier vos filtres ou votre recherche.</p>
+        </div>
+    @endif
 
     <x-modals.confirm-delete id="deleteOrderModal" title="Supprimer la commande" message="Vous voulez vraiment supprimer cette commande ?" />
 

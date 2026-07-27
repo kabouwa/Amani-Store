@@ -36,8 +36,7 @@
         <button type="button" id="sortToggle"
                 class="cursor-pointer relative w-full sm:w-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:border-amani text-gray-700 dark:text-gray-300 hover:text-amani dark:hover:bg-amani dark:hover:text-white
                     px-4 py-3 rounded-lg transition flex items-center justify-center gap-2 text-sm font-medium">
-            <i class="fa-solid fa-arrow-down-wide-short"></i>
-            <span class="hidden md:inline">Trier</span>
+            <i class="fa-solid fa-arrow-down-wide-short"></i> Trier
 
             @if(request()->filled('sort'))
                 <span class="bg-amani text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">1</span>

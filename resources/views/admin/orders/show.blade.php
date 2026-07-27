@@ -150,7 +150,7 @@
                                     {{ number_format($item->selling_price, 2) }} DH
                                 </td>
                                 <td class="px-5 py-3 text-right font-medium text-gray-800 dark:text-gray-100">
-                                    {{ number_format($item->selling_price * $item->quantity, 2) }} DH
+                                    {{ number_format($item->total, 2) }} DH
                                 </td>
                             </tr>
                         @endforeach

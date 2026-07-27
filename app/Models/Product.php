@@ -27,6 +27,11 @@ class Product extends Model
             ->where('is_primary',true);
     }
 
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function salesCount() : int
     {
         return OrderItem::where('product_id',$this->id)

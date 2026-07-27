@@ -1,19 +1,19 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 /**
  * Admin Controllers
 */
-use App\Http\Controllers\Admin\ProductImagesController;
-use App\Http\Controllers\Admin\ShipmentController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AuthController ;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DashboardController ;
-use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
-use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\ProductImagesController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
+use App\Http\Controllers\Admin\ShipmentController;
+use App\Http\Controllers\Admin\PickupController;
 
 /**
  * Public Controllers
@@ -22,7 +22,6 @@ use App\Http\Controllers\ProductController;
 
 
 Route::get('/', fn () => redirect('/admin'));
-
 
 Route::prefix('admin')->name('admin.')->group(function(){
     Route::get('/',function(){
@@ -61,6 +60,9 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::post('shipment/{order}',[ShipmentController::class,'store'])->name('shipment.store');
         
         Route::delete('shipment/{order}',[ShipmentController::class,'destroy'])->name('shipment.destroy');
+
+
+        Route::resource('pickups',PickupController::class)->only('index','store','destroy');
 
     });
 });

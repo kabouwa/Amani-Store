@@ -45,8 +45,7 @@
         <button type="button" id="sortToggle"
                 class="cursor-pointer relative w-full sm:w-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:border-amani text-gray-700 dark:text-gray-300 hover:text-amani dark:hover:bg-amani dark:hover:text-white
                     px-4 py-3 rounded-lg transition flex items-center justify-center gap-2 text-sm font-medium">
-            <i class="fa-solid fa-arrow-down-wide-short"></i>
-            <span class="hidden md:inline">Trier</span>
+            <i class="fa-solid fa-arrow-down-wide-short"></i> Trier
 
             @if(request()->filled('sort'))
                 <span class="bg-amani text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">1</span>
@@ -163,17 +162,32 @@
                     </div>
                     
                     {{-- Status --}}
-                    <div>
-                        <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">Statut</label>
-
-                        <label class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600
-                                    bg-white dark:bg-gray-800 cursor-pointer hover:border-amani transition">
-                            <input type="checkbox" name="status" value="PREPARING"
-                                {{ request('status') === 'PREPARING' ? 'checked' : '' }}
-                                class="w-4 h-4 rounded accent-amani cursor-pointer">
-                            <span class="text-sm text-gray-700 dark:text-gray-300">En cours de préparation</span>
-                        </label>
+                <div>
+                    <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">Statut</label>
+                    <div class="relative">
+                        <select name="status"
+                                class="w-full appearance-none rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2.5 pr-9 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800 text-sm
+                                    focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition cursor-pointer">
+                            <option value="">Tous les statuts</option>
+                            <option value="PENDING"         {{ request('status') === 'PENDING' ? 'selected' : '' }}>En attente</option>
+                            <option value="TO_PREPARE"      {{ request('status') === 'TO_PREPARE' ? 'selected' : '' }}>À préparer</option>
+                            <option value="PREPARING"       {{ request('status') === 'PREPARING' ? 'selected' : '' }}>En cours de préparation</option>
+                            <option value="NEW_DESTINATION" {{ request('status') === 'NEW_DESTINATION' ? 'selected' : '' }}>À changer</option>
+                            <option value="TOPICKUP"        {{ request('status') === 'TOPICKUP' ? 'selected' : '' }}>Ramassage en cours</option>
+                            <option value="PICKEDUP"        {{ request('status') === 'PICKEDUP' ? 'selected' : '' }}>Ramassé</option>
+                            <option value="WAREHOUSE"       {{ request('status') === 'WAREHOUSE' ? 'selected' : '' }}>Entrepôt</option>
+                            <option value="TRANSIT"         {{ request('status') === 'TRANSIT' ? 'selected' : '' }}>En transit</option>
+                            <option value="DISTRIBUTED"     {{ request('status') === 'DISTRIBUTED' ? 'selected' : '' }}>Distribué</option>
+                            <option value="DELIVERING"      {{ request('status') === 'DELIVERING' ? 'selected' : '' }}>En cours de livraison</option>
+                            <option value="UNREACHABLE"     {{ request('status') === 'UNREACHABLE' ? 'selected' : '' }}>Injoignable</option>
+                            <option value="POSTPONED"       {{ request('status') === 'POSTPONED' ? 'selected' : '' }}>Reporté</option>
+                            <option value="DELIVERED"       {{ request('status') === 'DELIVERED' ? 'selected' : '' }}>Livré</option>
+                            <option value="CANCELED"        {{ request('status') === 'CANCELED' ? 'selected' : '' }}>Annulé</option>
+                            <option value="REJECTED"        {{ request('status') === 'REJECTED' ? 'selected' : '' }}>Refusé</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-xs pointer-events-none"></i>
                     </div>
+                </div>
                 </div>
 
                 {{-- Actions --}}

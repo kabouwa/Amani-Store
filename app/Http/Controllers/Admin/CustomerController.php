@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
-use App\Services\SenditService;
+use App\Services\SenditDeliveriesService;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -22,9 +22,9 @@ class CustomerController extends Controller
         ->get();
         return view('admin.customers.index',compact('customers'));
     }
-    public function destroy(Customer $customer, SenditService $agency)
+    public function destroy(Customer $customer, SenditDeliveriesService $agency)
     {
-        if($customer->order->sendit_code) {
+        if($customer->order->hasShipment()) {
             $agency->delete($customer->order);
         };
 

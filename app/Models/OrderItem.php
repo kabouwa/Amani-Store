@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class OrderItem extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['order_id','product_id','price','quantity'];
+    protected $fillable = ['order_id','product_id','purchase_price','selling_price','quantity'];
 
     public function order()
     {
@@ -19,5 +19,15 @@ class OrderItem extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function getProfitAttribute()
+    {
+        return ($this->selling_price - $this->purchase_price) * $this->quantity;
+    }
+
+    public function getTotalAttribute()
+    {
+        return $this->selling_price * $this->quantity;
     }
 }

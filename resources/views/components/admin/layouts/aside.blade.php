@@ -21,10 +21,10 @@
             <span class="sidebar-label whitespace-nowrap">Gestion des Commandes</span>
         </a>
 
-        <a href="{{ route('admin.orders.index') }}"
+        <a href="{{ route('admin.pickups.index') }}"
             class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
-                {{ request()->routeIs('admin.shipment.pickup') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
-            <i class="fa-solid fa-box-archive w-5 text-xl text-center shrink-0"></i>
+                {{ request()->routeIs('admin.pickups.index') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
+            <i class="fa-solid fa-truck-fast w-5 text-xl text-center shrink-0"></i>
             <span class="sidebar-label whitespace-nowrap">Demander un ramassage</span>
         </a>
 

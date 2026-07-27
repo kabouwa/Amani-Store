@@ -40,6 +40,12 @@ return [
         'api' => env('SENDIT_API'),
         'public_key' => env('SENDIT_PUBLIC_KEY'),
         'private_key' => env('SENDIT_PRIVATE_KEY'),
+        'pickup' => [
+            'district_id' => env('SENDIT_PICKUP_DISTRICT_ID'),
+            'name' => env('SENDIT_PICKUP_NAME'),
+            'phone' => env('SENDIT_PICKUP_PHONE'),
+            'address' => env('SENDIT_PICKUP_ADDRESS'),
+        ]
     ]
 
 ];
