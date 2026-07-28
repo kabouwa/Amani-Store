@@ -73,7 +73,7 @@
         @endforeach
     </div>
 
-    <x-modals.confirm-delete id="deleteCategoryModal" message="Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action est irréversible." />
+    <x-modals.confirm-delete id="deleteCategoryModal" message="Êtes-vous sûr de vouloir supprimer cette catégorie ainsi ses produits ? Cette action est irréversible." />
 
     @push('scripts')
         @vite('resources/js/admin/categories.js')

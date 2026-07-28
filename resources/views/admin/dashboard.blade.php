@@ -205,7 +205,9 @@
                             class="flex-1 text-sm text-gray-700 dark:text-gray-300 truncate hover:text-amani dark:hover:text-amani-light transition-colors">
                             {{ $p->title }}
                         </a>
-                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-100 shrink-0">{{ $p->sales_times ?? 0 }} vendus</span>
+                        <span class="text-xs md:text-sm font-semibold text-gray-800 dark:text-gray-100 shrink-0">
+                            {{ $p->sales_times ?? 0 }} vendus
+                        </span>
                     </div>
                 @empty
                     <p class="text-sm text-gray-400 text-center py-4">Aucune vente pour le moment</p>

@@ -13,12 +13,6 @@
     {{-- Orders Toolbar --}}
     <x-admin.orders-toolbar />
 
-    <div class="text-gray-400 dark:text-gray-500 my-3 mb-8">
-        <p>
-            {{ count($orders) }}
-            @choice('commande a été trouvée.|commandes ont été trouvées.', count($orders))
-        </p>
-    </div>
 
     @if(count($orders))
 
@@ -143,7 +137,7 @@
                                 <i class="fa-solid fa-trash"></i>
                             </button>
 
-                            @if ($order->sendit_code)
+                            @if ($order->hasShipment())
                                 <form action="{{ route('admin.shipment.destroy', $order->code) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')

@@ -31,14 +31,18 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <span class="hidden md:inline">Chercher</span>
         </button>
-            @if (request()->except('page'))
-            <a href="{{ route('admin.orders.index') }}"
-               class="cursor-pointer border-2 border-amani text-amani dark:text-amani-light hover:bg-amani hover:text-white px-4 py-2.5 rounded-lg transition flex items-center gap-2 shrink-0">
-                <i class="fa-solid fa-rotate-right"></i>
-            </a>  
-            @endif
     </form>
 
+    @if (request()->except('page'))
+    <a href="{{ route('admin.orders.index') }}"
+        class="cursor-pointer border-2 border-amani dark:border-amani-light text-amani dark:text-gray-300 dark:bg-gray-800
+            hover:bg-amani dark:hover:bg-amani-light hover:text-white dark:hover:text-white font-medium text-sm
+            px-4 py-3 rounded-lg transition flex justify-center items-center gap-2 shrink-0">
+        <i class="fa-solid fa-rotate-right"></i>
+        <span>Réinitialiser</span>
+    </a>
+    @endif
+    
     {{-- Sort dropdown --}}
     <div class="relative shrink-0" id="sortDropdownWrapper">
 
@@ -86,12 +90,18 @@
                 {{-- Sort field --}}
                 <div class="space-y-1.5 mb-5">
                     @foreach ($sorts as $s)
-                        <label class="flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                            <input type="radio" name="sort" value="{{ $s['value'] }}" class="accent-amani"
-                                {{ request('sort', 'created_at') === $s['value'] ? 'checked' : '' }}>
-                            <i class="{{ $s['icon_class'] }} text-gray-400 dark:text-gray-500 w-4 text-xs"></i>
-                            <span class="text-sm text-gray-700 dark:text-gray-200">{{ $s['title'] }}</span>
-                        </label>
+                    <label class="flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer group hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                        <input type="radio" name="sort" value="{{ $s['value'] }}" class="sr-only"
+                            {{ request('sort', 'created_at') === $s['value'] ? 'checked' : '' }}>
+
+                        <span class="relative w-4 h-4 rounded-full border-2 border-gray-300 dark:border-gray-600 shrink-0
+                                    group-has-[:checked]:border-amani transition-colors duration-200">
+                            <span class="absolute inset-0.5 rounded-full bg-amani scale-0 group-has-[:checked]:scale-100 transition-transform duration-200"></span>
+                        </span>
+
+                        <i class="{{ $s['icon_class'] }} text-gray-400 dark:text-gray-500 w-4 text-xs"></i>
+                        <span class="text-sm text-gray-700 dark:text-gray-200">{{ $s['title'] }}</span>
+                    </label>
                     @endforeach
                 </div>
 

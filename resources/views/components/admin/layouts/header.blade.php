@@ -19,7 +19,7 @@
     </div>
 
     <div class="flex items-center gap-3">
-        <a href="{{ route('admin.dashboard') }}" class="w-10 h-10 rounded-full bg-amani dark:bg-amani-light text-white flex items-center justify-center text-md font-semibold hover:shadow-sm hover:shadow-amani dark:hover:shadow-amani-light transition-all duration-200">
+        <a href="{{ route('admin.users.edit', auth()->user()->slug ) }}" class="w-10 h-10 rounded-full bg-amani dark:bg-amani-light text-white flex items-center justify-center text-md font-semibold hover:shadow-sm hover:shadow-amani dark:hover:shadow-amani-light transition-all duration-200">
             {{ substr(auth()->user()->name ?? 'A', 0, 1) }}
         </a>
 

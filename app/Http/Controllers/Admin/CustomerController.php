@@ -19,7 +19,9 @@ class CustomerController extends Controller
                 ->orwhere("address","LIKE","%". $search ."%");
         })
         ->orderByDesc('created_at')
-        ->get();
+        ->paginate(20)
+        ->withQueryString();
+        
         return view('admin.customers.index',compact('customers'));
     }
     public function destroy(Customer $customer, SenditDeliveriesService $agency)

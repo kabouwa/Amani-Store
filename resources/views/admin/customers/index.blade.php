@@ -29,12 +29,6 @@
         @endif
     </form>
 
-    <div class="text-gray-400 dark:text-gray-500 my-3">
-        <p>
-            {{ count($customers) }} {{ count($customers) > 1 ? 'clients ont été trouvés.' : 'client a été trouvé.' }}
-        </p>
-    </div>
-    
     {{-- Desktop / tablet table --}}
     <div class="hidden md:block bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
         <table class="w-full text-sm">
@@ -142,6 +136,10 @@
                 </div>
             </div>
         @endforeach
+    </div>
+
+    <div class="my-4">
+        {{ $customers->links() }}
     </div>
 
     <x-modals.confirm-delete id="deleteModal"

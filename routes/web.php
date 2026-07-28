@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 /**
  * Admin Controllers
@@ -19,10 +20,14 @@ use App\Http\Controllers\Admin\PickupController;
  * Public Controllers
 */
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 
+Route::get('/', fn() => to_route('products.index'));
 
-Route::get('/', fn () => redirect('/admin'));
-
+/**
+ * Admin Routes
+*/
 Route::prefix('admin')->name('admin.')->group(function(){
     Route::get('/',function(){
         return auth()->check()
@@ -31,6 +36,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
     });
 
     Route::get('/login',[AuthController::class,'index'])->middleware('guest')->name('login');
+    Route::post('/login/otp-verification',[AuthController::class,'verification'])->middleware('guest')->name('login.verification');
     Route::post('/login',[AuthController::class,'authenticate'])->middleware('guest');
 
     // Management Panel
@@ -61,8 +67,15 @@ Route::prefix('admin')->name('admin.')->group(function(){
         
         Route::delete('shipment/{order}',[ShipmentController::class,'destroy'])->name('shipment.destroy');
 
-
         Route::resource('pickups',PickupController::class)->only('index','store','destroy');
 
     });
 });
+
+
+/**
+ * Public Routes
+*/
+Route::resource('products',ProductController::class)->only(['index']);
+Route::resource('orders',OrderController::class)->only(['create','store']);
+Route::resource('categories',CategoryController::class)->only(['index','show']);

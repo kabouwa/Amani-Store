@@ -1,4 +1,5 @@
 $(function () {
+    $('.js-viewable').addClass('cursor-pointer')
     $(document).on('click', '.js-viewable', function () {
         const src = $(this).attr('src');
         const alt = $(this).attr('alt') || '';

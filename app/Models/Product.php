@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -32,17 +33,18 @@ class Product extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    public function salesCount() : int
+    public function getSalesCountAttribute() : int
     {
         return OrderItem::where('product_id',$this->id)
             ->sum('quantity');
     }
 
-    public function totalSales() : float
+    public function getTotalSalesAttribute() : float
     {
-        return OrderItem::where('product_id',$this->id)
-            ->get()
-            ->sum(fn ($item) => $item->quantity * $item->price);
+        return (float) OrderItem::where('product_id',$this->id)
+            ->sum(
+                DB::raw('quantity * selling_price') 
+            );
     }
 
     protected static function booted(): void

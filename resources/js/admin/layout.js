@@ -1,3 +1,5 @@
+// OTP TIMER FORGET 
+if(sessionStorage.getItem('otp_expiry_time')) sessionStorage.removeItem('otp_expiry_time');
 // Phone Sidebar
 $(function () {
     $('#toggleSidebar').on('click', function () {

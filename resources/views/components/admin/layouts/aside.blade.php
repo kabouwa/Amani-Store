@@ -96,8 +96,10 @@
         <form method="POST" action="{{ route('admin.logout') }}">
             @csrf
             @method('DELETE')
-            <button type="submit"
-                    class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-white transition cursor-pointer">
+            <button type="button"
+                    class="js-delete-btn w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-white transition cursor-pointer"
+                    data-action="{{ route('admin.logout') }}"
+                    data-modal="logoutModal">
                 <i class="fa-solid fa-right-from-bracket w-5 text-xl text-center shrink-0"></i>
                 <span class="sidebar-label whitespace-nowrap">Déconnexion</span>
             </button>
@@ -107,3 +109,8 @@
 
 {{-- Mobile overlay --}}
 <div id="sidebarOverlay" class="fixed inset-0 bg-black/30 dark:bg-black/60 z-20 hidden md:hidden"></div>
+
+<x-modals.confirm-delete id="logoutModal"
+                          title="Déconnexion"
+                          action="Se déconnecter"
+                          message="Êtes-vous sûr de vouloir vous déconnecter ?" />

@@ -38,47 +38,49 @@
     @endif
     
     {{-- Actions --}}
-    @can('update',$order)
-    <div class="flex flex-wrap gap-3 mb-6">
-        <a href="{{ route('admin.orders.edit', $order->code) }}"
-           class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-            <i class="fa-solid fa-pen"></i>
-            Modifier
-        </a>
+@can('update', $order)
+<div class="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-6 gap-3 mb-6">
 
-        @if ($order->sendit_code)
-            <form action="{{ route('admin.shipment.destroy', $order->code) }}" method="POST" class="inline">
-                @csrf
-                @method('DELETE')
-                <button type="button"
-                        class="js-delete-btn inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-red-600 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 transition cursor-pointer"
-                        data-action="{{ route('admin.shipment.destroy', $order->code) }}"
-                        data-modal="deleteShipmentModal">
-                    <i class="fa-solid fa-ban"></i>
-                    Retirer de Sendit
-                </button>
-            </form>
-        @else
-            <form action="{{ route('admin.shipment.store', $order->code) }}" method="POST" class="inline">
-                @csrf
-                <button type="submit"
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-green-600 bg-green-50 dark:bg-green-900/30 hover:bg-green-100 dark:hover:bg-green-900/50 transition cursor-pointer">
-                    <i class="fa-solid fa-truck-fast"></i>
-                    Envoyer vers Sendit
-                </button>
-            </form>
-        @endif
-        
+    <a href="{{ route('admin.orders.edit', $order->code) }}"
+       class="inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
+              text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+        <i class="fa-solid fa-pen"></i>
+        Modifier
+    </a>
 
+    @if ($order->hasShipment())
         <button type="button"
-                class="js-delete-btn ml-auto inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-red-600 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 transition cursor-pointer"
-                data-action="{{ route('admin.orders.destroy', $order->code) }}"
-                data-modal="deleteOrderModal">
-            <i class="fa-solid fa-trash"></i>
-            Supprimer la commande
+                class="js-delete-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
+                       text-red-600 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 transition cursor-pointer"
+                data-action="{{ route('admin.shipment.destroy', $order->code) }}"
+                data-modal="deleteShipmentModal">
+            <i class="fa-solid fa-ban"></i>
+            Retirer de Sendit
         </button>
-    </div>
-    @endcan
+    @else
+        <form action="{{ route('admin.shipment.store', $order->code) }}" method="POST">
+            @csrf
+            <button type="submit"
+                    class="js-sendit-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
+                           text-green-600 bg-green-50 dark:bg-green-900/30 hover:bg-green-100 dark:hover:bg-green-900/50 transition cursor-pointer"
+                    data-modal="senditOrderModal">
+                <i class="fa-solid fa-truck-fast"></i>
+                Envoyer vers Sendit
+            </button>
+        </form>
+    @endif
+
+    <button type="button"
+            class="js-delete-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
+                   text-red-600 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 transition cursor-pointer"
+            data-action="{{ route('admin.orders.destroy', $order->code) }}"
+            data-modal="deleteOrderModal">
+        <i class="fa-solid fa-trash"></i>
+        Supprimer la commande
+    </button>
+
+</div>
+@endcan
 
     {{-- Grid principal --}}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -117,62 +119,65 @@
             {{-- Articles --}}
             <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 overflow-hidden">
                 <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100 p-5 pb-0">Articles</h2>
-                <table class="w-full text-sm mt-4">
-                    <thead>
-                        <tr class="text-left text-gray-400 text-xs border-b border-gray-100 dark:border-gray-800">
-                            <th class="px-5 py-3 font-medium">Produit</th>
-                            <th class="px-5 py-3 font-medium text-center">Qté</th>
-                            <th class="px-5 py-3 font-medium text-right">Prix</th>
-                            <th class="px-5 py-3 font-medium text-right">Sous-total</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                        @foreach ($order->items as $item)
-                            <tr>
-                                <td class="px-5 py-3">
-                                    <div class="flex items-center gap-3">
-                                        @if ($item->product)
-                                            <img src="{{ $item->product->primaryImage?->image ?? asset('storage/products/default-image.png') }}"
-                                                 alt="Image de produit : {{ $item->product->title }}"
-                                                 class="w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800">
-                                            <span class="text-gray-800 dark:text-gray-200 font-medium">
-                                                {{ $item->product->title }}
-                                            </span>
-                                        @else
-                                            <span class="text-gray-400 italic">Produit supprimé</span>
-                                        @endif
-                                    </div>
-                                </td>
-                                <td class="px-5 py-3 text-center text-gray-600 dark:text-gray-300">
-                                    {{ $item->quantity }}
-                                </td>
-                                <td class="px-5 py-3 text-right text-gray-600 dark:text-gray-300">
-                                    {{ number_format($item->selling_price, 2) }} DH
-                                </td>
-                                <td class="px-5 py-3 text-right font-medium text-gray-800 dark:text-gray-100">
-                                    {{ number_format($item->total, 2) }} DH
+
+                <div class="overflow-x-auto mt-4">
+                    <table class="w-full text-sm min-w-[480px]">
+                        <thead>
+                            <tr class="text-left text-gray-400 text-xs border-b border-gray-100 dark:border-gray-800">
+                                <th class="px-5 py-3 font-medium">Produit</th>
+                                <th class="px-5 py-3 font-medium text-center">Qté</th>
+                                <th class="px-5 py-3 font-medium text-right">Prix</th>
+                                <th class="px-5 py-3 font-medium text-right">Sous-total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                            @foreach ($order->items as $item)
+                                <tr>
+                                    <td class="px-5 py-3">
+                                        <div class="flex items-center gap-3">
+                                            @if ($item->product)
+                                                <img src="{{ $item->product->primaryImage?->image ? asset('storage/' . $item->product->primaryImage?->image) : asset('storage/products/default-image.png') }}"
+                                                    alt="Image de produit : {{ $item->product->title }}"
+                                                    class="js-viewable w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800 shrink-0">
+                                                <span class="text-gray-800 dark:text-gray-200 font-medium whitespace-nowrap">
+                                                    {{ $item->product->title }}
+                                                </span>
+                                            @else
+                                                <span class="text-gray-400 italic">Produit supprimé</span>
+                                            @endif
+                                        </div>
+                                    </td>
+                                    <td class="px-5 py-3 text-center text-gray-600 dark:text-gray-300">
+                                        {{ $item->quantity }}
+                                    </td>
+                                    <td class="px-5 py-3 text-right text-gray-600 dark:text-gray-300 whitespace-nowrap">
+                                        {{ number_format($item->selling_price, 2) }} DH
+                                    </td>
+                                    <td class="px-5 py-3 text-right font-medium text-gray-800 dark:text-gray-100 whitespace-nowrap">
+                                        {{ number_format($item->total, 2) }} DH
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr class="border-t border-gray-100 dark:border-gray-800">
+                                <td colspan="3" class="px-5 py-3 text-right text-gray-500 text-sm whitespace-nowrap">Livraison</td>
+                                <td class="px-5 py-3 text-right text-gray-800 dark:text-gray-100 whitespace-nowrap">
+                                    {{ number_format($order->shipping_price, 2) }} DH
                                 </td>
                             </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot>
-                        <tr class="border-t border-gray-100 dark:border-gray-800">
-                            <td colspan="3" class="px-5 py-3 text-right text-gray-500 text-sm">Livraison</td>
-                            <td class="px-5 py-3 text-right text-gray-800 dark:text-gray-100">
-                                {{ number_format($order->shipping_price, 2) }} DH
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="px-5 py-3 text-right font-semibold text-gray-800 dark:text-gray-100">Total</td>
-                            <td class="px-5 py-3 text-right font-bold text-amani text-base">
-                                {{ number_format($order->total_price, 2) }} DH
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+                            <tr>
+                                <td colspan="3" class="px-5 py-3 text-right font-semibold text-gray-800 dark:text-gray-100 whitespace-nowrap">Total</td>
+                                <td class="px-5 py-3 text-right font-bold text-amani text-base whitespace-nowrap">
+                                    {{ number_format($order->total_price, 2) }} DH
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
-
+            
         {{-- Colonne droite : client --}}
         <div class="space-y-6">
             <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-5">
@@ -218,9 +223,16 @@
             </div>
         </div>
     </div>
+    
     @can('update',$order)
-    <x-modals.confirm-delete id="deleteOrderModal" title="Supprimer la commande" message="Vous voulez vraiment supprimer cette commande ?" />
-    <x-modals.confirm-delete id="deleteShipmentModal" title="Retirer de Sendit" message="Vous voulez vraiment retirer cette commande de Sendit ?" action="Retirer" />   
+        <x-modals.confirm-delete id="deleteOrderModal" title="Supprimer la commande" message="Vous voulez vraiment supprimer cette commande ?" />
+        <x-modals.confirm-delete id="deleteShipmentModal" title="Retirer de Sendit" message="Vous voulez vraiment retirer cette commande de Sendit ?" action="Retirer" />   
     @endcan
+
+    <x-modals.image-preview />
+
+    @push('scripts')
+        @vite('resources/js/image-viewer.js')
+    @endpush
 
 </x-admin.layouts.app>
