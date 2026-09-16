@@ -1,6 +1,4 @@
 <?php
-
-
 use Illuminate\Support\Facades\Route;
 /**
  * Admin Controllers
@@ -22,9 +20,7 @@ use App\Http\Controllers\Admin\PickupController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
-
-Route::get('/', fn() => to_route('products.index'));
-
+use App\Http\Controllers\PublicController;
 /**
  * Admin Routes
 */
@@ -76,6 +72,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
 /**
  * Public Routes
 */
-Route::resource('products',ProductController::class)->only(['index']);
+Route::get('/', [PublicController::class,'index'])->name('home');
+Route::resource('products',ProductController::class)->only(['index','show']);
 Route::resource('orders',OrderController::class)->only(['create','store']);
 Route::resource('categories',CategoryController::class)->only(['index','show']);
