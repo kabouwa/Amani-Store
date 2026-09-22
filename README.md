@@ -1,5 +1,7 @@
 # Amani Store
 
+<p align="center"> <img src="https://raw.githubusercontent.com/kabouwa/Amani-Store/main/public/images/logo/amani-h.png" alt="Amani Store" width="500"> </p>
+
 A real e-commerce project — **Amani Store** — built with Laravel 13 using server-side rendering (Blade). The admin panel is the main focus so far and is fully functional; the public-facing storefront is still in progress.
 
 ## Status
