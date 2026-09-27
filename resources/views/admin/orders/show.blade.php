@@ -3,7 +3,7 @@
     <x-slot:heading>
         <i class="fa-solid fa-circle-info w-4 text-center"></i> Détail de commande
     </x-slot:heading>
-    
+
     {{-- Header : retour + code commande + statut --}}
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-3">
@@ -36,7 +36,7 @@
             <x-alert color="red">{{ $error }}</x-alert>
         @endforeach
     @endif
-    
+
     {{-- Actions --}}
 @can('update', $order)
 <div class="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-6 gap-3 mb-6">
@@ -108,12 +108,10 @@
                     </div>
                 </div>
 
-                @if ($order->note)
-                    <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
-                        <p class="text-gray-400 text-xs mb-1">Note</p>
-                        <p class="text-gray-700 dark:text-gray-300">{{ $order->note }}</p>
-                    </div>
-                @endif
+                <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                    <p class="text-gray-400 text-xs mb-1">Note</p>
+                    <p class="text-gray-700 dark:text-gray-300">{{ $order->note ?? 'Aucune note.' }}</p>
+                </div>
             </div>
 
             {{-- Articles --}}
@@ -177,7 +175,7 @@
                 </div>
             </div>
         </div>
-            
+
         {{-- Colonne droite : client --}}
         <div class="space-y-6">
             <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-5">
@@ -223,10 +221,10 @@
             </div>
         </div>
     </div>
-    
+
     @can('update',$order)
         <x-modals.confirm-delete id="deleteOrderModal" title="Supprimer la commande" message="Vous voulez vraiment supprimer cette commande ?" />
-        <x-modals.confirm-delete id="deleteShipmentModal" title="Retirer de Sendit" message="Vous voulez vraiment retirer cette commande de Sendit ?" action="Retirer" />   
+        <x-modals.confirm-delete id="deleteShipmentModal" title="Retirer de Sendit" message="Vous voulez vraiment retirer cette commande de Sendit ?" action="Retirer" />
     @endcan
 
     <x-modals.image-preview />

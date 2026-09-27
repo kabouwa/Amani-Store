@@ -22,7 +22,7 @@ class SenditDeliveriesService extends SenditService
                 url : $this->apiUrl . '/deliveries',
             )->throw()->json();
             $deliveries = $data['data'];
-        
+
             for($i = 2 ; $i <= $data['last_page']; $i++){
                 $nextDeliveries = Http::withToken( $this->getToken() )->get(
                     url : $this->apiUrl . '/deliveries?page=' . $i,
@@ -36,7 +36,7 @@ class SenditDeliveriesService extends SenditService
     public function updateStatus()
     {
         $deliveries = collect($this->all())->keyBy('reference') ;
-        
+
         Order::whereNotNull('sendit_code')
             ->get()
             ->each(function ($order) use ($deliveries) {
@@ -55,30 +55,33 @@ class SenditDeliveriesService extends SenditService
         //     )->throw()->json('data.status');
         // });
     }
-    public function city(int $id)
+    public function city(int $id): array
     {
         $city = Cache::get("sendit_city_$id");
         if($city) return $city;
+
         $response = Http::withToken( $this->getToken() )->get(
             url : $this->apiUrl . '/districts/' . $id,
         )->throw();
+
         if($response->successful()){
-            $city = $response->json()['data']['name'];
+            $city = $response->json()['data'];
             Cache::put("sendit_city_$id" , $city, now()->addMonth() );
-        } 
+        }
+
         return $city;
     }
     public function cities()
     {
         return Cache::remember('sendit_cities', now()->addMonth(), function(){
             $cities = [];
-    
+
             $response = Http::withToken( $this->getToken() )->get(
                 url : $this->apiUrl . '/districts?page=1',
             )->throw();
             $data = $response->json();
             $cities = $data['data'];
-    
+
             for($i = 2 ; $i <= $data['last_page']; $i++){
                 $response = Http::withToken( $this->getToken() )->get(
                     url : $this->apiUrl . '/districts?page=' . $i,
@@ -92,7 +95,7 @@ class SenditDeliveriesService extends SenditService
         });
     }
     public function create(
-        Order $order, 
+        Order $order,
         string $comment = 'Fragile – Merci de manipuler avec le plus grand soin.',
         int $allow_open = 1,
         int $allow_try = 1,
@@ -121,8 +124,8 @@ class SenditDeliveriesService extends SenditService
         $package['products'] =$order->items
             ->map(fn ($item) => "x{$item->quantity} {$item->product->title}")
             ->implode(', ');
-        
-        // Send Creation Request 
+
+        // Send Creation Request
         $data = Http::withToken( $this->getToken() )->post(
             url : $this->apiUrl . '/deliveries',
             data : $package

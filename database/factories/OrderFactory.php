@@ -24,9 +24,9 @@ class OrderFactory extends Factory
         return [
             'code' => $code,
             'shipping_price' => 35,
-            'total_price' => 35 + random_int(80,400),
+            'total_price' => 9999,
             'shipping_agency' => 'Sendit',
-            'note' => fake()->paragraph(5)
+            'note' => fake()->paragraph(2)
         ];
     }
 }

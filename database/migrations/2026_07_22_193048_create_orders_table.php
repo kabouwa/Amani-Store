@@ -17,11 +17,11 @@ return new class extends Migration
             $table->foreignId('customer_id')->nullable()->constrained()->cascadeOnUpdate()->nullOnDelete();
             $table->decimal('shipping_price', 10, 2)->default(35);
             $table->decimal('total_price', 10, 2)->default(0);
-            $table->string('shipping_agency', 50);
+            $table->string('shipping_agency', 50)->default('Sendit');
             $table->string('status', 20)->nullable()->default('PREPARING');
             $table->string('sendit_code')->nullable();
             $table->boolean('is_picked')->default(false);
-            $table->text('note')->nullable();
+            $table->string('note')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

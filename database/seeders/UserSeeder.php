@@ -18,8 +18,8 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => "Mohammed",
             'slug' => Str::slug('Mohammed'),
-            'email' => "admin@mail.com",
-            'phone' => "0631419206",
+            'email' => "med.rh.med27@gmail.com",
+            'phone' => "0666666666",
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ]);
@@ -27,8 +27,8 @@ class UserSeeder extends Seeder
         User::factory()->create([
             'name' => "Alabax",
             'slug' => Str::slug('Alabax'),
-            'email' => "aliAlbax@mail.com",
-            'phone' => "0674356417",
+            'email' => "alabax@mail.com",
+            'phone' => "0666666667",
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ]);

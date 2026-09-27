@@ -1,5 +1,5 @@
 $(function () {
-    $('#city').select2({
+    $('#district_id').select2({
         placeholder: 'Choisir la ville',
         width: '100%',
         dir: 'ltr',

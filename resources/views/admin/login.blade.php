@@ -20,7 +20,7 @@
 <body class="bg-gray-50 dark:bg-gray-950 min-h-screen flex items-center justify-center font-serif transition-colors duration-300">
     <div class="w-full max-w-md px-6">
         {{-- Card --}}
-        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-800 p-8 transition-colors duration-300">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-800 p-4 md:p-8 transition-colors duration-300">
             <div class="text-center">
                 <img src="{{ Vite::asset('resources/images/LOGO/amani-am.png') }}" alt="Amani Store Logo" class="mx-auto h-28 lg:h-36 w-auto">
             </div>
@@ -37,7 +37,7 @@
             @if (session('success'))
                 <x-alert color="green">{{ session('success') }}</x-alert>
             @endif
-                
+
             @unless (session('otp-form'))
             <form method="POST" action="{{ route('admin.login') }}" class="space-y-5" novalidate>
                 @csrf

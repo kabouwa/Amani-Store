@@ -57,10 +57,10 @@ Route::prefix('admin')->name('admin.')->group(function(){
 
         Route::resource('customers',AdminCustomerController::class)->only(['index','destroy']);
 
-        Route::resource('orders',AdminOrderController::class)->except(['create','store']);
+        Route::resource('orders',AdminOrderController::class);
 
         Route::post('shipment/{order}',[ShipmentController::class,'store'])->name('shipment.store');
-        
+
         Route::delete('shipment/{order}',[ShipmentController::class,'destroy'])->name('shipment.destroy');
 
         Route::resource('pickups',PickupController::class)->only('index','store','destroy');

@@ -30,4 +30,13 @@ class OrderItem extends Model
     {
         return $this->selling_price * $this->quantity;
     }
+
+    public static function booted(): void
+    {
+        static::deleting(function ($ordeItem) {
+            $ordeItem->product->update([
+                'stock' => $ordeItem->product->stock + $ordeItem->quantity
+            ]);
+        });
+    }
 }

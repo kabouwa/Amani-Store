@@ -22,7 +22,6 @@ class OrderRequest extends FormRequest
      */
     public function rules(): array
     {
-        $isCreate = $this->isMethod('POST');
         $rules = [
             'name' => 'required|string|min:3|max:80',
             'phone' => [
@@ -34,12 +33,16 @@ class OrderRequest extends FormRequest
                 'string',
                 'regex:/^[a-zA-Z0-9._]{1,30}$/',
             ],
+            'note' => 'nullable|max:255',
+
             'district_id' => 'required|integer',
             'address' => 'required|string|min:3|max:150',
+
+            'items' => 'required|array|min:1',
+            'items.*.slug' => 'required|string',
+            'items.*.quantity' => 'required|integer|min:1'
         ];
-        if($isCreate) $rules = array_merge($rules, [
-            // Creation rules
-        ]);
+
         return $rules;
     }
 }

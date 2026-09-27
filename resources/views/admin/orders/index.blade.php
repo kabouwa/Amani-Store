@@ -1,11 +1,22 @@
 <x-admin.layouts.app title="Gestion des commandes">
+
     <x-slot:heading>
         <i class="fa-solid fa-box w-4 text-center"></i> Gestion des commandes
     </x-slot:heading>
 
+    <x-slot:headingBtn>
+        <a href={{ route('admin.orders.create') }}
+            class="cursor-pointer bg-amani hover:bg-amani-dark text-white px-4 py-3 rounded-lg transition
+                flex items-center justify-center gap-2 text-sm font-medium w-full md:w-auto md:ml-auto shrink-0">
+            <i class="fa-solid fa-plus"></i> Créer une commande
+        </a>
+    </x-slot:headingBtn>
+
+
     @if(session('success'))
         <x-alert color="green">{{ session('success') }}</x-alert>
     @endif
+    
     @if(session('error'))
         <x-alert color="red">{{ session('error') }}</x-alert>
     @endif

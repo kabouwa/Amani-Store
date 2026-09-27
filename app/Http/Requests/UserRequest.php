@@ -36,16 +36,17 @@ class UserRequest extends FormRequest
                 'string',
                 'email',
                 'between:7,50',
-                Rule::unique('users','email')->ignore($user) 
+                Rule::unique('users','email')->ignore($user)
             ],
             'phone' => [
                 'required',
                 'string',
                 'regex:/^0[5-7][0-9]{8}$/',
-                Rule::unique('users','phone')->ignore($user) 
+                Rule::unique('users','phone')->ignore($user)
             ],
-            
+
         ];
+
         if ($this->isMethod('POST')) {
             $rules['password'] = 'required|string|confirmed|min:8|max:50';
         }

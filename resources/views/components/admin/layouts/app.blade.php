@@ -3,6 +3,7 @@
     'heading' => 'Management',
     'headingBtn' => ''
 ])
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

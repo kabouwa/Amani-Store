@@ -9,19 +9,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title }} - Amani Store</title>
-    
+
     @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-serif">
 
-    <div class="min-h-screen">
-
+    <div class="min-h-screen flex flex-col items-stretch">
         {{-- Fixed header --}}
         <x-layouts.header />
 
-        {{-- Fixed sidebar --}}
-        {{-- <x-layouts.footer /> --}}
+        <div class="flex-1 flex flex-col items-stretch">
+            {{ $slot }}
+        </div>
 
+        <x-layouts.footer />
 
     </div>
 

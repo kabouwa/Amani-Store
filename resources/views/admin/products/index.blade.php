@@ -2,6 +2,7 @@
     <x-slot:heading>
         <i class="fa-solid fa-bag-shopping w-4 text-center"></i> Gestion des produits
     </x-slot:heading>
+    
     <x-slot:headingBtn>
         <a href={{ route('admin.products.create') }}
             class="cursor-pointer bg-amani hover:bg-amani-dark text-white px-4 py-3 rounded-lg transition
@@ -15,8 +16,8 @@
     @endif
 
     {{-- Toolbar --}}
-    <x-products-toolbar :categories="$categories" />        
-       
+    <x-products-toolbar :categories="$categories" />
+
 
     <div class="text-gray-400 my-3">
         <p>

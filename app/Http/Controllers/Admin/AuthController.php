@@ -56,7 +56,7 @@ class AuthController extends Controller
                     'otp-form' => true, // UI
                 ]);
             }
-            return to_route('admin.login'); 
+            return to_route('admin.login');
         }
 
         return back()->with('error','Email ou mot de passe incorrect.');

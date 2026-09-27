@@ -14,7 +14,7 @@
                     <i class="fa-solid fa-headset mr-2"></i> SERVICE APRÈS-VENTE DISPONIBLE 24H/7J
                 </span>
                 <span class="flex items-center text-xs font-medium tracking-wide px-8 shrink-0">
-                    <i class="fa-brands fa-whatsapp mr-2"></i> WHATSAPP: 06 XX XX XX XX
+                    <i class="fa-brands fa-whatsapp mr-2"></i> WHATSAPP: 06 12 77 33 55
                 </span>
             @endfor
         </div>

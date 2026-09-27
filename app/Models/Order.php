@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Order extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['order_code','customer_id','shipping_price','total_price','shipping_agency','status','is_picked','sendit_code'];
-    
+    protected $fillable = ['order_code','customer_id','shipping_price','total_price','shipping_agency', 'note', 'status','is_picked','sendit_code'];
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);
@@ -40,7 +40,14 @@ class Order extends Model
 
     protected static function booted() : void
     {
+        static::creating(function ($order) {
+            do{
+                $order->code = 'AMN-' . now()->format('ym') . '-' . random_int(100000, 999999);
+            }while(static::where('code',$order->code)->exists());
+        });
+
         static::deleting(function ($order) {
+            $order->customer()->delete();
             $order->items()->delete();
         });
     }
