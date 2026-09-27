@@ -1,58 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"> <img src="https://raw.githubusercontent.com/kabouwa/Amani-Store/main/public/images/logo/amani-h.png" alt="Amani Store" width="500"> </p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Amani Store
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+A real e-commerce project — **Amani Store** — built with Laravel 13 using server-side rendering (Blade). The admin panel is the main focus so far and is fully functional; the public-facing storefront is still in progress.
 
-## Learning Laravel
+## Status
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- ✅ **Admin panel** — built out and functional (auth, dashboard, categories, products, customers, orders, pickups, shipments, user management)
+- 🚧 **Public storefront** — in progress (home, category listing, product listing/detail, checkout flow exist as a first pass)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Stack
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- **Backend:** Laravel 13 (PHP 8.3)
+- **Views:** Blade (SSR), component-based (`x-` components)
+- **Styling:** Tailwind CSS 4, with a custom `amani` brand color (`#7A1220`)
+- **JS:** jQuery, Select2 (searchable selects), Font Awesome + Bootstrap Icons
+- **Fonts:** Playfair Display
+- **Build tool:** Vite
 
-## Agentic Development
+## Admin Panel Features
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- **Authentication** — email + password, followed by an **email OTP verification step** (10-minute expiry, hashed OTP stored in session)
+- **Dashboard** — KPIs overview
+- **Categories** — CRUD with soft deletes (deleting a category cascades to its products)
+- **Products** — creation form with drag-and-drop image upload, multiple images with a "primary image" flag, auto-generated slug from title, active/inactive toggle, per-product sales stats (`sales_count`, `total_sales`)
+- **Customers** — table view, soft deletes (cascades to their order)
+- **Orders** — detail page (3-column layout), soft deletes (cascades to order items), **policy-protected**: an order can't be edited or deleted once it's picked up
+- **Pickups** — pickup scheduling/management
+- **Shipments** — integrated with the **Sendit** delivery API (bearer token auth, token cached for 50 minutes) to create/cancel shipments
+- **User management** — admin users can only update/delete their **own** account (enforced via policy)
+- **UI details** — collapsible sidebar with localStorage persistence, dark/light mode, French-language interface (`lang/fr/*`)
 
-```bash
-composer require laravel/boost --dev
+## Data Model
 
-php artisan boost:install
+- **Category** → has many **Products**
+- **Product** → belongs to Category, has many **ProductImages** (one marked primary), has many **OrderItems**; slug auto-generated on save
+- **Customer** → has one **Order**
+- **Order** → belongs to Customer, has many **OrderItems**; identified by `order_code` (route-bound by `code`); tracks `shipping_agency`, `status`, `is_picked`, `sendit_code`
+- **OrderItem** → belongs to Order and Product; computes `profit` and `total` per line
+- **User** (admin) → slug auto-generated from name; login by slug route
+
+Deleted images are moved to a `products/trash/` folder rather than hard-deleted from disk.
+
+## Project Structure
+
+```
+app/
+  Http/Controllers/
+    Admin/          # Admin panel controllers (Auth, Dashboard, Category, Customer, Order, Pickup, Product, ProductImages, Shipment, User)
+    *.php           # Public-facing controllers (Product, Category, Order, PublicController)
+  Http/Requests/     # Form validation (Order, Product, User)
+  Mail/              # AuthOtpMail
+  Models/            # Category, Customer, Order, OrderItem, Product, ProductImages, User
+  Policies/          # OrderPolicy, UserPolicy
+  Services/          # SenditService, SenditDeliveriesService, SenditPickupService
+
+resources/
+  views/admin/       # Admin Blade views (login, dashboard, categories, customers, products, orders, pickups, users)
+  views/             # Public Blade views (products, categories, orders, home)
+  views/components/  # Shared components (layouts, alert, modals, product-card, toolbars, order/pickup status badges)
+  js/admin/          # Admin JS modules (categories, layout, otp, pickups, product-images)
+  js/public/         # Public-facing JS
+  css/admin/         # Admin-specific styles
+
+routes/web.php       # admin.* routes (prefixed /admin, auth-protected) + public routes
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Setup
 
-## Contributing
+```bash
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+composer run dev
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+`composer run dev` runs the Laravel server, queue listener, log viewer (`pail`), and Vite concurrently.
 
-## Code of Conduct
+## Notes
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This is a real, ongoing project — not a tutorial or throwaway build. Admin side is solid; the public storefront (browsing/checkout experience customers actually see) is the current focus going forward.
