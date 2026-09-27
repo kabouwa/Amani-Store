@@ -24,19 +24,25 @@ use App\Http\Controllers\PublicController;
 /**
  * Admin Routes
 */
-Route::prefix('admin')->name('admin.')->group(function(){
+Route::prefix('admin')->name('admin.')->group(function (){
+
     Route::get('/',function(){
         return auth()->check()
             ? to_route('admin.dashboard')
             : to_route('admin.login');
     });
 
-    Route::get('/login',[AuthController::class,'index'])->middleware('guest')->name('login');
-    Route::post('/login/otp-verification',[AuthController::class,'verification'])->middleware('guest')->name('login.verification');
-    Route::post('/login',[AuthController::class,'authenticate'])->middleware('guest');
+    Route::middleware(['guest','throttle:login'])->group(function () {
+        Route::get('/login',[AuthController::class,'index'])->name('login');
+
+        Route::post('/login/otp-verification',[AuthController::class,'verification'])->name('login.verification');
+
+        Route::post('/login',[AuthController::class,'authenticate']);
+    });
+
 
     // Management Panel
-    Route::middleware('auth')->group(function(){
+    Route::middleware(['auth', 'throttle:admin'])->group(function(){
         Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
 
         Route::delete('/logout',[AuthController::class,'destroy'])->name('logout');
@@ -68,11 +74,20 @@ Route::prefix('admin')->name('admin.')->group(function(){
     });
 });
 
+/**
+ * Public Routes Maintenance Mode
+*/
+Route::middleware(['throttle:public', 'maintenance.mode'])->group(function(){
+    Route::get('/', [PublicController::class,'index'])->name('home');
+    Route::resource('products',ProductController::class)->only(['index','show']);
+    Route::resource('orders',OrderController::class)->only(['create','store']);
+    Route::resource('categories',CategoryController::class)->only(['index','show']);
+});
+
 
 /**
- * Public Routes
-*/
-Route::get('/', [PublicController::class,'index'])->name('home');
-Route::resource('products',ProductController::class)->only(['index','show']);
-Route::resource('orders',OrderController::class)->only(['create','store']);
-Route::resource('categories',CategoryController::class)->only(['index','show']);
+ ** -- Maintenance (Whole app) :
+ * Down : php artisan down
+ * Up : php artisan up
+ * Status : php artisan down
+ */

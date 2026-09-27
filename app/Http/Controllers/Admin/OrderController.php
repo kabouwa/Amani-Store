@@ -180,7 +180,7 @@ class OrderController extends Controller
         if (!$order->items()->exists()) {
             // Delete from agency if the order has shipement
             if($order->hasShipment()) $agency->delete($order);
-            
+
             $order->delete();
             return redirect()->back()->withInput()->withErrors(['items' => 'Une commande ne peut pas être créée sans au moins un article.']);
         }
@@ -208,4 +208,3 @@ class OrderController extends Controller
         return to_route('admin.orders.index')->with('success','La commande a été supprimée avec succès.');
     }
 }
-
