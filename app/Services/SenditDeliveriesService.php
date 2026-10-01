@@ -41,7 +41,9 @@ class SenditDeliveriesService extends SenditService
             ->get()
             ->each(function ($order) use ($deliveries) {
                 $delivery = $deliveries->get($order->code);
+
                 if(!$delivery) return;
+                
                 if($order->status !== $delivery['status']){
                     $order->update([
                         'status' => $delivery['status']
@@ -71,6 +73,7 @@ class SenditDeliveriesService extends SenditService
 
         return $city;
     }
+
     public function cities()
     {
         return Cache::remember('sendit_cities', now()->addMonth(), function(){

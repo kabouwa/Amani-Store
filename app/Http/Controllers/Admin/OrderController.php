@@ -20,6 +20,8 @@ class OrderController extends Controller
         $orders = Order::query()
         ->join('customers', 'orders.customer_id', '=', 'customers.id')
         ->select('orders.*')
+        ->with('customer')
+        ->withSum('items as total_items', 'quantity')
         ->when(
             request('search'), fn ($q,$s) =>
                 $q->where(function ($q) use ($s) {
@@ -49,7 +51,13 @@ class OrderController extends Controller
 
 
     public function create(SenditDeliveriesService $agency) {
-        $products = Product::where('stock', '>' , '0')->where('is_active', true)->get();
+        $products = Product::with('category')
+            ->with('primaryImage')
+            ->with('images')
+            ->where('stock', '>' , '0')
+            ->where('is_active', true)
+            ->get();
+
         $cities = $agency->cities();
 
         return view('admin.orders.create',compact('cities', 'products'));
@@ -113,7 +121,8 @@ class OrderController extends Controller
 
         $order_items = $order->items()->get()->keyBy('product_id');
 
-        $products = Product::where('is_active', true)
+        $products = Product::with('primaryImage')
+            ->where('is_active', true)
             ->get()
             // Add item quantity to product stock available on edit
             ->map(function ($product) use ($order_items) {

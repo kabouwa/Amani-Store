@@ -12,7 +12,8 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $search = $request->search;
-        $customers = Customer::when($search, function ($query) use ($search) {
+        $customers = Customer::with('order')
+        ->when($search, function ($query) use ($search) {
             $query->where("name","LIKE","%". $search ."%")
                 ->orwhere("phone","LIKE","%". $search ."%")
                 ->orwhere("instagram","LIKE","%". $search ."%")
@@ -21,7 +22,7 @@ class CustomerController extends Controller
         ->orderByDesc('created_at')
         ->paginate(20)
         ->withQueryString();
-        
+
         return view('admin.customers.index',compact('customers'));
     }
     public function destroy(Customer $customer, SenditDeliveriesService $agency)

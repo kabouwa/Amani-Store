@@ -16,7 +16,7 @@
     @if(session('success'))
         <x-alert color="green">{{ session('success') }}</x-alert>
     @endif
-    
+
     @if(session('error'))
         <x-alert color="red">{{ session('error') }}</x-alert>
     @endif
@@ -55,7 +55,7 @@
                         </td>
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $order->customer->phone }}</td>
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $order->customer->city }}</td>
-                        <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $order->total_items }}</td>
+                        <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $order->total_items  }}</td>
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ number_format($order->shipping_price, 2) }} DH</td>
                         <td class="px-5 py-3 font-semibold text-gray-800 dark:text-gray-100">{{ number_format($order->total_price, 2) }} DH</td>
                         <td class="px-5 py-3">

@@ -16,8 +16,18 @@ class ProductController extends Controller
     public function index(Request $request)
     {
 
-        $products = Product::when(request('search'), fn ($q, $sr) => $q->where("title","LIKE","%". $sr ."%")->orwhere("description","LIKE","%". $sr ."%"))
-            
+        $products = Product::with('images')
+            ->with('category')
+            ->withSum(
+                'orderItems as total_sales',
+                DB::raw('quantity * selling_price')
+            )
+            ->withSum(
+                'orderItems as sales_count',
+                DB::raw('quantity')
+            )
+            ->when(request('search'), fn ($q, $sr) => $q->where("title","LIKE","%". $sr ."%")->orwhere("description","LIKE","%{$sr}%"))
+
             ->when( request('category') , fn($q) => $q->whereHas('category', fn ($q) => $q->where('slug', request('category') ) ) )
 
             ->when(!is_null(request('is_active')) && in_array(request('is_active'),[0,1]), fn ($q) => $q->where('is_active', request('is_active')))
@@ -27,7 +37,7 @@ class ProductController extends Controller
 
             ->when(request('stock_min'), fn($q,$s) => $q->where('stock','>=',$s))
             ->when(request('stock_max'), fn($q,$s) => $q->where('stock','<=',$s))
-            
+
             ->orderBy(request('sort','created_at') , request('direction','desc'))
             ->paginate(20)
             ->withQueryString();
@@ -48,7 +58,7 @@ class ProductController extends Controller
         $data = $request->validated();
         $product = Product::create($data);
         // Store Images
-        foreach($data['images'] as $img){ 
+        foreach($data['images'] as $img){
             $path = $img->store('products','public');
             ProductImages::create([
                 'product_id' => $product->id,
@@ -72,7 +82,7 @@ class ProductController extends Controller
     {
         $data = $request->validated();
         if(isset($data['images'])){
-            foreach($data['images'] as $img){ 
+            foreach($data['images'] as $img){
                 $path = $img->store('products','public');
                 ProductImages::create([
                     'product_id' => $product->id,

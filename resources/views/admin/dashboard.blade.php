@@ -201,12 +201,12 @@
                         <span class="w-6 h-6 rounded-full bg-amani/10 text-amani text-xs font-bold flex items-center justify-center shrink-0">
                             {{ $i + 1 }}
                         </span>
-                        <a href="{{ route('admin.products.index',['search' => $p->title]) }}"
+                        <a href="{{ route('admin.products.index',['search' => $p['title']]) }}"
                             class="flex-1 text-sm text-gray-700 dark:text-gray-300 truncate hover:text-amani dark:hover:text-amani-light transition-colors">
-                            {{ $p->title }}
+                            {{ $p['title'] }}
                         </a>
                         <span class="text-xs md:text-sm font-semibold text-gray-800 dark:text-gray-100 shrink-0">
-                            {{ $p->sales_times ?? 0 }} vendus
+                            {{ $p['sales_times'] ?? 0 }} vendus
                         </span>
                     </div>
                 @empty
@@ -228,15 +228,15 @@
                         </span>
                         <div class="flex-1 min-w-0">
                             <p class="text-sm text-gray-700 dark:text-gray-300 truncate">
-                                {{ $c->name }} -
-                                <a  href="{{ route('admin.orders.show',  $c->order->code) }}"
+                                {{ $c['name'] }} -
+                                <a  href="{{ route('admin.orders.show',  $c['code']) }}"
                                 class="text-xs text-amani dark:text-amani-light hover:underline">
-                                    {{ $c->order->code }}
+                                    {{ $c['code'] }}
                                 </a>
                             </p>
-                            
+
                         </div>
-                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-100 shrink-0">{{ number_format($c->total_price, 0) }} DH</span>
+                        <span class="text-sm font-semibold text-gray-800 dark:text-gray-100 shrink-0">{{ number_format($c['total_price'], 0) }} DH</span>
                     </div>
                 @empty
                     <p class="text-sm text-gray-400 text-center py-4">Aucun client pour le moment</p>
@@ -255,10 +255,10 @@
                         <span class="w-6 h-6 rounded-full bg-amani/10 text-amani text-xs font-bold flex items-center justify-center shrink-0">
                             {{ $i + 1 }}
                         </span>
-                        <span class="flex-1 text-sm text-gray-700 dark:text-gray-300 truncate">{{ $city->city }}</span>
-                        <a href="{{ route('admin.orders.index', ['search' => $city->city]) }}"
+                        <span class="flex-1 text-sm text-gray-700 dark:text-gray-300 truncate">{{ $city['city'] }}</span>
+                        <a href="{{ route('admin.orders.index', ['search' => $city['city']]) }}"
                            class="text-sm font-semibold text-gray-800 dark:text-gray-100 shrink-0 hover:text-amani">
-                            {{ $city->total_orders }} commandes
+                            {{ $city['total_orders'] }} commandes
                         </a>
                     </div>
                 @empty

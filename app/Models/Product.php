@@ -33,19 +33,19 @@ class Product extends Model
         return $this->hasMany(OrderItem::class);
     }
 
-    public function getSalesCountAttribute() : int
-    {
-        return OrderItem::where('product_id',$this->id)
-            ->sum('quantity');
-    }
+    // public function getSalesCountAttribute() : int
+    // {
+    //     return OrderItem::where('product_id', $this->id)
+    //         ->sum('quantity');
+    // }
 
-    public function getTotalSalesAttribute() : float
-    {
-        return (float) OrderItem::where('product_id',$this->id)
-            ->sum(
-                DB::raw('quantity * selling_price') 
-            );
-    }
+    // public function getTotalSalesAttribute() : float
+    // {
+    //     return (float) OrderItem::where('product_id',$this->id)
+    //         ->sum(
+    //             DB::raw('quantity * selling_price')
+    //         );
+    // }
 
     protected static function booted(): void
     {

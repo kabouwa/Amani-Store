@@ -40,9 +40,9 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                 @foreach ($orders as $order)
-                    <label class="js-pickup-card group relative block bg-white dark:bg-gray-900 rounded-xl border-2 border-gray-200 dark:border-gray-800
-                                  shadow-sm p-5 cursor-pointer transition-all duration-200
-                                  has-[:checked]:border-amani has-[:checked]:bg-amani/5 dark:has-[:checked]:bg-amani/10">
+                    <label class="js-pickup-card group relative block bg-white dark:bg-gray-900 rounded-xl border-2 border-gray-200
+                        dark:border-gray-800 shadow-sm p-5 cursor-pointer transition-all duration-200
+                        has-[:checked]:border-amani has-[:checked]:bg-amani/5 dark:has-[:checked]:bg-amani/10">
 
                         <input type="checkbox" name="sendit_codes[]" value="{{ $order->sendit_code }}" class="sr-only js-pickup-checkbox">
 

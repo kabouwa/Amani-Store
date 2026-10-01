@@ -23,10 +23,10 @@ class Order extends Model
         return $this->HasMany(OrderItem::class);
     }
 
-    public function getTotalItemsAttribute()
-    {
-        return $this->items()->sum('quantity');
-    }
+    // public function getTotalItemsAttribute()
+    // {
+    //     return $this->items()->sum('quantity');
+    // }
 
     public  function hasShipment() : bool
     {
