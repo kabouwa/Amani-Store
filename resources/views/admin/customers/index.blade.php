@@ -12,16 +12,16 @@
     @endif
 
     {{-- Search for customer --}}
-    <form action="{{ route('admin.customers.index') }}" method="GET" class="flex gap-3 mb-8 w-full md:w-auto md:max-w-md" novalidate>
+    <form action="{{ route('admin.customers.index') }}" method="GET" class="flex gap-3 mb-8 w-full md:w-auto md:max-w-md" id="search-form" novalidate>
         <input type="search" name="search" placeholder="Chercher client..." required
                class="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2.5 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800
                       placeholder-gray-400 dark:placeholder-gray-500
                       focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition" value={{ old('search') ?? request('search') }}>
         <button type="submit"
                 class="bg-amani hover:bg-amani-dark text-white px-4 py-2.5 rounded-lg transition flex items-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-magnifying-glass"></i> <span class="hidden md:inline">Chercher</span> 
+            <i class="fa-solid fa-magnifying-glass"></i> <span class="hidden md:inline">Chercher</span>
         </button>
-        @if (request()->has('search'))
+        @if (request()->has('search') && request('search'))
             <a href="{{ route('admin.customers.index') }}"
                 class="border-2 border-amani text-amani hover:bg-amani-dark hover:text-white px-4 py-2.5 rounded-lg transition flex items-center gap-2 cursor-pointer">
                 <i class="fa-solid fa-rotate-right"></i>
@@ -44,7 +44,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                @foreach ($customers as $c)
+                @forelse ($customers as $c)
                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                         <td class="px-5 py-3 font-medium text-gray-800 dark:text-gray-100">{{ $c->name }}</td>
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">
@@ -56,7 +56,7 @@
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">
                             @if($c->instagram)
                                 <a href="https://instagram.com/{{ ltrim($c->instagram, '@') }}" target="_blank"
-                                   class="text-amani hover:underline">
+                                class="text-amani hover:underline">
                                     <i class="fa-brands fa-instagram"></i> {{ $c->instagram }}
                                 </a>
                             @else
@@ -83,14 +83,31 @@
                             </div>
                         </td>
                     </tr>
-                @endforeach
+
+                @empty
+                    <tr>
+                        <td colspan="7" class="px-6 py-12 text-center">
+                            <div class="flex flex-col items-center justify-center gap-2">
+                                <i class="fa-solid fa-users text-3xl text-gray-400"></i>
+
+                                <p class="text-sm font-medium text-gray-600">
+                                    Aucun client trouvé
+                                </p>
+
+                                <p class="text-xs text-gray-400">
+                                    Aucun client ne correspond à votre recherche.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                @endempty
             </tbody>
         </table>
     </div>
 
     {{-- Mobile card list --}}
     <div class="md:hidden space-y-3">
-        @foreach ($customers as $c)
+        @forelse ($customers as $c)
             <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-4">
                 <div class="flex items-start justify-between mb-2">
                     <span class="font-semibold text-gray-800 dark:text-gray-100">{{ $c->name }}</span>
@@ -107,7 +124,7 @@
                 </div>
 
                 <div class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                    <p><i class="fa-solid fa-phone w-4 text-gray-400 dark:text-gray-500"></i> 
+                    <p><i class="fa-solid fa-phone w-4 text-gray-400 dark:text-gray-500"></i>
                         <a href="https://wa.me/212{{ ltrim($c->phone, '0') }}" target="_blank" rel="noopener noreferrer"
                             title="Contacter sur WhatsApp" class="hover:text-green-600 hover:underline transition">
                             {{ $c->phone }}
@@ -135,7 +152,21 @@
                     </p>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div class="col-span-full flex flex-col items-center justify-center rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-10 text-center">
+                <div class="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 mb-3">
+                    <i class="fa-solid fa-users text-xl"></i>
+                </div>
+
+                <p class="font-semibold text-gray-700 dark:text-gray-200">
+                    Aucun client trouvé
+                </p>
+
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Aucun client ne correspond à votre recherche.
+                </p>
+            </div>
+        @endforelse
     </div>
 
     <div class="my-4">
@@ -145,4 +176,7 @@
     <x-modals.confirm-delete id="deleteModal"
                        message="Êtes-vous sûr de vouloir supprimer ce client avec sa commande ?" />
 
+    @push('scripts')
+        @vite('resources/js/validation/search-validation.js')
+    @endpush
 </x-admin.layouts.app>

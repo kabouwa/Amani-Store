@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class Order extends Model
 {
@@ -50,5 +51,14 @@ class Order extends Model
             $order->customer()->delete();
             $order->items()->delete();
         });
+
+        // after a query // clear dashboard
+        static::saved(function () {
+            Cache::forget('dashboard-statistics');
+        });
+        static::deleted(function () {
+            Cache::forget('dashboard-statistics');
+        });
+
     }
 }

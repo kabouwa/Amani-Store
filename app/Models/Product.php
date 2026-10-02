@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -47,15 +48,33 @@ class Product extends Model
     //         );
     // }
 
-    protected static function booted(): void
-    {
-        static::saving(function ($product) {
-            if ( $product->isDirty('title') ) $product->slug = Str::slug($product->title);
-        });
-    }
-
     public function getRouteKeyName()
     {
         return 'slug';
     }
+
+    public static function booted(): void
+    {
+        static::saving(function ($product) {
+            if ( $product->isDirty('title') ) $product->slug = Str::slug($product->title);
+        });
+
+        static::deleting(function ($ordeItem) {
+            if ($ordeItem->product) {
+                $ordeItem->product->update([
+                    'stock' => $ordeItem->product->stock + $ordeItem->quantity
+                ]);
+            }
+        });
+
+        // after a query // clear dashboard
+        static::saved(function () {
+            Cache::forget('dashboard-statistics');
+        });
+        static::deleted(function () {
+            Cache::forget('dashboard-statistics');
+        });
+
+    }
+
 }

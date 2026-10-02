@@ -16,8 +16,8 @@
 <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
 
     {{-- Search --}}
-    <form action="{{ route('admin.orders.index') }}" method="GET" class="flex gap-3 flex-1" novalidate>
-        <input type="hidden" name="category" value="{{ request('category') }}">
+    <form id="search-form" action="{{ route('admin.orders.index') }}" method="GET" class="flex gap-3 flex-1" novalidate>
+        <input type="hidden" name="category"  value="{{ request('category') }}">
         <input type="hidden" name="price_min" value="{{ request('price_min') }}">
         <input type="hidden" name="price_max" value="{{ request('price_max') }}">
 
@@ -42,7 +42,7 @@
         <span>Réinitialiser</span>
     </a>
     @endif
-    
+
     {{-- Sort dropdown --}}
     <div class="relative shrink-0" id="sortDropdownWrapper">
 
@@ -170,7 +170,7 @@
                             <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-xs pointer-events-none">DH</span>
                         </div>
                     </div>
-                    
+
                     {{-- Status --}}
                 <div>
                     <label class="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-1.5">Statut</label>
@@ -222,4 +222,5 @@
 
 @push('scripts')
     @vite('resources/js/toolbar.js')
+    @vite('resources/js/validation/search-validation.js')
 @endpush

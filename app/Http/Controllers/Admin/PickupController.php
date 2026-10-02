@@ -22,7 +22,7 @@ class PickupController extends Controller
         $pickups = collect($pickupService->all())
             ->map(fn ($pickup) => (object) $pickup);
 
-        return view('admin.pickups.index',compact('orders','pickups'));
+        return view('admin.pickups.index', compact('orders','pickups'));
     }
 
     public function store(Request $request, SenditPickupService $pickupService)
@@ -33,7 +33,7 @@ class PickupController extends Controller
         ]);
 
         $pickupService->create($data['sendit_codes']);
-        
+
         return back()->with('success','La demande de ramassage a été envoyée avec succès.');
     }
 

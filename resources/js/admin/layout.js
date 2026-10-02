@@ -1,68 +1,92 @@
-// OTP TIMER FORGET 
-if(sessionStorage.getItem('otp_expiry_time')) sessionStorage.removeItem('otp_expiry_time');
-// Phone Sidebar
+// OTP TIMER FORGET
+if (sessionStorage.getItem('otp_expiry_time')) {
+    sessionStorage.removeItem('otp_expiry_time');
+}
+
+
+// Sidebar icon
+function updateSidebarIcon(isOpen) {
+    $('.collapseIcon')
+        .toggleClass('fa-bars-staggered', isOpen)
+        .toggleClass('fa-bars', !isOpen);
+}
+
+
+// Mobile sidebar
 $(function () {
-    $('#toggleSidebar').on('click', function () {
-        $('#sidebar').toggleClass('-translate-x-full');
-        $('#sidebarOverlay').toggleClass('hidden');
-    });
-    $('#sidebarOverlay').on('click', function () {
+
+    // On mobile, sidebar starts closed
+    if (window.innerWidth < 768) {
         $('#sidebar').addClass('-translate-x-full');
-        $(this).addClass('hidden');
-    });
-});
+        $('#sidebarOverlay').addClass('hidden');
+        $('html, body').removeClass('overflow-hidden');
 
-// Desktop Sidebar
-$(function () {
-    $('#toggleSidebarDesktop').on('click', function () {
-        const html = document.documentElement;
-        html.classList.toggle('sidebar-collapsed');
-
-        const isCollapsed = html.classList.contains('sidebar-collapsed');
-        localStorage.setItem('sidebarCollapsed', isCollapsed);
-
-        $('#collapseIcon').toggleClass('fa-bars-staggered', !isCollapsed).toggleClass('fa-bars', isCollapsed);
-    });
-
-    // Sync icon on load with whatever the pre-paint script already applied
-    if (document.documentElement.classList.contains('sidebar-collapsed')) {
-        $('#collapseIcon').removeClass('fa-bars-staggered').addClass('fa-bars');
+        updateSidebarIcon(false);
     }
 
+
+    $('#toggleSidebar').on('click', function () {
+
+        $('#sidebar').toggleClass('-translate-x-full');
+        $('#sidebarOverlay').toggleClass('hidden');
+
+        const isOpen = !$('#sidebar').hasClass('-translate-x-full');
+
+        $('html, body').toggleClass('overflow-hidden', isOpen);
+
+        updateSidebarIcon(isOpen);
+    });
+
+
+    $('#sidebarOverlay').on('click', function () {
+
+        $('#sidebar').addClass('-translate-x-full');
+        $(this).addClass('hidden');
+
+        $('html, body').removeClass('overflow-hidden');
+
+        updateSidebarIcon(false);
+    });
+
+
+    $(window).on('resize', function () {
+        if (window.innerWidth < 768) {
+            $('#sidebar').addClass('-translate-x-full');
+            $('#sidebarOverlay').addClass('hidden');
+            $('html, body').removeClass('overflow-hidden');
+
+            updateSidebarIcon(false);
+        }
+    });
+
 });
 
 
-// Delete Modals toggling
+// Desktop sidebar
 $(function () {
-    // Delete clicked -> point the matching modal's form at this action, then open it
-    $('.js-delete-btn').click(e => {
-        const action = $(e.currentTarget).data('action');
-        const modalId = $(e.currentTarget).data('modal') || 'deleteModal';
-        $('#' + modalId + 'Form').attr('action', action);
-        openModal('#' + modalId);
-    });
 
-    // Cancel / overlay click -> close modal
-    $(document).on('click', '.js-modal-cancel', function () {
-        closeModal('#' + $(this).closest('.fixed.inset-0').attr('id'));
+    // Only initialize desktop state on md and above
+    if (window.innerWidth >= 768) {
+
+        const isCollapsed =
+            document.documentElement.classList.contains('sidebar-collapsed');
+
+        updateSidebarIcon(!isCollapsed);
+    }
+
+
+    $('#toggleSidebarDesktop').on('click', function () {
+
+        const html = document.documentElement;
+
+        html.classList.toggle('sidebar-collapsed');
+
+        const isCollapsed =
+            html.classList.contains('sidebar-collapsed');
+
+        localStorage.setItem('sidebarCollapsed', isCollapsed);
+
+        updateSidebarIcon(!isCollapsed);
     });
 
 });
-
-function openModal(selector) {
-    const $modal = $(selector);
-    $modal.removeClass('hidden').addClass('flex');
-    setTimeout(() => {
-        $modal.find('[data-modal-box]').removeClass('scale-95 opacity-0').addClass('scale-100 opacity-100');
-    }, 10);
-}
-
-function closeModal(selector) {
-    const $modal = $(selector);
-    $modal.find('[data-modal-box]').removeClass('scale-100 opacity-100').addClass('scale-95 opacity-0');
-    setTimeout(() => {
-        $modal.removeClass('flex').addClass('hidden');
-    }, 200);
-}
-window.openModal = openModal
-window.closeModal = closeModal

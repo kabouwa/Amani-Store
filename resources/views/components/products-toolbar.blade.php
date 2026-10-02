@@ -5,7 +5,7 @@
 <div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
 
     {{-- Search --}}
-    <form action="{{ route('admin.products.index') }}" method="GET" class="flex gap-3 flex-1" novalidate>
+    <form id="search-form" action="{{ route('admin.products.index') }}" method="GET" class="flex gap-3 flex-1" novalidate>
         <input type="hidden" name="category" value="{{ request('category') }}">
         <input type="hidden" name="is_active" value="{{ request('is_active') }}">
         <input type="hidden" name="price_min" value="{{ request('price_min') }}">
@@ -254,4 +254,5 @@
 
 @push('scripts')
     @vite('resources/js/toolbar.js')
+    @vite('resources/js/validation/search-validation.js')
 @endpush

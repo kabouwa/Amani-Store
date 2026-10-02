@@ -1,16 +1,16 @@
 @props([])
 
-<header class="fixed top-0 left-0 right-0 h-18 bg-white/75 dark:bg-gray-900/75 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm z-90 flex items-center justify-between px-4 md:px-6">
+<header class="fixed top-0 left-0 right-0 h-16 md:h-18 bg-white/75 dark:bg-gray-900/75 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 shadow-sm z-90 flex items-center justify-between px-4 md:px-6">
 
     <div class="flex items-center gap-3">
         {{-- Mobile menu toggle --}}
         <button id="toggleSidebar" class="md:hidden text-gray-600 dark:text-gray-300 hover:text-amani dark:hover:text-amani-light p-2 cursor-pointer">
-            <span class="text-xl"><i class="fa-solid fa-bars"></i></span>
+            <span class="text-xl"><i class="fa-solid fa-bars collapseIcon" ></i></span>
         </button>
 
         {{-- Desktop collapse toggle --}}
         <button id="toggleSidebarDesktop" class="hidden md:flex text-gray-600 dark:text-gray-300 hover:text-amani dark:hover:text-amani-light p-2 cursor-pointer">
-            <span class="text-xl"><i class="fa-solid fa-bars-staggered" id="collapseIcon"></i></span>
+            <span class="text-xl"><i class="fa-solid fa-bars-staggered collapseIcon"></i></span>
         </button>
 
         <a href="/">

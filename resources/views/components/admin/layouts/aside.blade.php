@@ -1,83 +1,42 @@
 @props([])
 
+@php
+    $links = [
+        ['route' => 'admin.dashboard',        'label' => 'Tableau de bord',            'icon' => 'fa-chart-line',   'active' => 'admin.dashboard'],
+        ['route' => 'admin.orders.index',     'label' => 'Gestion des commandes',      'icon' => 'fa-box',          'active' => 'admin.orders.*'],
+        ['route' => 'admin.orders.create',    'label' => 'Créer une commande',         'icon' => 'fa-cart-plus',    'active' => 'admin.orders.create'],
+        ['route' => 'admin.pickups.index',    'label' => 'Demander un ramassage',      'icon' => 'fa-truck-fast',   'active' => 'admin.pickups.index'],
+        ['route' => 'admin.products.index',   'label' => 'Gestion des produits',       'icon' => 'fa-bag-shopping', 'active' => 'admin.products.*'],
+        ['route' => 'admin.products.create',  'label' => 'Ajouter un produit',         'icon' => 'fa-plus',         'active' => 'admin.products.create'],
+        ['route' => 'admin.categories.index', 'label' => 'Gestion des catégories',     'icon' => 'fa-tags',         'active' => 'admin.categories.index'],
+        ['route' => 'admin.customers.index',  'label' => 'Liste des clients',          'icon' => 'fa-users',        'active' => 'admin.customers.index'],
+        ['route' => 'admin.suppliers.index',  'label' => 'Gestion des fournisseurs',   'icon' => 'fa-building',     'active' => 'admin.suppliers.*'],
+        ['route' => 'admin.users.index',      'label' => 'Équipe de travail',          'icon' => 'fa-user-shield',  'active' => 'admin.users.*'],
+        ['route' => 'admin.users.create',     'label' => 'Ajouter un administrateur',  'icon' => 'fa-user-plus',    'active' => 'admin.users.create'],
+    ];
+@endphp
+
 <aside id="sidebar"
-       class="fixed top-16 left-0 bottom-0 w-72 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 z-30
-              transform -translate-x-full md:translate-x-0 transition-all duration-300 overflow-hidden
-              flex flex-col align-center justify-between">
+    class="fixed top-16 left-0 bottom-0 w-72 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 z-50
+        transform -translate-x-full md:translate-x-0 transition-all duration-300 overflow-hidden flex flex-col align-center justify-between">
 
-    <nav class="p-4 space-y-1">
+    <nav class="p-4 space-y-1 overflow-y-auto md:overflow-hidden">
+        @foreach ($links as $link)
+            <a href="{{ route($link['route']) }}"
+                class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
+                    {{ request()->routeIs($link['active']) ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
 
-        <a href="{{ route('admin.dashboard') }}"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
-                {{ request()->routeIs('admin.dashboard') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
-            <i class="fa-solid fa-chart-line w-5 text-xl text-center shrink-0"></i>
-            <span class="sidebar-label whitespace-nowrap">Tableau de bord</span>
-        </a>
+                <i class="fa-solid {{ $link['icon'] }} w-5 text-xl text-center shrink-0"></i>
 
-        <a href="{{ route('admin.orders.index') }}"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
-                {{ request()->routeIs('admin.orders.index') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
-            <i class="fa-solid fa-box w-5 text-xl text-center shrink-0"></i>
-            <span class="sidebar-label whitespace-nowrap">Gestion des Commandes</span>
-        </a>
-
-        <a href="{{ route('admin.orders.create') }}"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
-                {{ request()->routeIs('admin.orders.create') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
-            <i class="fa-solid fa-cart-plus w-5 text-xl text-center shrink-0"></i>
-            <span class="sidebar-label whitespace-nowrap">Créer une Commande</span>
-        </a>
-
-        <a href="{{ route('admin.pickups.index') }}"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
-                {{ request()->routeIs('admin.pickups.index') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
-            <i class="fa-solid fa-truck-fast w-5 text-xl text-center shrink-0"></i>
-            <span class="sidebar-label whitespace-nowrap">Demander un ramassage</span>
-        </a>
-
-        <a href="{{ route('admin.products.index') }}"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
-                {{ request()->routeIs('admin.products.index') || request()->routeIs('admin.products.edit') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
-            <i class="fa-solid fa-bag-shopping w-5 text-xl text-center shrink-0"></i>
-            <span class="sidebar-label whitespace-nowrap">Gestion des produits</span>
-        </a>
-
-        <a href="{{ route('admin.products.create') }}"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
-                {{ request()->routeIs('admin.products.create') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
-            <i class="fa-solid fa-plus w-5 text-xl text-center shrink-0"></i>
-            <span class="sidebar-label whitespace-nowrap">Ajouter un produit</span>
-        </a>
-
-        <a href="{{ route('admin.categories.index') }}"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
-                {{ request()->routeIs('admin.categories.index') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
-            <i class="fa-solid fa-tags w-5 text-xl text-center shrink-0"></i>
-            <span class="sidebar-label whitespace-nowrap">Gestion des catégories</span>
-        </a>
-
-        <a href="{{ route('admin.customers.index') }}"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
-                {{ request()->routeIs('admin.customers.index') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
-            <i class="fa-solid fa-users w-5 text-xl text-center shrink-0"></i>
-            <span class="sidebar-label whitespace-nowrap">Liste des Clients</span>
-        </a>
-
-        <a href="{{ route('admin.users.index') }}"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
-                {{ request()->routeIs('admin.users.index') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
-            <i class="fa-solid fa-user-shield w-5 text-xl text-center shrink-0"></i>
-            <span class="sidebar-label whitespace-nowrap">Équipe de travail</span>
-        </a>
-
-        <a href="{{ route('admin.users.create') }}"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
-                {{ request()->routeIs('admin.users.create') ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
-            <i class="fa-solid fa-user-plus w-5 text-xl text-center shrink-0"></i>
-            <span class="sidebar-label whitespace-nowrap">Ajouter un administrateur</span>
-        </a>
+                <span class="sidebar-label whitespace-nowrap">
+                    {{ $link['label'] }}
+                </span>
+            </a>
+        @endforeach
     </nav>
 
+
+    {{-- Bottom Link --}}
     <div class="aside-bottom p-4 space-y-1">
         <div class="border-t border-gray-100 my-3 dark:border-gray-700"></div>
 
@@ -115,9 +74,9 @@
 </aside>
 
 {{-- Mobile overlay --}}
-<div id="sidebarOverlay" class="fixed inset-0 bg-black/30 dark:bg-black/60 z-20 hidden md:hidden"></div>
+<div id="sidebarOverlay" class="fixed inset-0 bg-black/30 dark:bg-black/60 z-40 hidden md:hidden"></div>
 
 <x-modals.confirm-delete id="logoutModal"
-                          title="Déconnexion"
-                          action="Se déconnecter"
-                          message="Êtes-vous sûr de vouloir vous déconnecter ?" />
+    title="Déconnexion"
+    action="Se déconnecter"
+    message="Êtes-vous sûr de vouloir vous déconnecter ?" />

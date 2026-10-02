@@ -1,5 +1,6 @@
 @props([
-    'color' => 'red'
+    'color' => 'red',
+    'classes' => ''
 ])
 
 @php
@@ -10,10 +11,10 @@
         'amani' => 'text-amani bg-amani/5 border-amani/20',
     ];
 
-    $classes = $styles[$color] ?? $styles['red'];
+    $theme = $styles[$color] ?? $styles['red'];
 @endphp
 
-<div class="js-alert mb-4 text-sm border rounded-lg px-4 py-2 flex items-center justify-between gap-3 {{ $classes }}">
+<div class="js-alert mb-4 text-sm border rounded-lg px-4 py-2 flex items-center justify-between gap-3 {{ $theme }} {{ $classes }}">
     <span class="flex-1">{{ $slot }}</span>
 
     <button type="button" class="js-alert-close cursor-pointer shrink-0 w-6 h-6 flex items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition">

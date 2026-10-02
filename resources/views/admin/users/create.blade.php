@@ -2,9 +2,13 @@
     <x-slot:heading>
         <i class="fa-solid fa-user-plus w-4 text-center"></i> Ajouter un administrateur
     </x-slot:heading>
-        
+
+    @if($errors->any())
+        <x-alert classes="max-w-4xl mx-auto" >Veuillez corriger les erreurs ci-dessous.</x-alert>
+    @endif
+
     <form action="{{ route('admin.users.store') }}" method="POST" novalidate
-          class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 max-w-2xl">
+          class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 max-w-4xl mx-auto">
         @csrf
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">

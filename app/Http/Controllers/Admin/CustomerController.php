@@ -14,16 +14,16 @@ class CustomerController extends Controller
         $search = $request->search;
         $customers = Customer::with('order')
         ->when($search, function ($query) use ($search) {
-            $query->where("name","LIKE","%". $search ."%")
-                ->orwhere("phone","LIKE","%". $search ."%")
-                ->orwhere("instagram","LIKE","%". $search ."%")
-                ->orwhere("address","LIKE","%". $search ."%");
+            $query->where("name",      "LIKE", "%$search}%")
+                ->orwhere("phone",     "LIKE", "%$search}%")
+                ->orwhere("instagram", "LIKE", "%$search}%")
+                ->orwhere("address",   "LIKE", "%$search}%");
         })
         ->orderByDesc('created_at')
         ->paginate(20)
         ->withQueryString();
 
-        return view('admin.customers.index',compact('customers'));
+        return view('admin.customers.index', compact('customers'));
     }
     public function destroy(Customer $customer, SenditDeliveriesService $agency)
     {

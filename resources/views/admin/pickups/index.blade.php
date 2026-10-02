@@ -6,9 +6,11 @@
     @if($errors->any())
         <x-alert>{{ $errors->first() }}</x-alert>
     @endif
+    
     @if(session('success'))
         <x-alert color="green">{{ session('success') }}</x-alert>
     @endif
+
     @if(session('error'))
         <x-alert >{{ session('error') }}</x-alert>
     @endif

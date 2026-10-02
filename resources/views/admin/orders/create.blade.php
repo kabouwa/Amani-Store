@@ -4,7 +4,7 @@
     </x-slot:heading>
 
     @if($errors->any())
-        <x-alert>{{ $errors->first() }}</x-alert>
+        <x-alert classes="max-w-4xl mx-auto" >Veuillez corriger les erreurs ci-dessous.</x-alert>
     @endif
 
     <form action="{{ route('admin.orders.store') }}" method="POST" id="orderForm" novalidate>

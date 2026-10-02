@@ -81,6 +81,7 @@ class ProductController extends Controller
     public function update(ProductRequest $request, Product $product)
     {
         $data = $request->validated();
+
         if(isset($data['images'])){
             foreach($data['images'] as $img){
                 $path = $img->store('products','public');
@@ -91,6 +92,7 @@ class ProductController extends Controller
                 ]);
             }
         }
+        
         $product->update($data);
         return to_route('admin.products.index')->with('success','Le produit a été modifiée avec succès.');
     }

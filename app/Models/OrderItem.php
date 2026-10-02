@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class OrderItem extends Model
 {
@@ -37,6 +38,14 @@ class OrderItem extends Model
             $ordeItem->product->update([
                 'stock' => $ordeItem->product->stock + $ordeItem->quantity
             ]);
+        });
+
+        // after a query // clear dashboard
+        static::saved(function () {
+            Cache::forget('dashboard-statistics');
+        });
+        static::deleted(function () {
+            Cache::forget('dashboard-statistics');
         });
     }
 }

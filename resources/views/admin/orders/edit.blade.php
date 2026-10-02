@@ -3,12 +3,6 @@
         <i class="fa-solid fa-pen w-4 text-center"></i> Modifier La Commande {{ $order->code }}
     </x-slot:heading>
 
-    @if($errors->any())
-        @foreach ($errors->all() as $error)
-            <x-alert>{{ $error }}</x-alert>
-        @endforeach
-    @endif
-
     {{-- Header : retour + code commande + statut --}}
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-3">
@@ -25,9 +19,11 @@
                 </p>
             </div>
         </div>
-
-
     </div>
+
+    @if($errors->any())
+        <x-alert classes="max-w-4xl mx-auto" >Veuillez corriger les erreurs ci-dessous.</x-alert>
+    @endif
 
     <form action="{{ route('admin.orders.update', $order->code) }}" method="POST" id="orderForm" novalidate>
         @csrf

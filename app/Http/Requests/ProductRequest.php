@@ -35,7 +35,7 @@ class ProductRequest extends FormRequest
             'is_active' => 'statut',
         ];
     }
-    
+
     public function messages(): array
     {
         return [
@@ -47,6 +47,7 @@ class ProductRequest extends FormRequest
     {
         $isUpdate = $this->isMethod('PUT') || $this->isMethod('PATCH') ;
         $product = $this->route('product');
+        
         return [
             'title' => [
                 'required',

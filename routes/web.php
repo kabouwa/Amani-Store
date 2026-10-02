@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\Admin\PrivateDiskController;
 use Illuminate\Support\Facades\Route;
 /**
  * Admin Controllers
@@ -13,6 +14,7 @@ use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\ShipmentController;
 use App\Http\Controllers\Admin\PickupController;
+use App\Http\Controllers\Admin\SupplierController;
 
 /**
  * Public Controllers
@@ -26,7 +28,7 @@ use App\Http\Controllers\PublicController;
 */
 Route::prefix('admin')->name('admin.')->group(function (){
 
-    Route::get('/',function(){
+    Route::get('/', function(){
         return auth()->check()
             ? to_route('admin.dashboard')
             : to_route('admin.login');
@@ -71,8 +73,12 @@ Route::prefix('admin')->name('admin.')->group(function (){
 
         Route::resource('pickups',PickupController::class)->only('index','store','destroy');
 
+        Route::resource('suppliers',SupplierController::class)->except('show');
+
+        Route::get('storage/{supplier}', [PrivateDiskController::class, 'supplierImage'])->name('storage.supplier');
     });
 });
+
 
 /**
  * Public Routes Maintenance Mode

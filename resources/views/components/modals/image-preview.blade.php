@@ -1,4 +1,4 @@
-<div id="imageViewerModal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/90">
+<div id="imageViewerModal" class="fixed inset-0 z-90 hidden items-center justify-center bg-black/90">
 
     <button type="button" id="imageViewerClose"
             class="cursor-pointer absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20
