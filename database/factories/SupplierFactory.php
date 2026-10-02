@@ -18,8 +18,11 @@ class SupplierFactory extends Factory
      */
     public function definition(): array
     {
+        $name = fake()->name();
+        
         return [
-            'name' => fake()->name(),
+            'name' => $name,
+            'slug' => Str::slug($name),
             'phone' => '0' . random_int(5,7) . random_int(10000000,99999999),
             'address' => fake()->address(),
             'note' => fake()->realText(100),

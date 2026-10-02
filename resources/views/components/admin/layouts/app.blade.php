@@ -53,6 +53,13 @@
         </main>
 
     </div>
+    {{-- Fixed sidebar --}}
+    @if (env('APP_DEBUG'))
+        <div class="fixed bottom-4 right-4 z-[9999] flex items-center gap-2 rounded-xl border border-white/20 bg-amani/60 px-4 py-2 text-sm font-semibold text-white shadow-xl backdrop-blur-xl">
+            <span class="h-2 w-2 animate-pulse rounded-full bg-white"></span>
+            DEBUG MODE
+        </div>
+    @endif
 
     @stack('scripts')
 </body>

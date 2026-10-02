@@ -27,7 +27,7 @@ use App\Http\Controllers\PublicController;
  * Admin Routes
 */
 Route::prefix('admin')->name('admin.')->group(function (){
-
+    // dd(config('database.connections.mysql.options'));
     Route::get('/', function(){
         return auth()->check()
             ? to_route('admin.dashboard')
