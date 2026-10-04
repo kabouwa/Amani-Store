@@ -132,7 +132,7 @@
                             'title' => $p->title,
                             'price' =>(float) $p->selling_price,
                             'stock' => $p->stock,
-                            'image' => $p->primaryImage?->image ? asset('storage/' . $p->primaryImage->image) : asset('storage/products/default-image.png'),
+                            'image' => $p->primaryImage?->image ? asset('storage/uploads/' . $p->primaryImage->image) : asset('storage/uploads/products/default-image.png'),
                         ]), JSON_HEX_TAG) !!}
                     </script>
 

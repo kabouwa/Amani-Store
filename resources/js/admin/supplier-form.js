@@ -34,7 +34,7 @@ $(function () {
         }
 
         const phone = $('#phone').val().trim();
-        if (!/^06\d{8}$/.test(phone)) {
+        if (!/^0[567]\d{8}$/.test(phone)) {
             $('#phone').next('.js-error').text('Format invalide. Exemple : 0612345678').removeClass('hidden');
             valid = false;
         }

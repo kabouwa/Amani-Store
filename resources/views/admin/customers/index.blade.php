@@ -12,19 +12,23 @@
     @endif
 
     {{-- Search for customer --}}
-    <form action="{{ route('admin.customers.index') }}" method="GET" class="flex gap-3 mb-8 w-full md:w-auto md:max-w-md" id="search-form" novalidate>
-        <input type="search" name="search" placeholder="Chercher client..." required
-               class="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2.5 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800
-                      placeholder-gray-400 dark:placeholder-gray-500
-                      focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition" value={{ old('search') ?? request('search') }}>
-        <button type="submit"
-                class="bg-amani hover:bg-amani-dark text-white px-4 py-2.5 rounded-lg transition flex items-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-magnifying-glass"></i> <span class="hidden md:inline">Chercher</span>
-        </button>
+    <form action="{{ route('admin.customers.index') }}" method="GET" class="flex flex-col md:flex-row gap-3 mb-8 w-full md:w-auto md:max-w-md" id="search-form" novalidate>
+
+        <div class="flex gap-3 w-full md:w-auto md:max-w-md">
+            <input type="search" name="search" placeholder="Chercher client..." required
+                   class="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2.5 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800
+                          placeholder-gray-400 dark:placeholder-gray-500
+                          focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition" value={{ old('search') ?? request('search') }}>
+            <button type="submit"
+                    class="bg-amani hover:bg-amani-dark text-white px-4 py-2.5 rounded-lg transition flex items-center gap-2 cursor-pointer">
+                <i class="fa-solid fa-magnifying-glass"></i> <span class="hidden md:inline">Chercher</span>
+            </button>
+        </div>
+
         @if (request()->has('search') && request('search'))
             <a href="{{ route('admin.customers.index') }}"
                 class="border-2 border-amani text-amani hover:bg-amani-dark hover:text-white px-4 py-2.5 rounded-lg transition flex items-center gap-2 cursor-pointer">
-                <i class="fa-solid fa-rotate-right"></i>
+                <i class="fa-solid fa-rotate-right"></i> <span class="inline md:hidden">Réinitialiser</span>
             </a>
         @endif
     </form>

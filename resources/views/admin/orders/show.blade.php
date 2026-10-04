@@ -134,7 +134,7 @@
                                     <td class="px-5 py-3">
                                         <div class="flex items-center gap-3">
                                             @if ($item->product)
-                                                <img src="{{ $item->product->primaryImage?->image ? asset('storage/' . $item->product->primaryImage?->image) : asset('storage/products/default-image.png') }}"
+                                                <img src="{{ $item->product->primaryImage?->image ? asset('storage/uploads/' . $item->product->primaryImage?->image) : asset('storage/uploads/products/default-image.png') }}"
                                                     alt="Image de produit : {{ $item->product->title }}"
                                                     class="js-viewable w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800 shrink-0">
                                                 <span class="text-gray-800 dark:text-gray-200 font-medium whitespace-nowrap">

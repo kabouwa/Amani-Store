@@ -7,7 +7,7 @@
 
             {{-- Logo + about --}}
             <div class="sm:col-span-2 lg:col-span-1">
-                <img src="{{ Vite::asset('resources/images/logo/amani-h.png') }}" alt="Amani Store" class="w-2/3 md:w-full mb-4 brightness-0 invert">
+                <img src="{{ Vite::asset('resources/images/logo/amani-h.png') }}" alt="Amani Store" class="w-2/3 lg:w-full mb-4 brightness-0 invert">
                 <p class="text-sm text-gray-400 leading-relaxed">
                     Votre boutique en ligne au Maroc — qualité, style et service après-vente disponible 24h/7j.
                 </p>

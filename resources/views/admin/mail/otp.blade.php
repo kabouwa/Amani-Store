@@ -16,7 +16,8 @@
 
                     {{-- Header --}}
                     <tr>
-                        <td align="center" style="background-color:#7A1220; padding: 32px 24px;">
+                        {{-- background-color:#7A1220; --}}
+                        <td align="center" style="padding: 32px 24px;">
                             <img src="{{ asset('images/logo/amani-h.png') }}" alt="Amani Store" style="display:block ; filter:brightness(0) invert(100%); height: 35px;">
                         </td>
                     </tr>

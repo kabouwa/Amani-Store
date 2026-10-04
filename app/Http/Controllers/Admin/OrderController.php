@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\OrderRequest;
+use App\Http\Requests\LabelsRequest;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -59,7 +60,6 @@ class OrderController extends Controller
             ->get();
 
         $cities = $agency->cities();
-
         return view('admin.orders.create',compact('cities', 'products'));
     }
 
@@ -215,5 +215,17 @@ class OrderController extends Controller
 
         $order->customer->delete();
         return to_route('admin.orders.index')->with('success','La commande a été supprimée avec succès.');
+    }
+
+    public function labels(LabelsRequest $request, SenditDeliveriesService $agency)
+    {
+        $data = $request->validated();
+
+        // Generate labels link from agency
+        $labels_link = $agency->labels($data['printFormat'], ...$data['codes']);
+
+        return $labels_link
+            ? redirect(to: $labels_link)
+            : back()-> with('error', 'Les codes des colis demandés pour les labels sont invalides.');
     }
 }

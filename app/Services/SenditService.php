@@ -16,6 +16,7 @@ class SenditService
     protected string $pickup_name;
     protected string $pickup_phone;
     protected string $pickup_address;
+
     public function __construct()
     {
         $this->apiUrl = config('services.sendit.api');
@@ -29,14 +30,14 @@ class SenditService
     }
     protected function getToken() : string
     {
-        return Cache::remember('sendit_token', now()->addMinutes(50), function () {
-            return Http::post(
+        return Cache::remember('sendit_token', now()->addMinutes(50), fn() =>
+            Http::post(
                 url : $this->apiUrl . '/login',
                 data : [
                     'public_key' => $this->public_key,
                     'secret_key' => $this->private_key,
                 ]
-            )->throw()->json('data.token');
-        });
+            )->throw()->json('data.token')
+        );
     }
 }

@@ -58,7 +58,6 @@
 
                         <div class="relative">
                             <label for="city" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Ville</label>
-
                             <select name="district_id" id="district_id" required
                                     class="w-full appearance-none rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2.5 pr-10 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800
                                         focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition cursor-pointer">
@@ -127,7 +126,7 @@
                             'category' => $p?->category?->title ?? "Non classé",
                             'price' => (float) $p->selling_price,
                             'stock' => $p->stock,
-                            'image' => $p->primaryImage?->image ? asset('storage/' . $p->primaryImage->image) : asset('storage/products/default-image.png'),
+                            'image' => $p->primaryImage?->image ? asset('storage/uploads/' . $p->primaryImage->image) : asset('storage/uploads/products/default-image.png'),
                         ])) !!}
                     </script>
                 </div>

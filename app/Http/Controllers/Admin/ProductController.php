@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -57,6 +56,7 @@ class ProductController extends Controller
     {
         $data = $request->validated();
         $product = Product::create($data);
+        
         // Store Images
         foreach($data['images'] as $img){
             $path = $img->store('products','public');
@@ -85,6 +85,7 @@ class ProductController extends Controller
         if(isset($data['images'])){
             foreach($data['images'] as $img){
                 $path = $img->store('products','public');
+
                 ProductImages::create([
                     'product_id' => $product->id,
                     'image' => $path,
@@ -92,7 +93,7 @@ class ProductController extends Controller
                 ]);
             }
         }
-        
+
         $product->update($data);
         return to_route('admin.products.index')->with('success','Le produit a été modifiée avec succès.');
     }
@@ -101,7 +102,9 @@ class ProductController extends Controller
     {
         $product->is_active = !$product->is_active;
         $product->save();
+
         $status = $product->is_active ? 'activé' : 'désactivé';
+
         return back()->with('success',"Le produit a été $status avec succès.");
     }
 
@@ -109,6 +112,7 @@ class ProductController extends Controller
     {
         $product->images()->delete();
         $product->delete();
+
         return to_route('admin.products.index')->with("success","Le produit a été supprimée avec succès.");
     }
 }

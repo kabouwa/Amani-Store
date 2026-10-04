@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Order;
+use ErrorException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use PhpParser\Node\Stmt\Return_;
@@ -15,17 +16,19 @@ class SenditDeliveriesService extends SenditService
     }
     public function all()
     {
+        define('PATH', '/deliveries');
+
         return Cache::remember('sendit_deliveries', now()->addMinutes(10), function (){
             $deliveries = [];
 
             $data = Http::withToken( $this->getToken() )->get(
-                url : $this->apiUrl . '/deliveries',
+                url : $this->apiUrl . PATH,
             )->throw()->json();
             $deliveries = $data['data'];
 
             for($i = 2 ; $i <= $data['last_page']; $i++){
                 $nextDeliveries = Http::withToken( $this->getToken() )->get(
-                    url : $this->apiUrl . '/deliveries?page=' . $i,
+                    url : $this->apiUrl . PATH . '?page=' . $i,
                 )->throw()->json('data');
                 $deliveries = array_merge($deliveries,$nextDeliveries);
             }
@@ -43,7 +46,7 @@ class SenditDeliveriesService extends SenditService
                 $delivery = $deliveries->get($order->code);
 
                 if(!$delivery) return;
-                
+
                 if($order->status !== $delivery['status']){
                     $order->update([
                         'status' => $delivery['status']
@@ -59,11 +62,13 @@ class SenditDeliveriesService extends SenditService
     }
     public function city(int $id): array
     {
+        define('PATH', '/districts');
+
         $city = Cache::get("sendit_city_$id");
         if($city) return $city;
 
         $response = Http::withToken( $this->getToken() )->get(
-            url : $this->apiUrl . '/districts/' . $id,
+            url : $this->apiUrl . PATH . '/' . $id,
         )->throw();
 
         if($response->successful()){
@@ -76,18 +81,20 @@ class SenditDeliveriesService extends SenditService
 
     public function cities()
     {
+        define('PATH', '/districts');
+
         return Cache::remember('sendit_cities', now()->addMonth(), function(){
             $cities = [];
 
             $response = Http::withToken( $this->getToken() )->get(
-                url : $this->apiUrl . '/districts?page=1',
+                url : $this->apiUrl . PATH . '?page=1',
             )->throw();
             $data = $response->json();
             $cities = $data['data'];
 
             for($i = 2 ; $i <= $data['last_page']; $i++){
                 $response = Http::withToken( $this->getToken() )->get(
-                    url : $this->apiUrl . '/districts?page=' . $i,
+                    url : $this->apiUrl . PATH . '?page=' . $i,
                 )->throw();
                 $data = $response->json();
                 foreach($data['data'] as $city){
@@ -104,6 +111,8 @@ class SenditDeliveriesService extends SenditService
         int $allow_try = 1,
         )
     {
+        define('PATH', '/deliveries');
+
         $package = [
             // Required Value
             "district_id"=> $order->customer->district_id,
@@ -124,13 +133,14 @@ class SenditDeliveriesService extends SenditService
             "delivery_exchange_id" => "",
             "products_from_stock"=> 0,
         ];
+
         $package['products'] =$order->items
             ->map(fn ($item) => "x{$item->quantity} {$item->product->title}")
             ->implode(', ');
 
         // Send Creation Request
         $data = Http::withToken( $this->getToken() )->post(
-            url : $this->apiUrl . '/deliveries',
+            url : $this->apiUrl . PATH,
             data : $package
         )->throw()->json('data');
         Cache::forget('sendit_deliveries');
@@ -142,10 +152,13 @@ class SenditDeliveriesService extends SenditService
 
         return $data;
     }
+
     public function delete(Order $order)
     {
+        define('PATH', '/deliveries');
+
         $response = Http::withToken( $this->getToken() )->delete(
-            url : $this->apiUrl . '/deliveries/' . $order->sendit_code
+            url : $this->apiUrl . PATH . '/' . $order->sendit_code
         )->throw();
         Cache::forget('sendit_deliveries');
         Cache::forget("sendit_status_" . $order->sendit_code);
@@ -158,9 +171,44 @@ class SenditDeliveriesService extends SenditService
 
     public function getStatusDeliveries()
     {
+        define('PATH', '/all-status-deliveries');
+
         $response = Http::withToken( $this->getToken() )->get(
-            url : $this->apiUrl . '/all-status-deliveries'
+            url : $this->apiUrl . PATH
         )->throw();
         return $response->json();
+    }
+
+    /**
+     * Generate labels for the given order codes.
+     * @param int $printFormat
+     * @param string[] $codes
+     * @throws ErrorException
+     * @return string|null Download URL, or null if the labels cannot be generated.
+     */
+
+    public function labels(int $printFormat = 0, string ...$codes)
+    {
+        if ( !in_array($printFormat, [0,1]) ) {
+            throw New ErrorException('Invalid print format of labels !');
+        }
+
+        define('PATH', '/deliveries/getlabels');
+
+        $data = [
+            "codesToPrint" => join(',', $codes),
+            "printFormat" => $printFormat
+        ];
+
+        $response = Http::withToken( $this->getToken() )->post(
+            url: $this->apiUrl . PATH ,
+            data: $data
+        );
+
+        $data = $response->json();
+
+        return (isset($data['status'] ) && $data['status'] === 422)
+            ? null
+            : $data['fileUrl'];
     }
 }

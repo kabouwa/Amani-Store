@@ -28,7 +28,7 @@
                  style="width: {{ $product->images->count() * 100 }}%;">
                 @foreach ($product->images as $img)
                     <div class="h-full shrink-0" style="width: {{ 100 / $product->images->count() }}%;">
-                        <img src="{{ asset('storage/' . $img->image) }}" alt="{{ $product->title }}"
+                        <img src="{{ asset('storage/uploads/' . $img->image) }}" alt="{{ $product->title }}"
                              class="w-full h-full object-cover">
                     </div>
                 @endforeach

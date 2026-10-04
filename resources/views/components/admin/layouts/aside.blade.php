@@ -3,7 +3,7 @@
 @php
     $links = [
         ['route' => 'admin.dashboard',        'label' => 'Tableau de bord',            'icon' => 'fa-chart-line',   'active' => 'admin.dashboard'],
-        ['route' => 'admin.orders.index',     'label' => 'Gestion des commandes',      'icon' => 'fa-box',          'active' => 'admin.orders.*'],
+        ['route' => 'admin.orders.index',     'label' => 'Gestion des commandes',      'icon' => 'fa-box',          'active' => 'admin.orders.index'],
         ['route' => 'admin.orders.create',    'label' => 'Créer une commande',         'icon' => 'fa-cart-plus',    'active' => 'admin.orders.create'],
         ['route' => 'admin.pickups.index',    'label' => 'Demander un ramassage',      'icon' => 'fa-truck-fast',   'active' => 'admin.pickups.index'],
         ['route' => 'admin.products.index',   'label' => 'Gestion des produits',       'icon' => 'fa-bag-shopping', 'active' => 'admin.products.*'],

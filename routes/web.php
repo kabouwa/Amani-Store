@@ -1,5 +1,6 @@
 <?php
-use App\Http\Controllers\Admin\PrivateDiskController;
+
+use App\Http\Controllers\PublicStorageController;
 use Illuminate\Support\Facades\Route;
 /**
  * Admin Controllers
@@ -15,6 +16,7 @@ use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\ShipmentController;
 use App\Http\Controllers\Admin\PickupController;
 use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\PrivateStorageController;
 
 /**
  * Public Controllers
@@ -65,6 +67,8 @@ Route::prefix('admin')->name('admin.')->group(function (){
 
         Route::resource('customers',AdminCustomerController::class)->only(['index','destroy']);
 
+        Route::get('orders/labels',[AdminOrderController::class, 'labels'])->name('orders.labels');
+
         Route::resource('orders',AdminOrderController::class);
 
         Route::post('shipment/{order}',[ShipmentController::class,'store'])->name('shipment.store');
@@ -75,7 +79,7 @@ Route::prefix('admin')->name('admin.')->group(function (){
 
         Route::resource('suppliers',SupplierController::class)->except('show');
 
-        Route::get('storage/{supplier}', [PrivateDiskController::class, 'supplierImage'])->name('storage.supplier');
+        Route::get('storage/{supplier}', [PrivateStorageController::class, 'supplierImage'])->name('storage.supplier');
     });
 });
 
@@ -83,6 +87,9 @@ Route::prefix('admin')->name('admin.')->group(function (){
 /**
  * Public Routes Maintenance Mode
 */
+// Public Storage
+Route::get('storage/uploads/{path}', [PublicStorageController::class, 'getFile'])->where('path', '.*');
+
 Route::middleware(['throttle:public', 'maintenance.mode'])->group(function(){
     Route::get('/', [PublicController::class,'index'])->name('home');
     Route::resource('products',ProductController::class)->only(['index','show']);

@@ -41,7 +41,7 @@
 
         {{-- Main content --}}
         <main class="py-30 px-4 md:px-16 md:ml-72 min-h-screen transition-all duration-300" id="mainContent">
-            <div class="mb-6 flex flex-col md:flex-row justify-between items-stretch gap-4">
+            <div class="mb-6 flex flex-col lg:flex-row justify-between items-stretch gap-4">
                 <h1 class="text-2xl md:text-4xl font-bold text-gray-700 dark:text-gray-100 capitalize">
                     {{ $heading }}
                 </h1>
@@ -53,6 +53,7 @@
         </main>
 
     </div>
+
     {{-- Fixed sidebar --}}
     @if (env('APP_DEBUG'))
         <div class="fixed bottom-4 right-4 z-[9999] flex items-center gap-2 rounded-xl border border-white/20 bg-amani/60 px-4 py-2 text-sm font-semibold text-white shadow-xl backdrop-blur-xl">
@@ -62,5 +63,6 @@
     @endif
 
     @stack('scripts')
+
 </body>
 </html>

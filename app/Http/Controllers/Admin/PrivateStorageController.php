@@ -7,7 +7,7 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class PrivateDiskController extends Controller
+class PrivateStorageController extends Controller
 {
     public function supplierImage(Supplier $supplier)
     {

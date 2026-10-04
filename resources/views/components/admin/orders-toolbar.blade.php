@@ -13,7 +13,7 @@
     ];
 @endphp
 {{-- Toolbar --}}
-<div class="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
+<div class="flex flex-col lg:flex-row lg:items-center gap-3 mb-6">
 
     {{-- Search --}}
     <form id="search-form" action="{{ route('admin.orders.index') }}" method="GET" class="flex gap-3 flex-1" novalidate>
@@ -47,7 +47,7 @@
     <div class="relative shrink-0" id="sortDropdownWrapper">
 
         <button type="button" id="sortToggle"
-                class="cursor-pointer relative w-full sm:w-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:border-amani text-gray-700 dark:text-gray-300 hover:text-amani dark:hover:bg-amani dark:hover:text-white
+                class="cursor-pointer relative w-full lg:w-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:border-amani text-gray-700 dark:text-gray-300 hover:text-amani dark:hover:bg-amani dark:hover:text-white
                     px-4 py-3 rounded-lg transition flex items-center justify-center gap-2 text-sm font-medium">
             <i class="fa-solid fa-arrow-down-wide-short"></i> Trier
 
@@ -58,7 +58,7 @@
 
         {{-- Dropdown panel --}}
         <div id="sortPanel"
-            class="hidden absolute right-0 mt-2 w-[92vw] sm:w-72 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg z-30 p-5">
+            class="hidden absolute right-0 mt-2 w-[92vw] md:w-72 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg z-30 p-5">
 
             <form action="{{ route('admin.orders.index') }}" method="GET">
                 {{-- Preserve everything already applied --}}
@@ -119,7 +119,7 @@
     <div class="relative shrink-0" id="filterDropdownWrapper">
 
         <button type="button" id="filterToggle"
-                class="cursor-pointer relative w-full sm:w-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:border-amani text-gray-700 dark:text-gray-300 hover:text-amani dark:hover:text-white dark:hover:bg-amani
+                class="cursor-pointer relative w-full lg:w-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:border-amani text-gray-700 dark:text-gray-300 hover:text-amani dark:hover:text-white dark:hover:bg-amani
                     px-4 py-3 rounded-lg transition flex items-center justify-center gap-2 text-sm font-medium">
             <i class="fa-solid fa-sliders"></i>
             <span>Filtres</span>
@@ -139,7 +139,7 @@
 
         {{-- Dropdown panel --}}
         <div id="filterPanel"
-            class="hidden absolute right-0 mt-2 w-[92vw] sm:w-[520px] bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg z-30 p-5">
+            class="hidden absolute right-0 mt-2 w-[92vw] md:w-130 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg z-30 p-5">
 
             <form action="{{ route('admin.orders.index') }}" method="GET">
                 <input type="hidden" name="search" value="{{ request('search') }}">
@@ -217,6 +217,8 @@
         </div>
 
     </div>
+
+    {{ $slot }}
 
 </div>
 

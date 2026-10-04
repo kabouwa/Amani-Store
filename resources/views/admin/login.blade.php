@@ -22,7 +22,7 @@
         {{-- Card --}}
         <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg dark:shadow-black/30 border border-gray-100 dark:border-gray-800 p-4 md:p-8 transition-colors duration-300">
             <div class="text-center">
-                <img src="{{ Vite::asset('resources/images/LOGO/amani-am.png') }}" alt="Amani Store Logo" class="mx-auto h-28 lg:h-36 w-auto">
+                <img src="{{ Vite::asset('resources/images/logo/amani-am.png') }}" alt="Amani Store Logo" class="mx-auto h-28 lg:h-36 w-auto">
             </div>
 
             <h1 class="text-2xl font-bold text-amani text-center mb-1">Espace Administration</h1>
