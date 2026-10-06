@@ -56,18 +56,21 @@ class ProductController extends Controller
     {
         $data = $request->validated();
         $product = Product::create($data);
-        
+
         // Store Images
-        foreach($data['images'] as $img){
+        $primaryDefined = false;
+
+        foreach($data['images'] as $img) {
             $path = $img->store('products','public');
+
             ProductImages::create([
                 'product_id' => $product->id,
                 'image' => $path,
-                'is_primary' => false
+                'is_primary' => $primaryDefined ? false : true
             ]);
+
+            $primaryDefined = true;
         }
-        // Make an image primary
-        ProductImages::where('product_id',$product->id)->first()->update(['is_primary' => true]);
 
         return to_route('admin.products.index')->with('success','Le produit a été créé avec succès.');
     }

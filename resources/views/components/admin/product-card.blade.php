@@ -56,9 +56,7 @@
                 </div>
             @endif
         @else
-            <div class="w-full h-full flex items-center justify-center text-gray-300 dark:text-gray-600">
-                <i class="fa-solid fa-image text-4xl"></i>
-            </div>
+            <x-no-image size="text-5xl md:text-7xl" />
         @endif
     </div>
 

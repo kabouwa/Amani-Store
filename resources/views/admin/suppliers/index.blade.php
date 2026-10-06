@@ -15,7 +15,7 @@
         <x-alert color="green">{{ session('success') }}</x-alert>
     @endif
 
-
+    @php $suppliers = []; @endphp
 
     @if(count($suppliers))
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -71,12 +71,9 @@
             @endforeach
         </div>
     @else
-        <div class="flex flex-col items-center justify-center py-20 text-center">
-            <div class="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
-                <i class="fa-solid fa-truck-field text-gray-300 dark:text-gray-600 text-2xl"></i>
-            </div>
-            <p class="text-gray-500 dark:text-gray-400 font-medium">Aucun fournisseur pour le moment</p>
-        </div>
+        {{-- Empty state --}}
+        <x-admin.resource-not-found icon="fa-truck-field" title="Aucun fournisseur trouvé"
+            description="Vous n'avez pas encore ajoutée de fournisseur." />
     @endif
 
     <x-modals.confirm-delete id="deleteSupplierModal" title="Supprimer le fournisseur" message="Vous voulez vraiment supprimer ce fournisseur ?" />

@@ -32,26 +32,20 @@
                 <x-admin.product-card :product="$p" />
             @endforeach
         </div>
+
+        <div class="my-4">
+            {{ $products->links() }}
+        </div>
+
         <x-modals.confirm-delete id="deleteModal"
                        message="Êtes-vous sûr de vouloir supprimer ce produit ?" />
     @else
         {{-- Empty state --}}
-        <div class="flex flex-col items-center justify-center py-20 text-center">
-            <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-                <i class="fa-solid fa-bag-shopping text-gray-300 text-2xl"></i>
-            </div>
-            <p class="text-gray-500 font-medium">Aucun produit pour le moment</p>
-            <p class="text-sm text-gray-400 mt-1">Commencez par ajouter votre premier produit.</p>
-            <a href="{{ route('admin.products.create') }}"
-               class="cursor-pointer mt-4 bg-amani hover:bg-amani-dark text-white px-5 py-2.5 rounded-lg transition text-sm font-medium">
-                <i class="fa-solid fa-plus mr-1"></i> Ajouter un produit
-            </a>
-        </div>
+        <x-admin.resource-not-found icon="fa-box-open" title="Aucun produit trouvé"
+            :description="request()->has('search') ? 'Essayez de modifier vos filtres ou votre recherche.' : 'Vous n\'avez pas encore créé de produit.'" />
     @endif
 
-    <div class="my-4">
-        {{ $products->links() }}
-    </div>
+
 
     @push('scripts')
         @vite('resources/js/products/carousel.js')

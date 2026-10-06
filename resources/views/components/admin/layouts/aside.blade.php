@@ -1,18 +1,19 @@
 @props([])
 
 @php
+    // dd(request()->route()->getName());
     $links = [
-        ['route' => 'admin.dashboard',        'label' => 'Tableau de bord',            'icon' => 'fa-chart-line',   'active' => 'admin.dashboard'],
-        ['route' => 'admin.orders.index',     'label' => 'Gestion des commandes',      'icon' => 'fa-box',          'active' => 'admin.orders.index'],
-        ['route' => 'admin.orders.create',    'label' => 'Créer une commande',         'icon' => 'fa-cart-plus',    'active' => 'admin.orders.create'],
-        ['route' => 'admin.pickups.index',    'label' => 'Demander un ramassage',      'icon' => 'fa-truck-fast',   'active' => 'admin.pickups.index'],
-        ['route' => 'admin.products.index',   'label' => 'Gestion des produits',       'icon' => 'fa-bag-shopping', 'active' => 'admin.products.*'],
-        ['route' => 'admin.products.create',  'label' => 'Ajouter un produit',         'icon' => 'fa-plus',         'active' => 'admin.products.create'],
-        ['route' => 'admin.categories.index', 'label' => 'Gestion des catégories',     'icon' => 'fa-tags',         'active' => 'admin.categories.index'],
-        ['route' => 'admin.customers.index',  'label' => 'Liste des clients',          'icon' => 'fa-users',        'active' => 'admin.customers.index'],
-        ['route' => 'admin.suppliers.index',  'label' => 'Gestion des fournisseurs',   'icon' => 'fa-building',     'active' => 'admin.suppliers.*'],
-        ['route' => 'admin.users.index',      'label' => 'Équipe de travail',          'icon' => 'fa-user-shield',  'active' => 'admin.users.*'],
-        ['route' => 'admin.users.create',     'label' => 'Ajouter un administrateur',  'icon' => 'fa-user-plus',    'active' => 'admin.users.create'],
+        ['route' => 'admin.dashboard',        'label' => 'Tableau de bord',            'icon' => 'fa-chart-line',   'active' => request()->routeIs('admin.dashboard')        ],
+        ['route' => 'admin.orders.index',     'label' => 'Gestion des commandes',      'icon' => 'fa-box',          'active' => request()->routeIs('admin.orders.index') || request()->routeIs('admin.orders.show') || request()->routeIs('admin.orders.edit')   ],
+        ['route' => 'admin.orders.create',    'label' => 'Créer une commande',         'icon' => 'fa-cart-plus',    'active' => request()->routeIs('admin.orders.create' )   ],
+        ['route' => 'admin.pickups.index',    'label' => 'Demander un ramassage',      'icon' => 'fa-truck-fast',   'active' => request()->routeIs('admin.pickups.index')    ],
+        ['route' => 'admin.products.index',   'label' => 'Gestion des produits',       'icon' => 'fa-bag-shopping', 'active' => request()->routeIs('admin.products.index') || request()->routeIs('admin.products.edit')        ],
+        ['route' => 'admin.products.create',  'label' => 'Ajouter un produit',         'icon' => 'fa-plus',         'active' => request()->routeIs('admin.products.create')  ],
+        ['route' => 'admin.categories.index', 'label' => 'Gestion des catégories',     'icon' => 'fa-tags',         'active' => request()->routeIs('admin.categories.index') ],
+        ['route' => 'admin.customers.index',  'label' => 'Liste des clients',          'icon' => 'fa-users',        'active' => request()->routeIs('admin.customers.index')  ],
+        ['route' => 'admin.suppliers.index',  'label' => 'Gestion des fournisseurs',   'icon' => 'fa-building',     'active' => request()->routeIs('admin.suppliers.*')      ],
+        ['route' => 'admin.users.index',      'label' => 'Équipe de travail',          'icon' => 'fa-user-shield',  'active' => request()->routeIs('admin.users.*')          ],
+        ['route' => 'admin.users.create',     'label' => 'Ajouter un administrateur',  'icon' => 'fa-user-plus',    'active' => request()->routeIs('admin.users.create')     ]
     ];
 @endphp
 
@@ -24,7 +25,7 @@
         @foreach ($links as $link)
             <a href="{{ route($link['route']) }}"
                 class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-amani/10 dark:hover:bg-amani hover:text-amani dark:hover:text-white transition
-                    {{ request()->routeIs($link['active']) ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
+                    {{ $link['active'] ? 'bg-amani/10 dark:bg-amani text-amani dark:text-white font-semibold' : '' }}">
 
                 <i class="fa-solid {{ $link['icon'] }} w-5 text-xl text-center shrink-0"></i>
 
@@ -48,9 +49,11 @@
                 <span class="sidebar-label whitespace-nowrap">Mode sombre</span>
             </span>
 
-            <div class="sidebar-label relative w-9 h-5 bg-gray-200 dark:bg-gray-700 rounded-full transition-colors duration-200 shrink-0" id="themeSwitch">
-                <div class="absolute top-0.5 left-0.5 bg-white dark:bg-gray-200 rounded-full h-4 w-4 transition-all duration-200" id="themeKnob"></div>
-            </div>
+            {{-- <div class="sidebar-label relative w-9 h-5 bg-gray-200 dark:bg-gray-700 rounded-full transition-colors duration-200 shrink-0" id="themeSwitch">
+                <div class="absolute top-0.5 left-0.5 bg-white dark:bg-gray-200 rounded-full h-4 w-4 transition-all duration-200" id="themeKnob">
+
+                </div>
+            </div> --}}
         </button>
 
         <a href="{{ route('admin.users.edit', auth()->user()->slug ) }}"

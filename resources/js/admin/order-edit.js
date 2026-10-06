@@ -34,7 +34,13 @@ $(function () {
             const $item = $(`
                 <div class="js-product-result flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition"
                      data-slug="${p.slug}">
-                    <img src="${p.image}" class="w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800 shrink-0">
+                    ${
+                        p.image ? `<img src="${p.image}" class="w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800 shrink-0">`
+                        : `<div class="h-full flex items-center justify-center text-gray-300 dark:text-gray-600">
+                                <i class="fa-solid fa-image text-xl"></i>
+                            </div>
+                        `
+                    }
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-medium text-gray-800 dark:text-gray-100 truncate">${p.title}</p>
                         <p class="text-xs text-gray-400">${p.price.toFixed(2)} DH — ${p.stock} en stock</p>
@@ -117,7 +123,13 @@ $(function () {
                 <tr>
                     <td class="px-5 py-3">
                         <div class="flex items-center gap-3">
-                            <img src="${a.image}" class="w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800 shrink-0">
+                            ${
+                                a.image ? `<img src="${a.image}" class="w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800 shrink-0">`
+                                : `<div class="h-full flex items-center justify-center text-gray-300 dark:text-gray-600">
+                                        <i class="fa-solid fa-image text-xl"></i>
+                                    </div>
+                                `
+                            }
                             <span class="text-gray-800 dark:text-gray-200 font-medium whitespace-nowrap">${a.title}</span>
                         </div>
                     </td>

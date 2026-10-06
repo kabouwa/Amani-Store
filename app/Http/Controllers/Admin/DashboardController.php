@@ -8,8 +8,6 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use App\Services\SenditDeliveriesService;
-use DragonCode\Contracts\Cashier\Config\Payments\Map;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
@@ -24,8 +22,23 @@ class DashboardController extends Controller
     public function index(SenditDeliveriesService $agency)
     {
         $agency->updateStatus();
-
+        Cache::forget('dashboard-statistics');
         $statistics = Cache::remember('dashboard-statistics', now()->addDays(2), function () {
+
+            $deliveredOrders = Order::where('status', 'DELIVERED');
+
+            $totalRevenue = (clone $deliveredOrders)->sum('total_price');
+
+            $totalShipping = (clone $deliveredOrders)->sum('shipping_price');
+
+            $totalPurchase = OrderItem::whereHas('order', function ($query) {
+                $query->where('status', 'DELIVERED');
+            })->selectRaw(
+                'COALESCE(SUM(purchase_price * quantity), 0)'
+            )->value();
+
+            $totalProfit = $totalRevenue - $totalPurchase - $totalShipping;
+
 
             $stats = [
                 // Revenue And Profit
@@ -43,17 +56,23 @@ class DashboardController extends Controller
                     ->first()
                     ->total_revenue,
 
-                // Orders
-                'totalOrders' => Order::count(),
-
-                'totalDayOrders' => Order::where('created_at', '>=', now()->startOfDay())->count(),
-
-                'totalMonthOrders' => Order::where('created_at','>=',now()->startOfMonth())->count(),
-
-                'totalYearOrders' => Order::where('created_at','>=',now()->startOfYear())->count(),
+                'dayProfit' => OrderItem::query()
+                    ->selectRaw('sum( quantity * ( selling_price - purchase_price) ) as total_revenue')
+                    ->where('created_at','>=', now()->startOfDay())
+                    ->first()
+                    ->total_revenue,
 
                 // Shipping total price
                 'totalShiping' => Order::where('status','DELIVERED')->sum('shipping_price'),
+
+                // Orders
+                'totalOrders' => Order::count(),
+
+                'totalDayOrders' => Order::where('created_at', '>=', now()->startOfDay() )->count(),
+
+                'totalMonthOrders' => Order::where('created_at','>=',now()->startOfMonth() )->count(),
+
+                'totalYearOrders' => Order::where('created_at','>=',now()->startOfYear() )->count(),
 
                 // Baskets
                 'avgBaskets' => Order::where('status','DELIVERED')->avg('total_price'),

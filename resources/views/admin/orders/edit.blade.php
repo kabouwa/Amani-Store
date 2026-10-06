@@ -132,7 +132,7 @@
                             'title' => $p->title,
                             'price' =>(float) $p->selling_price,
                             'stock' => $p->stock,
-                            'image' => $p->primaryImage?->image ? asset('storage/uploads/' . $p->primaryImage->image) : asset('storage/uploads/products/default-image.png'),
+                            'image' => $p->primaryImage?->image ? asset('storage/uploads/' . $p->primaryImage->image) : null,
                         ]), JSON_HEX_TAG) !!}
                     </script>
 
@@ -152,7 +152,7 @@
                     </h2>
 
                     <div class="overflow-x-auto mt-4">
-                        <table class="w-full text-sm min-w-[480px]">
+                        <table class="w-full text-sm min-w-120">
                             <thead>
                                 <tr class="text-left text-gray-400 text-xs border-b border-gray-100 dark:border-gray-800">
                                     <th class="px-5 py-3 font-medium">Produit</th>

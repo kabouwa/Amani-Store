@@ -17,6 +17,7 @@ const cssFiles = [
 
 const jsFile = [
     // Main
+    'resources/js/app.js',
     'resources/js/image-viewer.js',
     'resources/js/select-search.js',
     'resources/js/toolbar.js',
@@ -26,6 +27,7 @@ const jsFile = [
     'resources/js/admin/layout.js',
     'resources/js/admin/order-create.js',
     'resources/js/admin/order-edit.js',
+    'resources/js/admin/order-labels.js',
     'resources/js/admin/otp.js',
     'resources/js/admin/pickups.js',
     'resources/js/admin/product-images.js',

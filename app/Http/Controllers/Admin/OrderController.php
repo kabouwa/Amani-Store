@@ -104,13 +104,14 @@ class OrderController extends Controller
             ]);
         }
 
-        // Order Price
-        $order->update(compact('total_price'));
-
-        if (!$order->items()->exists()) {
+        if (!$total_price ) { // total price stay in 0 mean no item in order
             $order->delete();
             return redirect()->back()->withInput()->withErrors(['items' => 'Une commande ne peut pas être créée sans au moins un article.']);
         }
+
+        // Order Price
+        $total_price += $city['price'];
+        $order->update(compact('total_price'));
 
         return to_route('admin.orders.index')->with('success','La commande a été créer avec succès.');
     }
@@ -186,7 +187,7 @@ class OrderController extends Controller
             ]);
         }
 
-        if (!$order->items()->exists()) {
+        if (!$total_price) {
             // Delete from agency if the order has shipement
             if($order->hasShipment()) $agency->delete($order);
 
@@ -195,6 +196,7 @@ class OrderController extends Controller
         }
 
         // Order total price
+        $total_price += $city['price'];
         $order->update(compact('total_price'));
 
         // Update in agency if the order has shipement

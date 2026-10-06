@@ -9,10 +9,8 @@ $(function () {
 
         const count = uniqueCodes.length;
 
+        $('.js-selected-orders-count').text(count);
 
-        $('#selectedOrdersCount').text(count);
-
-        // Show the bar only when at least one order is selected
         if (count > 0) {
             $('#labelsBar').removeClass('hidden').addClass('flex');
         } else {
@@ -20,10 +18,12 @@ $(function () {
             $('#printDropdownPanel').addClass('hidden');
         }
 
-        // Keep "select all" checkbox state consistent with individual rows
-        const totalCheckboxes = $('.js-order-checkbox').length;
-        $('#selectAllOrders').prop('checked', count === totalCheckboxes && totalCheckboxes > 0);
+        // FIXED: count unique order codes, not raw checkbox elements
+        const totalUniqueCodes = [...new Set($('.js-order-checkbox').map(function () {
+            return $(this).val();
+        }).get())].length;
 
+        $('.js-select-all-orders').prop('checked', count === totalUniqueCodes && totalUniqueCodes > 0);
     }
 
     function updateCardAppearance($checkbox) {
@@ -61,7 +61,7 @@ $(function () {
         updateSelectionState();
     });
 
-    $('#selectAllOrders').on('change', function () {
+    $('.js-select-all-orders').on('change', function () {
         const isChecked = $(this).is(':checked');
 
         $('.js-order-checkbox').prop('checked', isChecked);

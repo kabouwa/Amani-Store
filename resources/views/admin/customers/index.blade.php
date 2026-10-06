@@ -157,25 +157,18 @@
                 </div>
             </div>
         @empty
-            <div class="col-span-full flex flex-col items-center justify-center rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-10 text-center">
-                <div class="w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 mb-3">
-                    <i class="fa-solid fa-users text-xl"></i>
-                </div>
-
-                <p class="font-semibold text-gray-700 dark:text-gray-200">
-                    Aucun client trouvé
-                </p>
-
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                    Aucun client ne correspond à votre recherche.
-                </p>
-            </div>
+            {{-- Empty state --}}
+            <x-admin.resource-not-found icon="fa-users" title="Aucun client trouvé"
+                :description="request()->has('search') ? 'Essayez de modifier vos filtres ou votre recherche.' : 'Vous n\'avez pas encore de client enregistré. Effectuez une commande pour en ajouter un.'" />
         @endforelse
     </div>
 
-    <div class="my-4">
-        {{ $customers->links() }}
-    </div>
+    @if(count($customers))
+        <div class="my-4">
+            {{ $customers->links() }}
+        </div>
+    @endif
+
 
     <x-modals.confirm-delete id="deleteModal"
                        message="Êtes-vous sûr de vouloir supprimer ce client avec sa commande ?" />

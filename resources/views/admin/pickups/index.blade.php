@@ -6,7 +6,7 @@
     @if($errors->any())
         <x-alert>{{ $errors->first() }}</x-alert>
     @endif
-    
+
     @if(session('success'))
         <x-alert color="green">{{ session('success') }}</x-alert>
     @endif
@@ -34,7 +34,7 @@
                 <span class="text-sm text-gray-600 dark:text-gray-300">Tout sélectionner</span>
             </label>
 
-            <span id="selectedCount" class="text-sm text-gray-400">0 sélectionnée(s)</span>
+            <span id="selectedCount" class="selectedOrdersCount text-sm text-gray-400">0 sélectionnée(s)</span>
         </div>
 
         <form action="{{ route('admin.pickups.store') }}" method="POST" id="pickupForm">

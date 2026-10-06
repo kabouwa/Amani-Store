@@ -30,7 +30,7 @@
                     class="cursor-pointer flex justify-center items-center gap-2 bg-amani hover:bg-amani-dark text-white px-4 py-3 rounded-lg
                         transition text-sm font-medium h-full w-full">
                 <i class="fa-solid fa-print"></i>
-                Imprimer <span id="selectedOrdersCount">0</span> étiquette(s)
+                Imprimer <span class="js-selected-orders-count hidden md:inline">0</span> étiquette(s)
                 <i class="fa-solid fa-chevron-down text-xs"></i>
             </button>
 
@@ -77,7 +77,7 @@
                     {{-- Table header --}}
                     <th class="px-3 py-3 font-semibold text-center">
                         <label class="inline-flex items-center cursor-pointer">
-                            <input type="checkbox" id="selectAllOrders" class="sr-only peer">
+                            <input type="checkbox" class="js-select-all-orders sr-only peer">
                             <span class="w-5 h-5 rounded-md border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center
                                         transition-all duration-200 peer-checked:bg-amani peer-checked:border-amani peer-checked:text-white text-transparent">
                                 <i class="fa-solid fa-check text-[10px] transition-opacity duration-200"></i>
@@ -95,6 +95,7 @@
                     <th class="px-5 py-3 font-semibold text-right"><span class="mr-24">Actions</span></th>
                 </tr>
             </thead>
+
             <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
                 @foreach ($orders as $order)
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
@@ -172,6 +173,21 @@
 
     {{-- Mobile card list --}}
     <div class="lg:hidden space-y-3">
+        <div class="flex items-center justify-between mb-6 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm px-5 py-3">
+            <label class="flex items-center gap-2.5 cursor-pointer">
+                <input type="checkbox" class="js-select-all-orders sr-only peer">
+
+                <span class="w-5 h-5 rounded-md border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center
+                            transition-all duration-200 peer-checked:bg-amani peer-checked:border-amani peer-checked:text-white text-transparent">
+                    <i class="fa-solid fa-check text-[10px] transition-opacity duration-200"></i>
+                </span>
+
+                <span class="text-sm text-gray-600 dark:text-gray-300">Tout sélectionner</span>
+            </label>
+
+            <span class="js-selected-orders-count text-sm text-gray-400">0</span>
+        </div>
+
         @foreach ($orders as $order)
             <div class="js-order-card relative bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm p-4 transition-all">
 
@@ -191,7 +207,7 @@
                             @if ($order->hasShipment())
                                 <label class="cursor-pointer">
                                     <input type="checkbox" class="js-order-checkbox sr-only peer" value="{{ $order->sendit_code }}">
-                                    <span class="w-5 h-5 rounded-md border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center
+                                    <span class="w-5 h-5 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center
                                                 transition-all duration-200 peer-checked:bg-amani peer-checked:border-amani peer-checked:text-white text-transparent">
                                         <i class="fa-solid fa-check text-[10px] transition-opacity duration-200"></i>
                                     </span>
@@ -262,13 +278,9 @@
 
     @else
         {{-- Empty state --}}
-        <div class="flex flex-col items-center justify-center py-20 text-center">
-            <div class="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
-                <i class="fa-solid fa-box-open text-gray-300 dark:text-gray-600 text-2xl"></i>
-            </div>
-            <p class="text-gray-500 dark:text-gray-400 font-medium">Aucune commande trouvée</p>
-            <p class="text-sm text-gray-400 dark:text-gray-500 mt-1">Essayez de modifier vos filtres ou votre recherche.</p>
-        </div>
+        <x-admin.resource-not-found icon="fa-box-open" title="Aucune commande trouvée"
+            :description="request()->has('search') ? 'Essayez de modifier vos filtres ou votre recherche.' : 'Vous n\'avez pas encore créé de commande.'" />
+
     @endif
 
     <x-modals.confirm-delete id="deleteOrderModal" title="Supprimer la commande" message="Vous voulez vraiment supprimer cette commande ?" />

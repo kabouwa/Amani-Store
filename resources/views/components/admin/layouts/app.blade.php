@@ -9,7 +9,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title }} - Amani Store Administration</title>
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="theme-color" content="#7A1220">
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+        }
+    </script>
     <script>
         if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark');
@@ -27,7 +34,7 @@
             border-radius: 4px;
         }
     </style>
-    @vite(['resources/css/app.css','resources/js/app.js','resources/js/admin/layout.js','resources/css/admin/layout.css'])
+    <title>{{ $title }} - Amani Store Administration</title>
 </head>
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-serif">
 
@@ -40,7 +47,8 @@
         <x-admin.layouts.aside />
 
         {{-- Main content --}}
-        <main class="py-30 px-4 md:px-16 md:ml-72 min-h-screen transition-all duration-300" id="mainContent">
+        <main class="py-26 px-4 md:px-16 md:ml-72 min-h-screen transition-all duration-300" id="mainContent">
+
             <div class="mb-6 flex flex-col lg:flex-row justify-between items-stretch gap-4">
                 <h1 class="text-2xl md:text-4xl font-bold text-gray-700 dark:text-gray-100 capitalize">
                     {{ $heading }}
@@ -62,6 +70,8 @@
         </div>
     @endif
 
+
+    @vite(['resources/css/app.css','resources/js/app.js','resources/js/admin/layout.js','resources/css/admin/layout.css'])
     @stack('scripts')
 
 </body>

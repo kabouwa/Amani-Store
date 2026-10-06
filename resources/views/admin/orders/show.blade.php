@@ -38,49 +38,49 @@
     @endif
 
     {{-- Actions --}}
-@can('update', $order)
-<div class="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-6 gap-3 mb-6">
+    @can('update', $order)
+    <div class="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-6 gap-3 mb-6">
 
-    <a href="{{ route('admin.orders.edit', $order->code) }}"
-       class="inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
-              text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
-        <i class="fa-solid fa-pen"></i>
-        Modifier
-    </a>
+        <a href="{{ route('admin.orders.edit', $order->code) }}"
+        class="inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
+                text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+            <i class="fa-solid fa-pen"></i>
+            Modifier
+        </a>
 
-    @if ($order->hasShipment())
+        @if ($order->hasShipment())
+            <button type="button"
+                    class="js-delete-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
+                        text-red-600 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 transition cursor-pointer"
+                    data-action="{{ route('admin.shipment.destroy', $order->code) }}"
+                    data-modal="deleteShipmentModal">
+                <i class="fa-solid fa-ban"></i>
+                Retirer de Sendit
+            </button>
+        @else
+            <form action="{{ route('admin.shipment.store', $order->code) }}" method="POST">
+                @csrf
+                <button type="submit"
+                        class="js-sendit-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
+                            text-green-600 bg-green-50 dark:bg-green-900/30 hover:bg-green-100 dark:hover:bg-green-900/50 transition cursor-pointer"
+                        data-modal="senditOrderModal">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    Envoyer vers Sendit
+                </button>
+            </form>
+        @endif
+
         <button type="button"
                 class="js-delete-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
-                       text-red-600 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 transition cursor-pointer"
-                data-action="{{ route('admin.shipment.destroy', $order->code) }}"
-                data-modal="deleteShipmentModal">
-            <i class="fa-solid fa-ban"></i>
-            Retirer de Sendit
+                    text-red-600 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 transition cursor-pointer"
+                data-action="{{ route('admin.orders.destroy', $order->code) }}"
+                data-modal="deleteOrderModal">
+            <i class="fa-solid fa-trash"></i>
+            Supprimer la commande
         </button>
-    @else
-        <form action="{{ route('admin.shipment.store', $order->code) }}" method="POST">
-            @csrf
-            <button type="submit"
-                    class="js-sendit-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
-                           text-green-600 bg-green-50 dark:bg-green-900/30 hover:bg-green-100 dark:hover:bg-green-900/50 transition cursor-pointer"
-                    data-modal="senditOrderModal">
-                <i class="fa-solid fa-truck-fast"></i>
-                Envoyer vers Sendit
-            </button>
-        </form>
-    @endif
 
-    <button type="button"
-            class="js-delete-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
-                   text-red-600 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 transition cursor-pointer"
-            data-action="{{ route('admin.orders.destroy', $order->code) }}"
-            data-modal="deleteOrderModal">
-        <i class="fa-solid fa-trash"></i>
-        Supprimer la commande
-    </button>
-
-</div>
-@endcan
+    </div>
+    @endcan
 
     {{-- Grid principal --}}
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -134,9 +134,14 @@
                                     <td class="px-5 py-3">
                                         <div class="flex items-center gap-3">
                                             @if ($item->product)
-                                                <img src="{{ $item->product->primaryImage?->image ? asset('storage/uploads/' . $item->product->primaryImage?->image) : asset('storage/uploads/products/default-image.png') }}"
-                                                    alt="Image de produit : {{ $item->product->title }}"
-                                                    class="js-viewable w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800 shrink-0">
+                                                @if ($item->product->primaryImage?->image)
+                                                    <img src="{{ asset('storage/uploads/' . $item->product->primaryImage?->image) }}"
+                                                        alt="Image de produit : {{ $item->product->title }}"
+                                                        class="js-viewable w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800 shrink-0">
+                                                @else
+                                                    <x-no-image size="text-2xl" />
+                                                @endif
+
                                                 <span class="text-gray-800 dark:text-gray-200 font-medium whitespace-nowrap">
                                                     {{ $item->product->title }}
                                                 </span>

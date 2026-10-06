@@ -29,6 +29,7 @@ $(function () {
         $('#themeSwitch').toggleClass('bg-amani', isDark).toggleClass('bg-gray-200', !isDark);
         $('#themeKnob').toggleClass('translate-x-4', isDark);
         $('#themeIcon').toggleClass('fa-moon', !isDark).toggleClass('fa-sun', isDark);
+        $('#themeKnob').toggleClass('translate-x-4', isDark);
     }
 
 });

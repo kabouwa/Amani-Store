@@ -11,7 +11,7 @@
                 <div class="w-10 h-10 rounded-lg bg-amani/10 text-amani flex items-center justify-center">
                     <i class="fa-solid fa-sack-dollar"></i>
                 </div>
-                <span class="text-xs text-gray-400">Revenu (livré)</span>
+                <span class="text-xs text-gray-400">Chiffre d'affaire (livré)</span>
             </div>
             <p class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{ number_format($totalRevenue, 0) }} DH</p>
         </div>
@@ -21,7 +21,7 @@
                 <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 flex items-center justify-center">
                     <i class="fa-solid fa-chart-simple"></i>
                 </div>
-                <span class="text-xs text-gray-400">Profit total</span>
+                <span class="text-xs text-gray-400">Bénéfice net</span>
             </div>
             <p class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{ number_format($totalProfit, 0) }} DH</p>
         </div>
@@ -31,9 +31,19 @@
                 <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center">
                     <i class="fa-solid fa-calendar-check"></i>
                 </div>
-                <span class="text-xs text-gray-400">Profit ce mois</span>
+                <span class="text-xs text-gray-400">Bénéfice net du mois</span>
             </div>
             <p class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{ number_format($monthProfit, 0) }} DH</p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm p-5">
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-10 h-10 rounded-lg bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+                    <i class="fa-solid fa-sun"></i>
+                </div>
+                <span class="text-xs text-gray-400">Bénéfice net de ce jour</span>
+            </div>
+            <p class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{ number_format($dayProfit, 0) }} DH</p>
         </div>
 
         <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm p-5">
@@ -41,7 +51,7 @@
                 <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center">
                     <i class="fa-solid fa-truck-fast"></i>
                 </div>
-                <span class="text-xs text-gray-400">Revenu livraison</span>
+                <span class="text-xs text-gray-400">Frais total de livraison</span>
             </div>
             <p class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{ number_format($totalShiping, 0) }} DH</p>
         </div>
