@@ -22,45 +22,40 @@ class DashboardController extends Controller
     public function index(SenditDeliveriesService $agency)
     {
         $agency->updateStatus();
-        Cache::forget('dashboard-statistics');
-        $statistics = Cache::remember('dashboard-statistics', now()->addDays(2), function () {
 
-            $deliveredOrders = Order::where('status', 'DELIVERED');
+        $statistics = Cache::remember('dashboard-statistics', now()->addDays(3), function () {
 
-            $totalRevenue = (clone $deliveredOrders)->sum('total_price');
-
-            $totalShipping = (clone $deliveredOrders)->sum('shipping_price');
-
-            $totalPurchase = OrderItem::whereHas('order', function ($query) {
-                $query->where('status', 'DELIVERED');
-            })->selectRaw(
-                'COALESCE(SUM(purchase_price * quantity), 0)'
-            )->value();
-
-            $totalProfit = $totalRevenue - $totalPurchase - $totalShipping;
-
+            $deliveredOrders = Order::where('status','DELIVERED');
 
             $stats = [
                 // Revenue And Profit
-                'totalRevenue' => Order::where('status','DELIVERED')
-                    ->sum('total_price'),
+                'totalRevenue' => $deliveredOrders->sum('total_price'),
 
                 'totalProfit' => OrderItem::query()
-                    ->selectRaw('sum( quantity * ( selling_price - purchase_price) ) as total_revenue')
+                    ->whereHas('order', function ($query) {
+                        $query->where('status','DELIVERED');
+                    })
+                    ->selectRaw('sum( quantity * ( selling_price - purchase_price) ) as total_profit')
                     ->first()
-                    ->total_revenue,
+                    ->total_profit
+                    - $deliveredOrders->sum('shipping_price'),
+
 
                 'monthProfit' => OrderItem::query()
-                    ->selectRaw('sum( quantity * ( selling_price - purchase_price) ) as total_revenue')
+                    ->whereHas('order', function ($query) {
+                        $query->where('status','DELIVERED');
+                    })
+                    ->selectRaw('sum( quantity * ( selling_price - purchase_price) ) as total_profit')
                     ->where('created_at','>=', now()->startOfMonth())
                     ->first()
-                    ->total_revenue,
+                    ->total_profit
+                    - $deliveredOrders->where('created_at','>=', now()->startOfMonth())->sum('shipping_price'),
 
                 'dayProfit' => OrderItem::query()
-                    ->selectRaw('sum( quantity * ( selling_price - purchase_price) ) as total_revenue')
+                    ->selectRaw('sum( quantity * ( selling_price - purchase_price) ) as total_profit')
                     ->where('created_at','>=', now()->startOfDay())
                     ->first()
-                    ->total_revenue,
+                    ->total_profit - Order::where('created_at','>=', now()->startOfDay())->sum('shipping_price'),
 
                 // Shipping total price
                 'totalShiping' => Order::where('status','DELIVERED')->sum('shipping_price'),
@@ -75,9 +70,9 @@ class DashboardController extends Controller
                 'totalYearOrders' => Order::where('created_at','>=',now()->startOfYear() )->count(),
 
                 // Baskets
-                'avgBaskets' => Order::where('status','DELIVERED')->avg('total_price'),
+                'avgBaskets' => $deliveredOrders->avg('total_price'),
 
-                'maxBasket' => Order::where('status','DELIVERED')->max('total_price'),
+                'maxBasket' => $deliveredOrders->max('total_price'),
 
                 // Products
                 'totalProducts' => Product::count(),
@@ -114,11 +109,11 @@ class DashboardController extends Controller
                     ->get()->toArray(),
 
                 // Orders Status
-                'preparingOrders' =>  Order::where('status','PREPARING')->count(),
-                'toPickedOrders' =>  Order::whereIn('status', ['PENDING','TOPICKUP'])->count(),
-                'pickedOrders' => Order::where('status','PICKEDUP')->count(),
+                'preparingOrders' => Order::where('status','PREPARING')->count(),
+                'toPickedOrders'  => Order::whereIn('status', ['PENDING','TOPICKUP'])->count(),
+                'pickedOrders'    => Order::where('status','PICKEDUP')->count(),
                 'deliveredOrders' => Order::where('status','DELIVERED')->count(),
-                'canceledOrders' => Order::where('status','CANCELED')->count(),
+                'canceledOrders'  => Order::where('status','CANCELED')->count(),
             ];
 
             // foreach($orders as $order) {

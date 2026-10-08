@@ -15,8 +15,6 @@
         <x-alert color="green">{{ session('success') }}</x-alert>
     @endif
 
-    @php $suppliers = []; @endphp
-
     @if(count($suppliers))
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
             @foreach ($suppliers as $supplier)
@@ -27,7 +25,7 @@
                         @if ($supplier->image)
                             <img src="{{ route('admin.storage.supplier', $supplier) }}"
                                  alt="{{ $supplier->name }}"
-                                 class="w-full h-full object-cover">
+                                 class="js-viewable w-full h-full object-cover">
                         @else
                             <div class="w-full h-full flex items-center justify-center text-gray-300 dark:text-gray-600">
                                 <i class="fa-solid fa-building text-3xl"></i>
@@ -77,5 +75,11 @@
     @endif
 
     <x-modals.confirm-delete id="deleteSupplierModal" title="Supprimer le fournisseur" message="Vous voulez vraiment supprimer ce fournisseur ?" />
+
+    <x-modals.image-preview />
+
+    @push('scripts')
+        @vite('resources/js/image-viewer.js')
+    @endpush
 
 </x-admin.layouts.app>

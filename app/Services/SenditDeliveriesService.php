@@ -16,19 +16,17 @@ class SenditDeliveriesService extends SenditService
     }
     public function all()
     {
-        define('PATH', '/deliveries');
-
         return Cache::remember('sendit_deliveries', now()->addMinutes(10), function (){
             $deliveries = [];
 
             $data = Http::withToken( $this->getToken() )->get(
-                url : $this->apiUrl . PATH,
+                url : $this->apiUrl . '/deliveries',
             )->throw()->json();
             $deliveries = $data['data'];
 
             for($i = 2 ; $i <= $data['last_page']; $i++){
                 $nextDeliveries = Http::withToken( $this->getToken() )->get(
-                    url : $this->apiUrl . PATH . '?page=' . $i,
+                    url : $this->apiUrl . '/deliveries?page=' . $i,
                 )->throw()->json('data');
                 $deliveries = array_merge($deliveries,$nextDeliveries);
             }
@@ -38,11 +36,13 @@ class SenditDeliveriesService extends SenditService
     }
     public function updateStatus()
     {
+        // Reference we saved in agency as code of order in our db
         $deliveries = collect($this->all())->keyBy('reference') ;
 
         Order::whereNotNull('sendit_code')
             ->get()
             ->each(function ($order) use ($deliveries) {
+                // Get delivery with code accorfing to reference saved in agency
                 $delivery = $deliveries->get($order->code);
 
                 if(!$delivery) return;
@@ -62,13 +62,11 @@ class SenditDeliveriesService extends SenditService
     }
     public function city(int $id): array
     {
-        define('PATH', '/districts');
-
         $city = Cache::get("sendit_city_$id");
         if($city) return $city;
 
         $response = Http::withToken( $this->getToken() )->get(
-            url : $this->apiUrl . PATH . '/' . $id,
+            url : $this->apiUrl . '/districts/' . $id,
         )->throw();
 
         if($response->successful()){
@@ -81,20 +79,18 @@ class SenditDeliveriesService extends SenditService
 
     public function cities()
     {
-        define('PATH', '/districts');
-
         return Cache::remember('sendit_cities', now()->addMonth(), function(){
             $cities = [];
 
             $response = Http::withToken( $this->getToken() )->get(
-                url : $this->apiUrl . PATH . '?page=1',
+                url : $this->apiUrl . '/districts?page=1',
             )->throw();
             $data = $response->json();
             $cities = $data['data'];
 
             for($i = 2 ; $i <= $data['last_page']; $i++){
                 $response = Http::withToken( $this->getToken() )->get(
-                    url : $this->apiUrl . PATH . '?page=' . $i,
+                    url : $this->apiUrl . '/districts?page=' . $i,
                 )->throw();
                 $data = $response->json();
                 foreach($data['data'] as $city){
@@ -111,7 +107,6 @@ class SenditDeliveriesService extends SenditService
         int $allow_try = 1,
         )
     {
-        define('PATH', '/deliveries');
 
         $package = [
             // Required Value
@@ -140,7 +135,7 @@ class SenditDeliveriesService extends SenditService
 
         // Send Creation Request
         $data = Http::withToken( $this->getToken() )->post(
-            url : $this->apiUrl . PATH,
+            url : $this->apiUrl . '/deliveries',
             data : $package
         )->throw()->json('data');
         Cache::forget('sendit_deliveries');
@@ -155,10 +150,9 @@ class SenditDeliveriesService extends SenditService
 
     public function delete(Order $order)
     {
-        define('PATH', '/deliveries');
 
         $response = Http::withToken( $this->getToken() )->delete(
-            url : $this->apiUrl . PATH . '/' . $order->sendit_code
+            url : $this->apiUrl . '/deliveries/' . $order->sendit_code
         )->throw();
         Cache::forget('sendit_deliveries');
         Cache::forget("sendit_status_" . $order->sendit_code);
@@ -171,10 +165,8 @@ class SenditDeliveriesService extends SenditService
 
     public function getStatusDeliveries()
     {
-        define('PATH', '/all-status-deliveries');
-
         $response = Http::withToken( $this->getToken() )->get(
-            url : $this->apiUrl . PATH
+            url : $this->apiUrl . '/all-status-deliveries'
         )->throw();
         return $response->json();
     }
@@ -193,15 +185,13 @@ class SenditDeliveriesService extends SenditService
             throw New ErrorException('Invalid print format of labels !');
         }
 
-        define('PATH', '/deliveries/getlabels');
-
         $data = [
             "codesToPrint" => join(',', $codes),
             "printFormat" => $printFormat
         ];
 
         $response = Http::withToken( $this->getToken() )->post(
-            url: $this->apiUrl . PATH ,
+            url: $this->apiUrl . '/deliveries/getlabels' ,
             data: $data
         );
 

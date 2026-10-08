@@ -173,6 +173,10 @@
                             <span>Articles</span>
                             <span id="summaryCount" class="font-medium text-gray-800 dark:text-gray-100">0</span>
                         </div>
+                        <div class="flex justify-between text-gray-600 dark:text-gray-400">
+                            <span>Frais de livraison</span>
+                            <span class="font-medium text-gray-800 dark:text-gray-100">20 DH</span>
+                        </div>
                         <div class="flex justify-between pt-2 border-t border-gray-100 dark:border-gray-800 text-base">
                             <span class="font-semibold text-gray-700 dark:text-gray-200">Total</span>
                             <span id="summaryTotal" class="font-bold text-amani">0.00 DH</span>

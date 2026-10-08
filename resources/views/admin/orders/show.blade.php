@@ -7,7 +7,7 @@
     {{-- Header : retour + code commande + statut --}}
     <div class="flex items-center justify-between mb-6">
         <div class="flex items-center gap-3">
-            <a href="{{url()->previous()}}"
+            <a href="{{route('admin.orders.index')}}"
                class="w-9 h-9 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-amani hover:bg-amani/10 transition">
                 <i class="fa-solid fa-arrow-left"></i>
             </a>
@@ -97,7 +97,7 @@
                         <p class="text-gray-800 dark:text-gray-200 font-medium">{{ $order->shipping_agency }}</p>
                     </div>
                     <div>
-                        <p class="text-gray-400 text-xs mb-1">Frais de livraison</p>
+                        <p class="text-gray-400 text-xs mb-1">Frais de livraison payé par nous</p>
                         <p class="text-gray-800 dark:text-gray-200 font-medium">{{ number_format($order->shipping_price, 2) }} DH</p>
                     </div>
                     <div>
@@ -164,9 +164,10 @@
                         </tbody>
                         <tfoot>
                             <tr class="border-t border-gray-100 dark:border-gray-800">
-                                <td colspan="3" class="px-5 py-3 text-right text-gray-500 text-sm whitespace-nowrap">Livraison</td>
+                                <td colspan="3" class="px-5 py-3 text-right text-gray-500 text-sm whitespace-nowrap">Livraison de client</td>
                                 <td class="px-5 py-3 text-right text-gray-800 dark:text-gray-100 whitespace-nowrap">
-                                    {{ number_format($order->shipping_price, 2) }} DH
+                                    {{-- {{ number_format($order->shipping_price, 2) }} --}}
+                                    20 DH
                                 </td>
                             </tr>
                             <tr>

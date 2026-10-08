@@ -33,7 +33,7 @@ body {
 
 
 /* Select2 Jquery Theme */
-.select2-container--default .select2-selection--single {
+/* .select2-container--default .select2-selection--single {
     height: 44px;
     border: 1px solid rgb(209 213 219);
     border-radius: 0.5rem;
@@ -53,14 +53,14 @@ body {
 }
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background-color: #7A1220; /* amani */
+    background-color: #7A1220;
 }
 
 .select2-container--default.select2-container--focus .select2-selection--single {
     border-color: #7A1220;
-}
+} */
 /* --- Dark mode --- */
-.dark .select2-container--default .select2-selection--single {
+/* .dark .select2-container--default .select2-selection--single {
     background-color: rgb(31 41 55);
     border-color: rgb(55 65 81);
 }
@@ -86,7 +86,7 @@ body {
     background-color: rgb(17 24 39);
     border-color: rgb(55 65 81);
     color: rgb(243 244 246);
-}
+} */
 
 @keyframes marquee {
     0% { transform: translateX(0); }

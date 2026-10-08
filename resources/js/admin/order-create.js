@@ -1,5 +1,5 @@
 $(function () {
-
+    const delivery_price = 20;
     const products = JSON.parse(document.getElementById('productsData').textContent);
     let articles = {}; // slug -> { title, price, stock, image, quantity }
 
@@ -119,7 +119,13 @@ $(function () {
                 <tr>
                     <td class="px-5 py-3">
                         <div class="flex items-center gap-3">
-                            <img src="${a.image}" class="w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800 shrink-0">
+                            ${
+                                a.image ? `<img src="${a.image}" class="w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800 shrink-0">`
+                                : `<div class="h-full flex items-center justify-center text-gray-300 dark:text-gray-600">
+                                        <i class="fa-solid fa-image text-xl"></i>
+                                    </div>
+                                `
+                            }
                             <span class="text-gray-800 dark:text-gray-200 font-medium whitespace-nowrap">${a.title}</span>
                         </div>
                     </td>
@@ -149,7 +155,11 @@ $(function () {
         });
 
         $('#summaryCount').text(count);
-        $('#summaryTotal').text(total.toFixed(2) + ' DH');
+        $('#summaryTotal').text(
+            count
+            ? (total + delivery_price).toFixed(2) + ' DH'
+            : '0.00 DH'
+        );
 
         if (slugs.length > 0) {
             $('#articlesError').addClass('hidden');

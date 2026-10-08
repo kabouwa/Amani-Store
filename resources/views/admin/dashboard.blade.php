@@ -4,7 +4,7 @@
     </x-slot:heading>
 
     {{-- Revenue / Profit --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
 
         <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm p-5">
             <div class="flex items-center gap-3 mb-2">
@@ -21,7 +21,7 @@
                 <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 flex items-center justify-center">
                     <i class="fa-solid fa-chart-simple"></i>
                 </div>
-                <span class="text-xs text-gray-400">Bénéfice net</span>
+                <span class="text-xs text-gray-400">Bénéfice net (livré)</span>
             </div>
             <p class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{ number_format($totalProfit, 0) }} DH</p>
         </div>
@@ -31,7 +31,7 @@
                 <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center">
                     <i class="fa-solid fa-calendar-check"></i>
                 </div>
-                <span class="text-xs text-gray-400">Bénéfice net du mois</span>
+                <span class="text-xs text-gray-400">Bénéfice net du mois (livré)</span>
             </div>
             <p class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{ number_format($monthProfit, 0) }} DH</p>
         </div>

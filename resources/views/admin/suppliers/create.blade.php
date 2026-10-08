@@ -9,7 +9,4 @@
 
     <x-admin.forms.supplier :supplier="$supplier" action="{{ route('admin.suppliers.store') }}" />
 
-    @push('scripts')
-        @vite('resources/js/admin/supplier-form.js')
-    @endpush
 </x-admin.layouts.app>

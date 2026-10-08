@@ -7,29 +7,40 @@
         @method('PUT')
     @endif
 
-    {{-- Profile image --}}
-    <div class="flex flex-col items-center mb-8">
-        <div class="relative">
-            <div id="imagePreviewWrapper"
-                 class="w-28 h-28 rounded-full overflow-hidden bg-gray-100 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center">
+    {{-- Supplier company image (dropzone) --}}
+    <div class="mb-8">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image du fournisseur</label>
 
-                <img src="{{ $supplier->image ? route('admin.storage.supplier', $supplier) : '' }}"
-                     alt="{{ $supplier->name }}"
-                     id="imagePreview"
-                     class="w-full h-full object-cover {{ $supplier->image ? '' : 'hidden' }}">
+        <label for="image" id="dropzone"
+            class="group relative flex items-center justify-center w-full h-70 rounded-xl overflow-hidden cursor-pointer
+                    border-2 border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-800
+                    hover:border-amani transition">
 
-                    <div id="imagePlaceholderIcon" class="lex items-center justify-center text-3xl {{ $supplier->image ? 'hidden' : '' }}">
-                        <i class="fa-solid fa-user text-gray-300 dark:text-gray-600"></i>
-                    </div>
+            {{-- Preview: shows the existing image in edit mode, hidden on create --}}
+            <img src="{{ $supplier->image ? route('admin.storage.supplier', $supplier) : '' }}"
+                alt="{{ $supplier->name }}"
+                id="imagePreview"
+                class="absolute inset-0 w-full h-full object-cover {{ $supplier->image ? '' : 'hidden' }}">
+
+            {{-- Empty state: hidden when an image exists --}}
+            <div id="imagePlaceholder"
+                class="flex flex-col items-center gap-2 text-gray-400 dark:text-gray-500 {{ $supplier->image ? 'hidden' : '' }}">
+                <i class="fa-solid fa-cloud-arrow-up text-4xl"></i>
+                <p class="text-sm"><span class="text-amani font-medium">Cliquez pour choisir</span> ou glissez-déposez</p>
+                <p class="text-xs">PNG, JPG ou JPEG</p>
             </div>
 
-            <label for="image"
-                   class="cursor-pointer absolute bottom-0 right-0 w-9 h-9 rounded-full bg-amani hover:bg-amani-dark text-white flex items-center justify-center shadow-md transition">
-                <i class="fa-solid fa-camera text-sm"></i>
-            </label>
+            {{-- Hover overlay: only useful when a preview is visible --}}
+            <div id="imageOverlay"
+                class="absolute inset-0 bg-black/50 text-white flex-col items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition
+                        {{ $supplier->image ? 'flex' : 'hidden' }}">
+                <i class="fa-solid fa-camera text-2xl"></i>
+                <span class="text-sm">Changer l'image</span>
+            </div>
+
             <input type="file" name="image" id="image" accept=".png,.jpg,.jpeg" class="hidden">
-        </div>
-        <p class="text-xs text-gray-400 mt-2">Photo du fournisseur</p>
+        </label>
+
         <p class="js-error text-xs text-red-600 mt-1 hidden" id="imageError"></p>
         @error('image')<p class="text-xs text-red-600 mt-1">{{ $message }}</p>@enderror
     </div>
@@ -89,3 +100,7 @@
     </div>
 
 </form>
+
+@push('scripts')
+    @vite('resources/js/admin/supplier-form.js')
+@endpush

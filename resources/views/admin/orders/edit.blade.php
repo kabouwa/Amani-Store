@@ -195,7 +195,7 @@
                         </div>
                         <div class="flex justify-between text-gray-600 dark:text-gray-400">
                             <span>Livraison</span>
-                            <span class="font-medium text-gray-800 dark:text-gray-100">{{ number_format($order->shipping_price, 2) }} DH</span>
+                            <span class="font-medium text-gray-800 dark:text-gray-100">20 DH</span>
                         </div>
                         <div class="flex justify-between pt-2 border-t border-gray-100 dark:border-gray-800 text-base">
                             <span class="font-semibold text-gray-700 dark:text-gray-200">Total</span>

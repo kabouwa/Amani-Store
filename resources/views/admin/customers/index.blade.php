@@ -18,7 +18,7 @@
             <input type="search" name="search" placeholder="Chercher client..." required
                    class="flex-1 rounded-lg border border-gray-300 dark:border-gray-700 px-4 py-2.5 text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-800
                           placeholder-gray-400 dark:placeholder-gray-500
-                          focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition" value={{ old('search') ?? request('search') }}>
+                          focus:outline-none focus:ring-2 focus:ring-amani focus:border-amani transition" value="{{ old('search') ?? request('search') }}">
             <button type="submit"
                     class="bg-amani hover:bg-amani-dark text-white px-4 py-2.5 rounded-lg transition flex items-center gap-2 cursor-pointer">
                 <i class="fa-solid fa-magnifying-glass"></i> <span class="hidden md:inline">Chercher</span>
@@ -75,16 +75,18 @@
                             </a>
                         </td>
                         <td class="px-5 py-3">
-                            <div class="flex justify-end gap-2">
-                                <a href="{{ route('admin.orders.edit', $c->order->code) }}"
-                                        class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-amani hover:bg-amani/10 transition">
-                                    <i class="fa-solid fa-pen"></i>
-                                </a>
-                                <button type="button" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950 transition"
-                                        data-action={{ route('admin.customers.destroy', $c->id) }}>
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
+                            @can('update', $c)
+                                <div class="flex justify-end gap-2">
+                                    <a href="{{ route('admin.orders.edit', $c->order->code) }}"
+                                            class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-amani hover:bg-amani/10 transition">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </a>
+                                    <button type="button" class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950 transition"
+                                            data-action={{ route('admin.customers.destroy', $c->id) }}>
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            @endcan
                         </td>
                     </tr>
 

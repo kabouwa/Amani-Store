@@ -121,7 +121,12 @@
                                 {{ $order->customer->name }}
                             </a>
                         </td>
-                        <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $order->customer->phone }}</td>
+                        <td class="px-5 py-3 text-gray-600 dark:text-gray-400">
+                            <a href="https://wa.me/212{{ ltrim($order->customer->phone, '0') }}" target="_blank" rel="noopener noreferrer"
+                                title="Contacter sur WhatsApp" class="hover:text-green-600 hover:underline transition">
+                                {{ $order->customer->phone }}
+                            </a>
+                        </td>
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $order->customer->city }}</td>
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $order->total_items  }}</td>
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ number_format($order->shipping_price, 2) }} DH</td>
@@ -218,7 +223,12 @@
                 </div>
 
                 <div class="text-sm text-gray-600 dark:text-gray-400 space-y-1 mb-3">
-                    <p><i class="fa-solid fa-phone w-4 text-gray-400"></i> {{ $order->customer->phone }}</p>
+                    <p>
+                        <i class="fa-solid fa-phone w-4 text-gray-400"></i> <a href="https://wa.me/212{{ ltrim($order->customer->phone, '0') }}" target="_blank" rel="noopener noreferrer"
+                            title="Contacter sur WhatsApp" class="hover:text-green-600 hover:underline transition">
+                            {{ $order->customer->phone }}
+                        </a>
+                    </p>
                     <p><i class="fa-solid fa-location-dot w-4 text-gray-400"></i> {{ $order->customer->city }}</p>
                     <p><i class="fa-solid fa-box w-4 text-gray-400"></i> {{ $order->total_items }} article(s)</p>
                     <p><i class="fa-solid fa-truck w-4 text-gray-400"></i> {{ number_format($order->shipping_price, 2) }} DH</p>

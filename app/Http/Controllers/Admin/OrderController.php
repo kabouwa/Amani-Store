@@ -79,8 +79,8 @@ class OrderController extends Controller
         // Order Creation
         $order = Order::create([
             'customer_id' => $customer_id,
-            'shipping_price' => $city['price'],
-            'note' => $data['note']
+            'shipping_price' => $city['price'] - 20,
+            'note' => $data['note'],
         ]);
 
         // Order items Creation
@@ -110,7 +110,7 @@ class OrderController extends Controller
         }
 
         // Order Price
-        $total_price += $city['price'];
+        $total_price += 20; // Customer shipping part
         $order->update(compact('total_price'));
 
         return to_route('admin.orders.index')->with('success','La commande a été créer avec succès.');
@@ -157,7 +157,7 @@ class OrderController extends Controller
 
         // Update Order
         $order->update([
-            'shipping_price' => $city['price'],
+            'shipping_price' => $city['price'] - 20,
             'note' => $data['note']
         ]);
 
@@ -196,7 +196,7 @@ class OrderController extends Controller
         }
 
         // Order total price
-        $total_price += $city['price'];
+        $total_price += 20; // Customer shipping part
         $order->update(compact('total_price'));
 
         // Update in agency if the order has shipement
@@ -211,6 +211,7 @@ class OrderController extends Controller
     public function destroy(Order $order, SenditDeliveriesService $agency)
     {
         $this->authorize('delete', $order);
+
         if($order->hasShipment()) {
             $agency->delete($order);
         };

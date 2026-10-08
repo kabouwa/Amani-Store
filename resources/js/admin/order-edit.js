@@ -1,5 +1,5 @@
 $(function () {
-
+    const delivery_price = 20
     const products = JSON.parse(document.getElementById('productsData').textContent);
     const existingItems = JSON.parse(document.getElementById('existingItemsData').textContent);
     let articles = {};
@@ -159,7 +159,10 @@ $(function () {
         });
 
         $('#summaryCount').text(count);
-        $('#summaryTotal').text(total.toFixed(2) + ' DH');
+        $('#summaryTotal').text(count
+            ? (total + delivery_price).toFixed(2) + ' DH'
+            : '0.00 DH'
+        );
 
         if (slugs.length > 0) $('#articlesError').addClass('hidden');
 

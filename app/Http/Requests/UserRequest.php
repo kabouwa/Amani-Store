@@ -28,7 +28,7 @@ class UserRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                'between:4,20',
+                'between:3,20',
                 Rule::unique('users','name')->ignore($user),
             ],
             'email' => [

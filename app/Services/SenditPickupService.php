@@ -23,7 +23,7 @@ class SenditPickupService extends SenditService
                 url : $this->apiUrl . '/pickups',
             )->throw()->json();
             $pickups = $data['data'];
-        
+
             for($i = 2 ; $i <= $data['last_page']; $i++){
                 $nextPickups = Http::withToken( $this->getToken() )->get(
                     url : $this->apiUrl . '/pickups?page=' . $i,
@@ -55,9 +55,12 @@ class SenditPickupService extends SenditService
             "deliveries" => "",
             "movements" => ""
         ];
+
         $deliveries = [];
+
+        // Update picked status
         foreach($codes as $code){
-            $order = Order::where('sendit_code',$code)->first();
+            $order = Order::where('sendit_code', $code)->first();
             $deliveries[] = $order->sendit_code;
             $order->update([
                 'is_picked' => true
@@ -67,7 +70,7 @@ class SenditPickupService extends SenditService
 
         $data = Http::withToken( $this->getToken() )->post(
             url : $this->apiUrl . '/pickups',
-            data : $pickup 
+            data : $pickup
         )->throw()->json('data');
 
         Cache::forget('sendit_deliveries');

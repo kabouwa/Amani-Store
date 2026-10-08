@@ -104,9 +104,9 @@
                 @method('PATCH')
                 <span class="text-xs text-gray-500 dark:text-gray-400">Statut</span>
                 <label class="inline-flex items-center cursor-pointer">
-                    <input type="checkbox" name="is_active" value="1" class="sr-only peer"
+                    <input type="checkbox" name="active" value="1" class="sr-only peer"
                            onchange="this.form.requestSubmit()"
-                           {{ $product->is_active ? 'checked' : '' }}>
+                           @checked($product->is_active)>
                     <div class="relative w-9 h-5 bg-gray-200 dark:bg-gray-700 rounded-full peer
                                 peer-checked:bg-amani transition-colors duration-200
                                 after:content-[''] after:absolute after:top-0.5 after:left-0.5

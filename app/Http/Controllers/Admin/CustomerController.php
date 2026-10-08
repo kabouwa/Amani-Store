@@ -12,12 +12,13 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $search = $request->search;
+        // dd($search);
         $customers = Customer::with('order')
         ->when($search, function ($query) use ($search) {
-            $query->where("name",      "LIKE", "%$search}%")
-                ->orwhere("phone",     "LIKE", "%$search}%")
-                ->orwhere("instagram", "LIKE", "%$search}%")
-                ->orwhere("address",   "LIKE", "%$search}%");
+            $query->where("name",      "LIKE", "%{$search}%")
+                ->orwhere("phone",     "LIKE", "%{$search}%")
+                ->orwhere("instagram", "LIKE", "%{$search}%")
+                ->orwhere("address",   "LIKE", "%{$search}%");
         })
         ->orderByDesc('created_at')
         ->paginate(20)
@@ -25,8 +26,11 @@ class CustomerController extends Controller
 
         return view('admin.customers.index', compact('customers'));
     }
+
     public function destroy(Customer $customer, SenditDeliveriesService $agency)
     {
+        $this->authorize('delete', $customer);
+
         if($customer->order->hasShipment()) {
             $agency->delete($customer->order);
         };

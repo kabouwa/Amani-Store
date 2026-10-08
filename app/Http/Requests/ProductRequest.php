@@ -47,13 +47,13 @@ class ProductRequest extends FormRequest
     {
         $isUpdate = $this->isMethod('PUT') || $this->isMethod('PATCH') ;
         $product = $this->route('product');
-        
+
         return [
             'title' => [
                 'required',
                 'string',
                 'min:5',
-                'max:70',
+                'max:255',
                 Rule::unique('products','title')->ignore($product) // Check if titles exist and skip this current product edited
             ],
 
