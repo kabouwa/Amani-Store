@@ -2,7 +2,7 @@
     'product' => null,
     'categories' => [],
 ])
-<form action={{ $product ? route('admin.products.update', $product->slug) : route('admin.products.store') }} method="POST" novalidate enctype="multipart/form-data"
+<form action={{ $product ? route('admin.products.update', $product->reference) : route('admin.products.store') }} method="POST" novalidate enctype="multipart/form-data"
       class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm p-4 md:p-6">
     @csrf
     @unless ( is_null($product) )
@@ -192,7 +192,7 @@
         @unless (is_null($product))
             <button type="button"
                     class="js-delete-btn cursor-pointer text-amani dark:text-amani-light hover:bg-gray-100 dark:hover:bg-gray-800 px-6 py-2.5 rounded-lg transition flex items-center gap-2"
-                    data-action={{ route('admin.products.destroy', $product->slug) }}>
+                    data-action={{ route('admin.products.destroy', $product->reference) }}>
                 <i class="fa-solid fa-trash"></i> Supprimer
             </button>
         @endunless

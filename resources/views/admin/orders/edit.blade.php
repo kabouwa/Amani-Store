@@ -128,7 +128,7 @@
 
                     <script type="application/json" id="productsData">
                         {!! json_encode($products->map(fn($p) => [
-                            'slug' => $p->slug,
+                            'reference' => $p->reference,
                             'title' => $p->title,
                             'price' =>(float) $p->selling_price,
                             'stock' => $p->stock,
@@ -139,9 +139,9 @@
                     {{-- Existing order items, pre-filling the JS state on load --}}
                     <script type="application/json" id="existingItemsData">
                         {!! json_encode($order->items->map(fn($item) => [
-                            'slug' => $item->product?->slug,
+                            'reference' => $item->product?->reference,
                             'quantity' => $item->quantity,
-                        ])->filter(fn($i) => $i['slug'])->values()) !!}
+                        ])->filter(fn($i) => $i['reference'])->values()) !!}
                     </script>
                 </div>
 

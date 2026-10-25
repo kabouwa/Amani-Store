@@ -1,7 +1,7 @@
 $(function () {
     const delivery_price = 20;
     const products = JSON.parse(document.getElementById('productsData').textContent);
-    let articles = {}; // slug -> { title, price, stock, image, quantity }
+    let articles = {}; // reference -> { title, price, stock, image, quantity }
 
     // ---- Product search ----
     $('#productSearchInput').on('input', function () {
@@ -24,7 +24,7 @@ $(function () {
         matches.forEach(p => {
             const $item = $(`
                 <div class="js-product-result flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 transition"
-                     data-slug="${p.slug}">
+                     data-reference="${p.reference}">
                     ${
                         p.image ? `<img src="${p.image}" class="w-10 h-10 rounded-lg object-cover bg-gray-100 dark:bg-gray-800 shrink-0">`
                         : `<div class="h-full flex items-center justify-center text-gray-300 dark:text-gray-600">
@@ -46,8 +46,8 @@ $(function () {
     });
 
     $(document).on('click', '.js-product-result', function () {
-        const slug = $(this).data('slug');
-        addArticle(slug);
+        const reference = $(this).data('reference');
+        addArticle(reference);
         $('#productSearchInput').val('');
         $('#productSearchResults').addClass('hidden').empty();
     });
@@ -59,30 +59,30 @@ $(function () {
     });
 
     // ---- Article management ----
-    function addArticle(slug) {
-        const product = products.find(p => p.slug === slug);
+    function addArticle(reference) {
+        const product = products.find(p => p.reference === reference);
         if (!product) return;
 
-        if (articles[slug]) {
-            if (articles[slug].quantity < product.stock) {
-                articles[slug].quantity++;
+        if (articles[reference]) {
+            if (articles[reference].quantity < product.stock) {
+                articles[reference].quantity++;
             }
         } else {
             if (product.stock < 1) return; // out of stock, refuse
-            articles[slug] = { ...product, quantity: 1 };
+            articles[reference] = { ...product, quantity: 1 };
         }
 
         renderArticles();
     }
 
-    function changeQuantity(slug, delta) {
-        const article = articles[slug];
+    function changeQuantity(reference, delta) {
+        const article = articles[reference];
         if (!article) return;
 
         const newQty = article.quantity + delta;
 
         if (newQty < 1) {
-            delete articles[slug];
+            delete articles[reference];
         } else if (newQty > article.stock) {
             return; // block exceeding stock
         } else {
@@ -92,23 +92,23 @@ $(function () {
         renderArticles();
     }
 
-    function removeArticle(slug) {
-        delete articles[slug];
+    function removeArticle(reference) {
+        delete articles[reference];
         renderArticles();
     }
 
     function renderArticles() {
         const $tbody = $('#articlesTableBody');
-        const slugs = Object.keys(articles);
+        const references = Object.keys(articles);
 
         $tbody.empty();
-        $('#noArticles').toggleClass('hidden', slugs.length > 0);
+        $('#noArticles').toggleClass('hidden', references.length > 0);
 
         let total = 0;
         let count = 0;
 
-        slugs.forEach(slug => {
-            const a = articles[slug];
+        references.forEach(reference => {
+            const a = articles[reference];
             const lineTotal = a.price * a.quantity;
             total += lineTotal;
             count += a.quantity;
@@ -131,11 +131,11 @@ $(function () {
                     </td>
                     <td class="px-5 py-3">
                         <div class="flex items-center justify-center gap-2">
-                            <button type="button" class="js-qty-minus cursor-pointer w-7 h-7 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition" data-slug="${slug}">
+                            <button type="button" class="js-qty-minus cursor-pointer w-7 h-7 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition" data-reference="${reference}">
                                 <i class="fa-solid fa-minus text-xs"></i>
                             </button>
                             <span class="w-6 text-center font-medium text-gray-800 dark:text-gray-100">${a.quantity}</span>
-                            <button type="button" class="js-qty-plus cursor-pointer w-7 h-7 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition disabled:opacity-30 disabled:cursor-not-allowed" data-slug="${slug}" ${atMaxStock ? 'disabled' : ''}>
+                            <button type="button" class="js-qty-plus cursor-pointer w-7 h-7 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition disabled:opacity-30 disabled:cursor-not-allowed" data-reference="${reference}" ${atMaxStock ? 'disabled' : ''}>
                                 <i class="fa-solid fa-plus text-xs"></i>
                             </button>
                         </div>
@@ -144,7 +144,7 @@ $(function () {
                     <td class="px-5 py-3 text-right text-gray-600 dark:text-gray-300 whitespace-nowrap">${a.price.toFixed(2)} DH</td>
                     <td class="px-5 py-3 text-right font-medium text-gray-800 dark:text-gray-100 whitespace-nowrap">${lineTotal.toFixed(2)} DH</td>
                     <td class="px-5 py-3 text-right">
-                        <button type="button" class="js-remove-article cursor-pointer w-7 h-7 rounded-full text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition" data-slug="${slug}">
+                        <button type="button" class="js-remove-article cursor-pointer w-7 h-7 rounded-full text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition" data-reference="${reference}">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
                     </td>
@@ -161,25 +161,25 @@ $(function () {
             : '0.00 DH'
         );
 
-        if (slugs.length > 0) {
+        if (references.length > 0) {
             $('#articlesError').addClass('hidden');
         }
 
         syncHiddenInputs();
     }
 
-    $(document).on('click', '.js-qty-plus', function () { changeQuantity($(this).data('slug'), 1); });
-    $(document).on('click', '.js-qty-minus', function () { changeQuantity($(this).data('slug'), -1); });
-    $(document).on('click', '.js-remove-article', function () { removeArticle($(this).data('slug')); });
+    $(document).on('click', '.js-qty-plus', function () { changeQuantity($(this).data('reference'), 1); });
+    $(document).on('click', '.js-qty-minus', function () { changeQuantity($(this).data('reference'), -1); });
+    $(document).on('click', '.js-remove-article', function () { removeArticle($(this).data('reference')); });
 
-    // ---- Sync hidden inputs so the form actually submits items[i][slug] / items[i][quantity] ----
+    // ---- Sync hidden inputs so the form actually submits items[i][reference] / items[i][quantity] ----
     function syncHiddenInputs() {
         const $container = $('#itemsContainer');
         $container.empty();
 
-        Object.keys(articles).forEach((slug, index) => {
-            $container.append(`<input type="hidden" name="items[${index}][slug]" value="${slug}">`);
-            $container.append(`<input type="hidden" name="items[${index}][quantity]" value="${articles[slug].quantity}">`);
+        Object.keys(articles).forEach((reference, index) => {
+            $container.append(`<input type="hidden" name="items[${index}][reference]" value="${reference}">`);
+            $container.append(`<input type="hidden" name="items[${index}][quantity]" value="${articles[reference].quantity}">`);
         });
     }
 

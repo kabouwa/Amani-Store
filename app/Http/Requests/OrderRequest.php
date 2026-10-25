@@ -39,7 +39,7 @@ class OrderRequest extends FormRequest
             'address' => 'required|string|min:3|max:150',
 
             'items' => 'required|array|min:1',
-            'items.*.slug' => 'required|string',
+            'items.*.reference' => 'required|string',
             'items.*.quantity' => 'required|integer|min:1'
         ];
 

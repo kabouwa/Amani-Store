@@ -4,7 +4,7 @@
     </x-slot:heading>
 
     @if($errors->any())
-        <x-alert classes="max-w-4xl mx-auto" >Veuillez corriger les erreurs ci-dessous.</x-alert>
+        <x-alert >Veuillez corriger les erreurs ci-dessous.</x-alert>
     @endif
 
     <form action="{{ route('admin.orders.store') }}" method="POST" id="orderForm" novalidate>
@@ -121,7 +121,7 @@
                     {{-- All products data, hidden, for client-side search --}}
                     <script type="application/json" id="productsData">
                         {!! json_encode($products->map(fn($p) => [
-                            'slug' => $p->slug,
+                            'reference' => $p->reference,
                             'title' => $p->title,
                             'category' => $p?->category?->title ?? "Non classé",
                             'price' => (float) $p->selling_price,

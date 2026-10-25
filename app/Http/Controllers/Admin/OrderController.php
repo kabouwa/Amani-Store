@@ -87,7 +87,7 @@ class OrderController extends Controller
         $total_price = 0;
 
         foreach( $data['items'] as $item) {
-            $product = Product::where('slug', $item['slug'])->first();
+            $product = Product::where('reference', $item['reference'])->first();
 
             if (empty($product) || $product->stock < $item['quantity']) continue;
 
@@ -170,7 +170,7 @@ class OrderController extends Controller
         $total_price = 0;
 
         foreach( $data['items'] as $item) {
-            $product = Product::where('slug', $item['slug'])->first();
+            $product = Product::where('reference', $item['reference'])->first();
 
             if (empty($product) || $product->stock < $item['quantity']) continue;
 

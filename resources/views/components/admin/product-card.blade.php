@@ -5,7 +5,7 @@
     {{-- Admin actions --}}
     @auth
         <div class="absolute top-2 right-2 z-20 flex gap-1.5">
-            <a href="{{ route('admin.products.edit', $product->slug) }}"
+            <a href="{{ route('admin.products.edit', $product->reference) }}"
                class="cursor-pointer w-8 h-8 flex items-center justify-center rounded-full bg-white/95 dark:bg-gray-800/95 text-gray-600 dark:text-gray-300
                       hover:text-amani dark:hover:text-white hover:bg-white dark:hover:bg-amani shadow-sm transition">
                 <i class="fa-solid fa-pen text-xs"></i>
@@ -13,7 +13,7 @@
             <button type="button"
                     class="js-delete-btn cursor-pointer w-8 h-8 flex items-center justify-center rounded-full bg-white/95 dark:bg-gray-800/95 text-gray-600 dark:text-gray-300
                            hover:text-red-600 dark:hover:text-white hover:bg-white dark:hover:bg-red-600 shadow-sm transition"
-                    data-action="{{ route('admin.products.destroy', $product->slug) }}"
+                    data-action="{{ route('admin.products.destroy', $product->reference) }}"
                     data-modal="deleteModal">
                 <i class="fa-solid fa-trash text-xs"></i>
             </button>
@@ -63,7 +63,10 @@
     {{-- Info --}}
     <div class="p-4 relative z-10">
         <p class="text-xs text-amani dark:text-amani-light font-medium mb-1">{{ $product->category->title ?? 'Non Classé' }}</p>
-        <h3 class="font-semibold text-gray-800 dark:text-gray-100 truncate mb-2">{{ $product->title }}</h3>
+        <h3 class="font-semibold text-gray-800 dark:text-gray-100 truncate">
+            {{ $product->title }}
+        </h3>
+        <p class="text-gray-400 text-xs mb-2">{{ $product->reference }}</p>
 
         {{-- Prices --}}
         <div class="flex items-center justify-between mb-2">
@@ -98,7 +101,7 @@
 
         {{-- Active toggle --}}
         @auth
-            <form action="{{ route('admin.products.toggle', $product->slug) }}" method="POST"
+            <form action="{{ route('admin.products.toggle', $product->reference) }}" method="POST"
                   class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
                 @csrf
                 @method('PATCH')

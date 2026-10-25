@@ -1,6 +1,6 @@
 <x-admin.layouts.app title="Modifier un produit">
     <x-slot:heading>
-        <i class="fa-solid fa-pen w-4 text-center"></i> Modifier un produit
+        <i class="fa-solid fa-pen w-4 text-center"></i> Modifier le produit {{ $product->reference }}
     </x-slot:heading>
 
     <div class="flex items-center justify-between mb-6">

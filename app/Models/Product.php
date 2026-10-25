@@ -50,14 +50,19 @@ class Product extends Model
 
     public function getRouteKeyName()
     {
-        return 'slug';
+        return 'reference';
     }
 
     public static function booted(): void
     {
-        static::saving(function ($product) {
-            if ( $product->isDirty('title') ) $product->slug = Str::slug($product->title);
+        static::created(function ($product) {
+            $product->reference = 'AM-P' . $product->id;
+            $product->saveQuietly();
         });
+
+        // static::saving(function ($product) {
+        //     if ( $product->isDirty('title') ) $product->slug = Str::slug($product->title);
+        // });
 
         static::deleting(function ($ordeItem) {
             if ($ordeItem->product) {

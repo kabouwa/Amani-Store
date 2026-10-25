@@ -70,16 +70,16 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
-    server: {
-        host: '0.0.0.0',
-        port: 5173,
+    // server: {
+    //     host: '0.0.0.0',
+    //     port: 5173,
 
-        cors : true,
+    //     cors : true,
 
-        hmr: {
-            host: '192.168.1.100',
-            port: 5173,
-        },
+    //     hmr: {
+    //         host: '192.168.1.100',
+    //         port: 5173,
+    //     },
 
-    },
+    // },
 });

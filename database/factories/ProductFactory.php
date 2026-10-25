@@ -23,7 +23,7 @@ class ProductFactory extends Factory
         return [
             'category_id' => Category::inRandomOrder()->first()->id,
             'title' => $title,
-            'slug' => Str::slug($title),
+            // 'slug' => Str::slug($title),
             'description' => fake()->realText(400),
             'stock' => fake()->numberBetween(5,100),
             'purchase_price' => fake()->numberBetween(0,100),
