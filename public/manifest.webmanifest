@@ -1,7 +1,7 @@
 {
     "name": "Amani Store",
-    "short_name": "Amani",
-    "start_url": "/",
+    "short_name": "Amanistore",
+    "start_url": "/admin",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#7A1220",
