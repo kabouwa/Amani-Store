@@ -12,7 +12,7 @@
         ['route' => 'admin.categories.index', 'label' => 'Gestion des catégories',     'icon' => 'fa-tags',         'active' => request()->routeIs('admin.categories.index') ],
         ['route' => 'admin.customers.index',  'label' => 'Liste des clients',          'icon' => 'fa-users',        'active' => request()->routeIs('admin.customers.index')  ],
         ['route' => 'admin.suppliers.index',  'label' => 'Gestion des fournisseurs',   'icon' => 'fa-building',     'active' => request()->routeIs('admin.suppliers.*')      ],
-        ['route' => 'admin.users.index',      'label' => 'Équipe de travail',          'icon' => 'fa-user-shield',  'active' => request()->routeIs('admin.users.*')          ],
+        ['route' => 'admin.users.index',      'label' => 'Équipe de travail',          'icon' => 'fa-user-shield',  'active' => request()->routeIs('admin.users.index')      ],
         ['route' => 'admin.users.create',     'label' => 'Ajouter un administrateur',  'icon' => 'fa-user-plus',    'active' => request()->routeIs('admin.users.create')     ]
     ];
 @endphp
