@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Services\SenditPickupService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PickupController extends Controller
 {
@@ -28,8 +29,8 @@ class PickupController extends Controller
     public function store(Request $request, SenditPickupService $pickupService)
     {
         $data = $request->validate([
-            'sendit_codes' => 'required|array|min:1',
-            'sendit_codes.*' => 'required|string|min:7|max:20|exists:orders,sendit_code'
+            'sendit_codes' => ['required','array','min:1'],
+            'sendit_codes.*' => ['required','string','min:7','max:25', Rule::exists('orders', 'sendit_code')->where('is_picked', false)]
         ]);
 
         $pickupService->create($data['sendit_codes']);

@@ -57,7 +57,7 @@ Route::prefix('admin')->name('admin.')->group(function (){
 
         Route::resource('products', AdminProductController::class)->except('show');
 
-        Route::patch('products/{product}',[AdminProductController::class,'toggle'])->name('products.toggle');
+        Route::patch('products/{product}/toggle',[AdminProductController::class,'toggle'])->name('products.toggle');
 
         Route::patch('product-images/{productImages}/{product}',[ProductImagesController::class, 'primary'])->name('product-image.primary');
 

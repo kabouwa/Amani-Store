@@ -43,6 +43,7 @@ class ProductRequest extends FormRequest
             'images.max' => 'Vous ne pouvez pas ajouter plus de 10 images.',
         ];
     }
+    
     public function rules(): array
     {
         $isUpdate = $this->isMethod('PUT') || $this->isMethod('PATCH') ;

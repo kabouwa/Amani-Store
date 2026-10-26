@@ -103,11 +103,13 @@ class ProductController extends Controller
 
     public function toggle(Product $product)
     {
-        $product->is_active = !$product->is_active;
+        $prev = $product->is_active;
 
-        $product->save();
+        $product->update([
+            'is_active' => !$prev
+        ]);
 
-        $status = $product->is_active ? 'activé' : 'désactivé';
+        $status = $prev ? 'activé' : 'désactivé';
 
         return back()->with('success',"Le produit a été $status avec succès.");
     }

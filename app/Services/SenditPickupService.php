@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Order;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 
@@ -44,7 +45,8 @@ class SenditPickupService extends SenditService
     {
         return array_keys($this->get($code)['deliveries']);
     }
-    public function create($codes)
+
+    public function create(array $codes): array
     {
         $pickup = [
             "district_id" => $this->pickup_district_id,
@@ -56,26 +58,38 @@ class SenditPickupService extends SenditService
             "movements" => ""
         ];
 
-        $deliveries = [];
 
-        // Update picked status
-        foreach($codes as $code){
-            $order = Order::where('sendit_code', $code)->first();
-            $deliveries[] = $order->sendit_code;
-            $order->update([
+        return DB::transaction(function () use ($codes , $pickup) {
+            $deliveries = [];
+            $orders = [];
+            // Update picked status
+            foreach($codes as $code){
+                // Find orders, save their id, get sendit code
+                $order = Order::where('sendit_code', $code)->firstOrFail();
+
+                $orders[] = $order->id;
+
+                $deliveries[] = $order->sendit_code;
+            }
+
+            $pickup['deliveries'] = implode(',', $deliveries);
+
+            // Send request
+            $data = Http::withToken( $this->getToken() )->post(
+                url : $this->apiUrl . '/pickups',
+                data : $pickup
+            )->throw()->json('data');
+
+            // Set is_picked true to picked orders
+            Order::whereIn('id', $orders)->update([
                 'is_picked' => true
             ]);
-        }
-        $pickup['deliveries'] = implode(',',$deliveries);
 
-        $data = Http::withToken( $this->getToken() )->post(
-            url : $this->apiUrl . '/pickups',
-            data : $pickup
-        )->throw()->json('data');
-
-        Cache::forget('sendit_deliveries');
-        Cache::forget('sendit_pickups');
-        return $data;
+            Cache::forget('dashboard-statistics');
+            Cache::forget('sendit_deliveries');
+            Cache::forget('sendit_pickups');
+            return $data;
+        });
     }
 
     public function delete($code) : array

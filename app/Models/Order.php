@@ -56,6 +56,7 @@ class Order extends Model
         static::saved(function () {
             Cache::forget('dashboard-statistics');
         });
+
         static::deleted(function () {
             Cache::forget('dashboard-statistics');
         });

@@ -101,7 +101,7 @@
 
         {{-- Active toggle --}}
         @auth
-            <form action="{{ route('admin.products.toggle', $product->reference) }}" method="POST"
+            <form action="{{ route('admin.products.toggle', $product) }}" method="POST"
                   class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
                 @csrf
                 @method('PATCH')
@@ -111,11 +111,11 @@
                            onchange="this.form.requestSubmit()"
                            @checked($product->is_active)>
                     <div class="relative w-9 h-5 bg-gray-200 dark:bg-gray-700 rounded-full peer
-                                peer-checked:bg-amani transition-colors duration-200
-                                after:content-[''] after:absolute after:top-0.5 after:left-0.5
-                                after:bg-white after:rounded-full after:h-4 after:w-4
-                                after:transition-all after:duration-200
-                                peer-checked:after:translate-x-4">
+                        peer-checked:bg-amani transition-colors duration-200
+                        after:content-[''] after:absolute after:top-0.5 after:left-0.5
+                        after:bg-white after:rounded-full after:h-4 after:w-4
+                        after:transition-all after:duration-200
+                        peer-checked:after:translate-x-4">
                     </div>
                 </label>
             </form>
