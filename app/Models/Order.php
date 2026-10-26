@@ -40,9 +40,7 @@ class Order extends Model
             $profit += $item->quantity * ($item->selling_price - $item->purchase_price);
         }
 
-        $profit -= ($this->shipping_price + $customerShippingPrice);
-
-        return $profit;
+        return $profit - $this->shipping_price;
     }
 
     public  function hasShipment() : bool
