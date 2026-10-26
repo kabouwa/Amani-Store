@@ -66,7 +66,10 @@ class OrderController extends Controller
             ->get();
 
         $cities = $agency->cities();
-        return view('admin.orders.create',compact('cities', 'products'));
+
+        $customerShippingPrice = config('services.sendit.customer.shipping_price');
+
+        return view('admin.orders.create',compact('cities', 'products', 'customerShippingPrice'));
     }
 
     public function store(OrderRequest $request, SenditDeliveriesService $agency) {
@@ -142,7 +145,9 @@ class OrderController extends Controller
 
         $cities = $agency->cities();
 
-        return view('admin.orders.edit',compact('order','products','cities'));
+        $customerShippingPrice = config('services.sendit.customer.shipping_price');
+
+        return view('admin.orders.edit',compact('order','products','cities', 'customerShippingPrice'));
     }
 
     public function update(Order $order, SenditDeliveriesService $agency, OrderRequest $request)
