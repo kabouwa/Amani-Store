@@ -234,6 +234,9 @@
                     <p><i class="fa-solid fa-location-dot w-4 text-gray-400"></i> {{ $order->customer->city }}</p>
                     <p><i class="fa-solid fa-box w-4 text-gray-400"></i> {{ $order->total_items }} article(s)</p>
                     <p><i class="fa-solid fa-truck w-4 text-gray-400"></i> {{ number_format($order->shipping_price, 2) }} DH</p>
+                    <p class="{{ $order->profit >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
+                            <i class="fa-solid fa-money-bill-wave w-4 text-gray-400"></i> {{ number_format($order->profit ?? 0, 2) }} DH
+                    </p>
                 </div>
 
                 <div class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-800">

@@ -32,15 +32,16 @@ class Order extends Model
     public function getProfitAttribute(): float
     {
         $this->loadMissing('items');
+        $customerShippingPrice = config('services.sendit.customer.shipping_price');
 
         $profit = 0;
 
         foreach($this->items as $item) {
             $profit += $item->quantity * ($item->selling_price - $item->purchasing_price);
         }
-
-        $profit -= ($this->shipping_price + $this->customerShippingPrice);
-
+        // dd($profit);
+        $profit -= ($this->shipping_price + $customerShippingPrice);
+        dd($profit);
         return $profit;
     }
 

@@ -108,7 +108,7 @@
                         </p>
                     </div>
                     <div>
-                        <p class="text-gray-400 text-xs mb-1">Profit</p>
+                        <p class="text-gray-400 text-xs mb-1">Bénéfice</p>
                         <p class="font-semibold {{ $order->profit >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
                             {{ number_format($order->profit ?? 0, 2) }} DH
                         </p>
@@ -126,7 +126,7 @@
                 <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100 p-5 pb-0">Articles</h2>
 
                 <div class="overflow-x-auto mt-4">
-                    <table class="w-full text-sm min-w-[480px]">
+                    <table class="w-full text-sm min-w-120">
                         <thead>
                             <tr class="text-left text-gray-400 text-xs border-b border-gray-100 dark:border-gray-800">
                                 <th class="px-5 py-3 font-medium">Produit</th>

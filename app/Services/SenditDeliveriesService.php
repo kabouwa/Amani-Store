@@ -37,7 +37,7 @@ class SenditDeliveriesService extends SenditService
     public function updateStatus()
     {
         // Reference we saved in agency as code of order in our db
-        $deliveries = collect($this->all())->keyBy('reference') ;
+        $deliveries = collect($this->all())->keyBy('reference');
 
         Order::whereNotNull('sendit_code')
             ->get()
