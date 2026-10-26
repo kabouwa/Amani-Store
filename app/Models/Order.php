@@ -39,9 +39,9 @@ class Order extends Model
         foreach($this->items as $item) {
             $profit += $item->quantity * ($item->selling_price - $item->purchasing_price);
         }
-        // dd($profit);
+        
         $profit -= ($this->shipping_price + $customerShippingPrice);
-        dd($profit);
+
         return $profit;
     }
 
