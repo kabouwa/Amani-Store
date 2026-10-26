@@ -3,17 +3,17 @@
         <i class="fa-solid fa-users-gear w-4 text-center"></i> Gestion des administrateurs
     </x-slot:heading>
 
-    @if(session('success'))
-        <x-alert color="green">{{ session('success') }}</x-alert>
-    @endif
-
-    <div class="flex justify-end mb-6">
+    <x-slot:headingBtn>
         <a href="{{ route('admin.users.create') }}"
            class="cursor-pointer bg-amani hover:bg-amani-dark text-white px-4 py-2.5 rounded-lg transition
                   flex items-center justify-center gap-2 text-sm font-medium">
             <i class="fa-solid fa-plus"></i> Ajouter un administrateur
         </a>
-    </div>
+    </x-slot:headingBtn>
+
+    @if(session('success'))
+        <x-alert color="green">{{ session('success') }}</x-alert>
+    @endif
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         @foreach ($users as $user)
@@ -36,7 +36,7 @@
 
                 <div class="text-sm text-gray-600 dark:text-gray-400 space-y-1.5 pt-3 border-t border-gray-100 dark:border-gray-800">
                     <p class="truncate"><i class="fa-solid fa-envelope w-4 text-gray-400 dark:text-gray-500"></i> {{ $user->email }}</p>
-                    <p class="truncate"><i class="fa-solid fa-phone w-4 text-gray-400 dark:text-gray-500"></i> 
+                    <p class="truncate"><i class="fa-solid fa-phone w-4 text-gray-400 dark:text-gray-500"></i>
                         <a href="https://wa.me/212{{ ltrim($user->phone, '0') }}" target="_blank" rel="noopener noreferrer"
                             title="Contacter sur WhatsApp" class="hover:text-green-600 hover:underline transition">
                             {{ $user->phone }}
