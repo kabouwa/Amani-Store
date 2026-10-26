@@ -34,6 +34,7 @@
             border-radius: 4px;
         }
     </style>
+    @vite(['resources/css/app.css','resources/js/app.js','resources/js/admin/layout.js','resources/css/admin/layout.css'])
     <title>{{ $title }} - Amani Store Administration</title>
 </head>
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-serif">
@@ -71,8 +72,6 @@
     @endif
 
 
-    @vite(['resources/css/app.css','resources/js/app.js','resources/js/admin/layout.js','resources/css/admin/layout.css'])
     @stack('scripts')
-
 </body>
 </html>
