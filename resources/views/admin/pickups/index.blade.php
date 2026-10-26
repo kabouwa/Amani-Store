@@ -108,6 +108,7 @@
                         <th class="px-5 py-3 font-semibold">Ville</th>
                         <th class="px-5 py-3 font-semibold">Adresse</th>
                         <th class="px-5 py-3 font-semibold">Commandes</th>
+                        <th class="px-5 py-3 font-semibold">Montant Total</th>
                         <th class="px-5 py-3 font-semibold">Statut</th>
                         <th class="px-5 py-3 font-semibold text-right">Actions</th>
                     </tr>
@@ -121,6 +122,7 @@
                             <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $pickup->district['name'] ?? '—' }}</td>
                             <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $pickup->address }}</td>
                             <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ count($pickup->deliveries) }}</td>
+                            <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $pickup->total_price }}</td>
                             <td class="px-5 py-3">
                                 <x-admin.pickup-status :status="$pickup->status" />
                             </td>
@@ -157,7 +159,8 @@
                         <p><i class="fa-solid fa-phone w-4 text-gray-400"></i> {{ $pickup->phone }}</p>
                         <p><i class="fa-solid fa-location-dot w-4 text-gray-400"></i> {{ $pickup->district['name'] ?? '—' }}</p>
                         <p><i class="fa-solid fa-map w-4 text-gray-400"></i> {{ $pickup->address }}</p>
-                        <p><i class="fa-solid fa-box w-4 text-gray-400"></i> {{ count($pickup->deliveries) }} commande(s)</p>
+                        <p><i class="fa-solid fa-box w-4 text-gray-400"></i> {{ count($pickup->deliveries) }} Commande(s)</p>
+                        <p><i class="fa-solid fa-money-bill-wave w-4 text-gray-400"></i> {{ $pickup->total_price }} Dhs</p>
                     </div>
 
                     @if(in_array($pickup->status, ['SCHEDULED', 'PENDING']))

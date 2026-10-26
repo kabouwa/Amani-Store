@@ -91,6 +91,7 @@
                     <th class="px-5 py-3 font-semibold">Articles</th>
                     <th class="px-5 py-3 font-semibold">Livraison</th>
                     <th class="px-5 py-3 font-semibold">Total</th>
+                    <th class="px-5 py-3 font-semibold">Bénéfice</th>
                     <th class="px-5 py-3 font-semibold">Statut</th>
                     <th class="px-5 py-3 font-semibold text-right"><span class="mr-24">Actions</span></th>
                 </tr>
@@ -131,6 +132,7 @@
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ $order->total_items  }}</td>
                         <td class="px-5 py-3 text-gray-600 dark:text-gray-400">{{ number_format($order->shipping_price, 2) }} DH</td>
                         <td class="px-5 py-3 font-semibold text-gray-800 dark:text-gray-100">{{ number_format($order->total_price, 2) }} DH</td>
+                        <td class="px-5 py-3 font-semibold {{ $order->profit >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">{{ number_format($order->profit, 2) }} DH</td>
                         <td class="px-5 py-3">
                             <x-admin.order-status :status="$order->status" />
                         </td>

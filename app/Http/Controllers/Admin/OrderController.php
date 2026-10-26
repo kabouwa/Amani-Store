@@ -14,6 +14,12 @@ use App\Http\Controllers\Controller;
 
 class OrderController extends Controller
 {
+    private int $customerShippingPrice;
+
+    public function __construct() {
+        $this->customerShippingPrice = config('services.sendit.customer.shipping_price');
+    }
+
     public function index(SenditDeliveriesService $agency)
     {
         $agency->updateStatus();
@@ -21,7 +27,7 @@ class OrderController extends Controller
         $orders = Order::query()
         ->join('customers', 'orders.customer_id', '=', 'customers.id')
         ->select('orders.*')
-        ->with('customer')
+        ->with(['customer','items'])
         ->withSum('items as total_items', 'quantity')
         ->when(
             request('search'), fn ($q,$s) =>
@@ -46,10 +52,10 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
+        $order->load('items');
+
         return view('admin.orders.show', compact('order'));
     }
-
-
 
     public function create(SenditDeliveriesService $agency) {
         $products = Product::with('category')
@@ -79,7 +85,7 @@ class OrderController extends Controller
         // Order Creation
         $order = Order::create([
             'customer_id' => $customer_id,
-            'shipping_price' => $city['price'] - 20,
+            'shipping_price' => $city['price'] - $this->customerShippingPrice,
             'note' => $data['note'],
         ]);
 
@@ -110,7 +116,7 @@ class OrderController extends Controller
         }
 
         // Order Price
-        $total_price += 20; // Customer shipping part
+        $total_price += $this->customerShippingPrice; // Customer shipping part
         $order->update(compact('total_price'));
 
         return to_route('admin.orders.index')->with('success','La commande a été créer avec succès.');
@@ -157,7 +163,7 @@ class OrderController extends Controller
 
         // Update Order
         $order->update([
-            'shipping_price' => $city['price'] - 20,
+            'shipping_price' => $city['price'] - $this->customerShippingPrice,
             'note' => $data['note']
         ]);
 
@@ -196,7 +202,7 @@ class OrderController extends Controller
         }
 
         // Order total price
-        $total_price += 20; // Customer shipping part
+        $total_price += $this->customerShippingPrice; // Customer shipping part
         $order->update(compact('total_price'));
 
         // Update in agency if the order has shipement

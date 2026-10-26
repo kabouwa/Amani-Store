@@ -45,6 +45,9 @@ return [
             'name' => env('SENDIT_PICKUP_NAME'),
             'phone' => env('SENDIT_PICKUP_PHONE'),
             'address' => env('SENDIT_PICKUP_ADDRESS'),
+        ],
+        'customer' => [
+            'shipping_price' => env('SENDIT_CUSTOMER_SHIPPING_PRICE'),
         ]
     ]
 

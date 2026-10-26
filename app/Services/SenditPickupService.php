@@ -23,6 +23,7 @@ class SenditPickupService extends SenditService
             $data = Http::withToken( $this->getToken() )->get(
                 url : $this->apiUrl . '/pickups',
             )->throw()->json();
+
             $pickups = $data['data'];
 
             for($i = 2 ; $i <= $data['last_page']; $i++){
@@ -30,6 +31,13 @@ class SenditPickupService extends SenditService
                     url : $this->apiUrl . '/pickups?page=' . $i,
                 )->throw()->json('data');
                 $pickups = array_merge($pickups,$nextPickups);
+            }
+
+            // Add total price
+            for($i=0 ; $i < count($pickups); $i++) {
+                $total = 0;
+                foreach($pickups[$i]['deliveries'] as $delivery) $total += $delivery['amount'];
+                $pickups[$i]['total_price'] = $total;
             }
 
             return $pickups;

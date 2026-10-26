@@ -50,7 +50,7 @@
 
         @if ($order->hasShipment())
             <button type="button"
-                    class="js-delete-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
+                    class="js-delete-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium text-nowrap h-full
                         text-red-600 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 transition cursor-pointer"
                     data-action="{{ route('admin.shipment.destroy', $order->code) }}"
                     data-modal="deleteShipmentModal">
@@ -61,7 +61,7 @@
             <form action="{{ route('admin.shipment.store', $order->code) }}" method="POST">
                 @csrf
                 <button type="submit"
-                        class="js-sendit-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
+                        class="js-sendit-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium text-nowrap h-full
                             text-green-600 bg-green-50 dark:bg-green-900/30 hover:bg-green-100 dark:hover:bg-green-900/50 transition cursor-pointer"
                         data-modal="senditOrderModal">
                     <i class="fa-solid fa-truck-fast"></i>
@@ -71,7 +71,7 @@
         @endif
 
         <button type="button"
-                class="js-delete-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium
+                class="js-delete-btn inline-flex justify-center items-center gap-2 px-4 py-3 w-full rounded-lg text-sm font-medium text-nowrap h-full
                     text-red-600 bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/50 transition cursor-pointer"
                 data-action="{{ route('admin.orders.destroy', $order->code) }}"
                 data-modal="deleteOrderModal">
@@ -91,7 +91,8 @@
             {{-- Infos commande --}}
             <div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-100 dark:border-gray-800 p-5">
                 <h2 class="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-4">Informations de livraison</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
                     <div>
                         <p class="text-gray-400 text-xs mb-1">Agence</p>
                         <p class="text-gray-800 dark:text-gray-200 font-medium">{{ $order->shipping_agency }}</p>
@@ -104,6 +105,12 @@
                         <p class="text-gray-400 text-xs mb-1">Code Sendit</p>
                         <p class="text-gray-800 dark:text-gray-200 font-medium">
                             {{ $order->sendit_code ?? '—' }}
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 text-xs mb-1">Profit</p>
+                        <p class="font-semibold {{ $order->profit >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' }}">
+                            {{ number_format($order->profit ?? 0, 2) }} DH
                         </p>
                     </div>
                 </div>

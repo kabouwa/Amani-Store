@@ -29,6 +29,21 @@ class Order extends Model
     //     return $this->items()->sum('quantity');
     // }
 
+    public function getProfitAttribute(): float
+    {
+        $this->loadMissing('items');
+
+        $profit = 0;
+
+        foreach($this->items as $item) {
+            $profit += $item->quantity * ($item->selling_price - $item->purchasing_price);
+        }
+
+        $profit -= ($this->shipping_price + $this->customerShippingPrice);
+
+        return $profit;
+    }
+
     public  function hasShipment() : bool
     {
         return ! is_null($this->sendit_code);
