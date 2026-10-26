@@ -126,7 +126,7 @@
                             'category' => $p?->category?->title ?? "Non classé",
                             'price' => (float) $p->selling_price,
                             'stock' => $p->stock,
-                            'image' => $p->primaryImage?->image ? asset('storage/uploads/' . $p->primaryImage->image) : null,
+                            'image' => $p->primaryImage?->image ? asset('storage/' . $p->primaryImage->image) : null,
                         ])) !!}
                     </script>
                 </div>

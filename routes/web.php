@@ -87,8 +87,9 @@ Route::prefix('admin')->name('admin.')->group(function (){
 /**
  * Public Routes Maintenance Mode
 */
-// Public Storage
-Route::get('storage/uploads/{path}', [PublicStorageController::class, 'getFile'])->where('path', '.*');
+
+// Public Storage for host hasn't a command prompt
+// Route::get('storage/{path}', [PublicStorageController::class, 'getFile'])->where('path', '.*');
 
 Route::middleware(['throttle:public', 'maintenance.mode'])->group(function(){
     Route::get('/', [PublicController::class,'index'])->name('home');

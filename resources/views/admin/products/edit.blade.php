@@ -42,9 +42,9 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-sm p-6 mb-6">
         @forelse ($product->images as $index => $img)
             <div class="relative group md:aspect-square rounded-lg border overflow-hidden border-gray-200 dark:border-gray-700 cursor-pointer flex justify-center items-center bg-cover {{ $img->is_primary ? 'ring-2 ring-amani shadow-md shadow-amani/50' : '' }}"
-                data-index="{{ $index }}" style="background: url({{ asset('storage/uploads/' . $img->image) }}) center no-repeat; background-size: cover;">
+                data-index="{{ $index }}" style="background: url({{ asset('storage/' . $img->image) }}) center no-repeat; background-size: cover;">
 
-                <img src="{{ asset('storage/uploads/' . $img->image ) }}" class="js-viewable absolute inset-1 w-full h-full opacity-0">
+                <img src="{{ asset('storage/' . $img->image ) }}" class="js-viewable absolute inset-1 w-full h-full opacity-0">
 
                 @if ($img->is_primary)
                     <div class="cursor-pointer md:absolute top-1 left-1 w-full md:w-6 h-6 rounded-full text-xs
